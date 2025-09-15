@@ -18,6 +18,7 @@ export async function POST(request: Request) {
   // --- 2. Chatworkからのメッセージを取得 ---
   const body = await request.json();
   const userMessage = body.webhook_event.body;
+  const roomId = body.webhook_event.room_id;
 
   // メンションなどを除外した、純粋な質問文だけを抽出（簡易的な処理）
   const question = userMessage.replace(/\[To:\d+\]\n/g, '').trim();
@@ -26,9 +27,8 @@ export async function POST(request: Request) {
   try {
     const aiResponse = await askAI(question);
 
-    // --- 4. Chatworkに返信する（今回はまず、コンソールに結果表示） ---
-    // 本来はこのAIの回答をChatwork APIを使って返信する
-    console.log('AIからの回答:', aiResponse);
+    // --- 4. Chatworkに返信する ---
+    await sendChatworkMessage(roomId, aiResponse);
 
     // Chatworkには、まず「受け取ったよ」という合図の200 OKを返す
     return NextResponse.json({ message: 'OK' });
@@ -54,7 +54,9 @@ async function askAI(question: string): Promise<string> {
   const vertexAI = new VertexAI({
     project: process.env.GCP_PROJECT_ID,
     location: 'asia-northeast1', // 東京リージョン
-    credentials,
+    googleAuthOptions: {
+      credentials,
+    },
   });
 
   // --- 使用するAIモデルを指定 ---
@@ -67,4 +69,28 @@ async function askAI(question: string): Promise<string> {
   const responseText = result.response.candidates?.[0]?.content.parts[0]?.text || '';
 
   return responseText;
+}
+
+// ----------------------------------------------------------------
+// Chatworkにメッセージを送信する関数
+// ----------------------------------------------------------------
+async function sendChatworkMessage(roomId: string, message: string): Promise<void> {
+  const chatworkApiToken = process.env.CHATWORK_API_TOKEN;
+  if (!chatworkApiToken) {
+    throw new Error('CHATWORK_API_TOKENが設定されていません');
+  }
+
+  const url = `https://api.chatwork.com/v2/rooms/${roomId}/messages`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'X-ChatWorkToken': chatworkApiToken,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `body=${encodeURIComponent(message)}`,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Chatwork APIエラー: ${response.status} ${response.statusText}`);
+  }
 }
