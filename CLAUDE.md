@@ -55,22 +55,61 @@ OneDriveやGoogle Driveに保管されている社内規程のドキュメント
 
 ---
 
-## 3. 現在の状況と次のステップ
+## 3. 次のステップ
 
-**現在の状況**:
-VS Codeで`app/api/chatwork/route.ts`ファイルを開き、プログラムを実装する直前の段階です。
+. コードの検証 (Code Verification)
+対象ファイル: app/api/chatwork/route.ts
 
-**次のタスク**:
-1.  `route.ts`内のAIからのレスポンスを、実際にChatwork APIを使って返信する処理を実装する。
-2.  ChatworkでWebhookを設定し、実際にメッセージを投稿してエンドツーエンドの動作をテストする。
-3.  （将来的に）OneDrive/Google Driveからドキュメントを自動で読み込み、GCPのVector Datastoreに格納するCloud Functionsを実装する。
+検証項目:
 
----
+askAI関数が@google-cloud/discoveryengineライブラリを使用しているか確認せよ。
 
-## 4. 重要な情報（環境変数）
+GCP_DATA_STORE_ID環境変数を参照しているか確認せよ。
 
-Vercelには以下の環境変数が設定されています。
+2. 依存関係の検証 (Dependency Verification)
+対象ファイル: package.json
 
-- `GCP_CREDENTIALS`: GCPサービスアカウントの認証情報（JSON文字列）
-- `GCP_PROJECT_ID`: GCPのプロジェクトID
-- `CHATWORK_WEBHOOK_TOKEN`: Chatwork Webhookの認証用トークン（任意の値で設定済み）
+検証項目:
+
+dependenciesまたはdevDependencies内に@google-cloud/discoveryengineパッケージが存在するか確認せよ。
+
+3. 環境変数の検証 (Environment Variable Verification)
+検証対象: Vercelプロジェクト設定
+
+検証項目:
+
+以下の環境変数がすべて設定されているか確認せよ。
+
+GCP_DATA_STORE_ID
+
+CHATWORK_API_TOKEN
+
+CHATWORK_MY_ID
+
+CHATWORK_WEBHOOK_TOKEN
+
+GCP_PROJECT_ID
+
+GCP_CREDENTIALS
+
+4. デプロイメント状態の確認 (Deployment Status Check)
+検証対象: Vercelダッシュボード
+
+検証項目:
+
+直近のGitHubへのプッシュがトリガーとなり、最新のビルドが成功し、本番環境にデプロイされていることを確認せよ。
+
+5. エンドツーエンドテストの実行 (End-to-End Test Execution)
+実行プロトコル:
+
+テストデータの準備: Google Driveの指定フォルダ内にあるドキュメントから、そのドキュメントにしか記載されていない固有の情報を特定する。
+
+質問の実行: Chatworkの指定されたグループチャットにて、準備した情報に関する質問を投稿する。
+
+期待される結果 (Expected Outcome):
+
+AIがドキュメントの内容に即した正確な回答をChatworkに返信する。
+
+失敗時の対応 (Failure Protocol):
+
+期待される結果が得られない場合、VercelのFunction Logを取得し、エラーメッセージや関連するログ出力を報告せよ。
