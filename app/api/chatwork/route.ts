@@ -5,21 +5,35 @@ import { SearchServiceClient } from '@google-cloud/discoveryengine';
 
 // --- メインの処理：ChatworkからのPOSTリクエストを受け取る ---
 export async function POST(request: Request) {
+  console.log('🔥 Webhook received!');
+
   // 1. セキュリティチェック
   const chatworkToken = request.headers.get('X-ChatWorkWebhookToken');
+  console.log('🔑 Token check:', chatworkToken ? 'Token present' : 'No token');
+
   if (chatworkToken !== process.env.CHATWORK_WEBHOOK_TOKEN) {
+    console.log('❌ Token mismatch - Forbidden');
     return new NextResponse('Forbidden', { status: 403 });
   }
 
+  console.log('✅ Token verified');
+
   // 2. Chatworkからのメッセージを取得
   const body = await request.json();
+  console.log('📨 Request body:', JSON.stringify(body, null, 2));
+
   const event = body.webhook_event;
   const userMessage = event.body;
   const roomId = event.room_id;
   const fromAccountId = event.from_account_id;
 
+  console.log('💬 Message:', userMessage);
+  console.log('🏠 Room ID:', roomId);
+  console.log('👤 From Account ID:', fromAccountId);
+
   // ★ 修正点1：ボット自身の発言には反応しないようにする (無限ループ防止)
   if (fromAccountId === parseInt(process.env.CHATWORK_MY_ID || '0')) {
+    console.log('🤖 Bot message detected - skipping');
     // 自分のメッセージなので、何もせず処理を終了
     return NextResponse.json({ message: 'Message from bot itself. Skipped.' });
   }
