@@ -3,6 +3,15 @@
 import { NextResponse } from 'next/server';
 import { SearchServiceClient } from '@google-cloud/discoveryengine';
 
+// --- テスト用のGETハンドラ ---
+export async function GET() {
+  return NextResponse.json({
+    message: 'Chatwork AI Bot API is running!',
+    status: 'OK',
+    timestamp: new Date().toISOString()
+  });
+}
+
 // --- メインの処理：ChatworkからのPOSTリクエストを受け取る ---
 export async function POST(request: Request) {
   console.log('🔥 Webhook received!');
