@@ -49,17 +49,9 @@ export async function POST(request: Request) {
   // ★ 修正点2：メンション処理を削除し、メッセージ全体を質問とする
   const question = userMessage.trim();
 
-  // 3. テスト用の固定レスポンス（Discovery Engine問題回避）
+  // 3. Discovery Engineを使った実際のAI検索
   try {
-    // const aiResponse = await askAI(question);
-    const aiResponse = `【テスト応答】お問い合わせありがとうございます。
-
-勤務時間について：
-• 通常勤務時間: 9:00-18:00
-• 休憩時間: 12:00-13:00
-• 土日祝日は休業日
-
-※現在テスト運用中です。Discovery Engine設定完了後、実際の社内規程検索に切り替わります。`;
+    const aiResponse = await askAI(question);
 
     // 4. AIの回答をChatworkに返信する
     await replyToChatwork(roomId, aiResponse);
