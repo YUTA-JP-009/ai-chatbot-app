@@ -17,8 +17,9 @@ OneDriveやGoogle Driveに保管されている社内規程のドキュメント
   - Microsoft Graph API (OneDrive)
   - Google Drive API
 
-### 重要要件
+### その他要件
 - **応答性能**: 原則3秒以内の高速応答を目指す。ストリーミング応答やキャッシュも視野に入れる。
+Githubへのコミット名は日本語で記載する。
 
 ---
 

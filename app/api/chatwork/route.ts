@@ -126,8 +126,8 @@ async function askAI(question: string): Promise<string> {
 
     console.log('🔧 Access Token obtained successfully');
 
-    // Discovery Engine REST API エンドポイント
-    const servingConfigPath = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+    // Discovery Engine REST API エンドポイント（Engine based）
+    const servingConfigPath = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${dataStoreId}/servingConfigs/default_config`;
     const apiUrl = `https://discoveryengine.googleapis.com/v1/${servingConfigPath}:search`;
 
     console.log('🔧 API URL:', apiUrl);
