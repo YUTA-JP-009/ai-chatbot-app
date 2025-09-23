@@ -123,8 +123,14 @@ async function askAI(question: string): Promise<string> {
   const location = 'global';
   const dataStoreId = process.env.GCP_DATA_STORE_ID;
 
+  console.log('🔧 Debug - Project ID:', projectId);
+  console.log('🔧 Debug - Data Store ID:', dataStoreId);
+
+  const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+  console.log('🔧 Serving Config:', servingConfig);
+
   const request = {
-    servingConfig: `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`,
+    servingConfig,
     query: question,
     pageSize: 10,
   };
