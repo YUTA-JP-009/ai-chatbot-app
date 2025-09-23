@@ -213,3 +213,6 @@ Search using service account credentials is not supported for workspace datastor
 - **Collection ID**: `1757942105818`
 - **データストアタイプ**: Drive（Workspace Datastore）
 - **API URL**: `projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/engines/internal-rules-search_1757941895913/servingConfigs/default_config:search` ✅ 修正済み
+
+
+
