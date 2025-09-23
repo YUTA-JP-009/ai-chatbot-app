@@ -115,9 +115,18 @@ async function askAI(question: string): Promise<string> {
   }
 
   const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
+
+  // 認証情報にプロジェクトIDを強制的に設定
+  const credentialsWithProjectId = {
+    ...credentials,
+    project_id: process.env.GCP_PROJECT_ID
+  };
+
   const client = new SearchServiceClient({
-    credentials,
-    projectId: process.env.GCP_PROJECT_ID // 明示的にプロジェクトIDを指定
+    credentials: credentialsWithProjectId,
+    projectId: process.env.GCP_PROJECT_ID,
+    // 明示的にプロジェクトIDを複数箇所で指定
+    keyFilename: undefined // ファイルではなく直接認証情報を使用
   });
 
   const projectId = process.env.GCP_PROJECT_ID;
@@ -134,6 +143,8 @@ async function askAI(question: string): Promise<string> {
     servingConfig,
     query: question,
     pageSize: 10,
+    // autoPaginateの警告を解決
+    autoPaginate: false
   };
 
   try {
