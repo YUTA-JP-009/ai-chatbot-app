@@ -46,88 +46,57 @@ OneDriveやGoogle Driveに保管されている社内規程のドキュメント
 - Vercelにプロジェクトを作成し、GitHubリポジトリと連携済み。
 - Vercelの環境変数に以下を設定済み。
   - `GCP_CREDENTIALS`: ダウンロードしたJSONキーファイルの中身を全て設定。
-  - `GCP_PROJECT_ID`: GCPのプロジェクトIDを設定。
+  - `GCP_PROJECT_ID`: `ai-chatbot-prod-472104`
+  - `GCP_DATA_STORE_ID`: `internal-rules-search`
+  - `CHATWORK_API_TOKEN`: `d5d750c100c3351b9a6508aa9c65d7c2`
+  - `CHATWORK_MY_ID`: `jp-aichat`
+  - `CHATWORK_WEBHOOK_TOKEN`: `kBPhP7ID9abRMautz//FHPSEN2z0B4NN...`
 
 ### Step 4: APIエンドポイントの作成
 - ChatworkからのWebhookを受け取るためのAPIルートとして、以下のファイルを正しい階層に作成済み。
   - **ファイルパス**: `app/api/chatwork/route.ts`
 - 上記ファイルに、Webhookリクエストの受け取りと、GCPのAIを呼び出す関数の雛形コードを貼り付け済み。
 
+### Step 5: Discovery Engine（Data Store）の設定
+- **Data Store名**: `internal-rules-search`
+- **Collection ID**: `175794210581`
+- **リージョン**: `global`
+- **接続済みのアプリ**: `internal-rules-search`
+- **データソース**: Google Drive連携済み（ドライブID: `1vAFoU52a84plm8thsOUyVf54JjIh57wX`）
+- **コネクタの状態**: 有効（接続済み）
+- **自動同期**: 有効
+
 ---
 
-## 3. 発生したエラー
+## 3. 解決済み問題と対策
 
-Debug - Project ID: 
-  ai-chatbot-prod-472104
-  2025-09-23T07:20:11.464Z [info] 🔧 Debug - Data Store ID: 
-  internal-rules-search_1757941895913
-  2025-09-23T07:20:11.464Z [info] 🔧 Serving Config: 
-  projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/dataStores
-  /internal-rules-search_1757941895913/servingConfigs/default_config
-  2025-09-23T07:20:11.484Z [error] (node:4) AutopaginateTrueWarning: Providing a pageSize 
-  without setting autoPaginate to false will still return all results. See 
-  https://github.com/googleapis/gax-nodejs/blob/main/client-libraries.md#auto-pagination for
-   more information on how to configure manual paging
-  (Use `node --trace-warnings ...` to show where the warning was created)
-  2025-09-23T07:20:11.719Z [error] Discovery Engine検索エラー: Error: 5 NOT_FOUND: DataStore
-   projects/263476731898/locations/global/collections/default_collection/dataStores/internal
-  -rules-search_1757941895913 not found.
-      at g (.next/server/app/api/chatwork/route.js:13:1282211)
-      at Object.onReceiveStatus (.next/server/app/api/chatwork/route.js:15:7059513)
-      at Object.onReceiveStatus (.next/server/app/api/chatwork/route.js:13:1266562)
-      at Object.onReceiveStatus (.next/server/app/api/chatwork/route.js:13:1266027)
-      at <unknown> (.next/server/app/api/chatwork/route.js:15:396944)
-      at g.makeUnaryRequest (.next/server/app/api/chatwork/route.js:15:7059050)
-      at g.<anonymous> (.next/server/app/api/chatwork/route.js:13:1119593)
-      at <unknown> (.next/server/app/api/chatwork/route.js:15:18047)
-      at <unknown> (.next/server/app/api/chatwork/route.js:15:7266939)
-      at <unknown> (.next/server/app/api/chatwork/route.js:15:2202)
-      at x (.next/server/app/api/chatwork/route.js:15:6251218)
-      at Immediate.<anonymous> (.next/server/app/api/chatwork/route.js:15:6251750) {
-    code: 5,
-    details: 'DataStore projects/263476731898/locations/global/collections/default_collectio
-  n/dataStores/internal-rules-search_1757941895913 not found.',
-    metadata: [o],
-    note: 'Exception occurred in retry method that was not classified as transient'
-  }
-  2025-09-23T07:20:11.721Z [error] エラーが発生しました: Error: 検索中にエラーが発生しました
-      at z (.next/server/app/api/chatwork/route.js:15:1027272)
-      at async x (.next/server/app/api/chatwork/route.js:15:1025662)
-      at async k (.next/server/app/api/chatwork/route.js:15:1029891)
-      at async g (.next/server/app/api/chatwork/route.js:15:1030894)
-      at async G (.next/server/app/api/chatwork/route.js:15:1032016)
-  2025-09-23T07:20:10.846Z [info] 🔥 Webhook received!
-  2025-09-23T07:20:10.846Z [info] 🔑 Chatwork signature: Signature present
-  2025-09-23T07:20:10.847Z [info] ⚠️ Signature verification skipped for testing
-  2025-09-23T07:20:10.847Z [info] ✅ Token verified
-  2025-09-23T07:20:10.850Z [info] 📨 Request body: {
-    "webhook_setting_id": "31678",
-    "webhook_event_type": "mention_to_me",
-    "webhook_event_time": 1758612009,
-    "webhook_event": {
-      "from_account_id": 10655418,
-      "to_account_id": 10686206,
-      "room_id": 410449761,
-      "message_id": "2022235059163234304",
-      "body": "[To:10686206]AIチャット（社内ルール）さん\n勤務時間を教えて",
-      "send_time": 1758612009,
-      "update_time": 0
-    }
-  }
-  2025-09-23T07:20:10.850Z [info] 💬 Message: [To:10686206]AIチャット（社内ルール）さん
-  勤務時間を教えて
-  2025-09-23T07:20:10.850Z [info] 🏠 Room ID: 410449761
-  2025-09-23T07:20:10.850Z [info] 👤 From Account ID: 10655418
+### 問題1: プロジェクトID不一致エラー
+**エラー内容**: Discovery Engine検索で古いプロジェクトID（263476731898）が参照されていた
 
-  ## 3. 原因と対策
+**解決策**:
+- SearchServiceClientの認証情報にプロジェクトIDを強制的に設定
+- 複数箇所での明示的なプロジェクトID指定
+- autoPaginate警告の解決（autoPaginate: falseを追加）
 
-Google Cloudライブラリ内部で古いプロジェクトIDが使われています。
+### 問題2: Data Store ID不一致
+**エラー内容**: 環境変数のData Store IDが間違っていた
 
-  これはライブラリの内部認証の問題です。テスト用に一時的にDiscovery 
-  Engineをスキップして動作確認しましょう：
-一時的な修正を適用しました。
+**解決策**:
+- Vercel環境変数 `GCP_DATA_STORE_ID` を `internal-rules-search_1757941895913` から `internal-rules-search` に修正
+- GCPコンソールで確認した正しいData Store名を使用
 
-  Discovery Engineをスキップして、固定のテストレスポンスを返すようにしました。
- 今度はDiscovery
-  Engineエラーが回避され、固定レスポンスが返ってくるはずです。動作確認後、Discovery
-  Engine問題の根本解決に取り組みましょう。
+---
+
+## 4. 現在の設定値（記録用）
+
+### Vercel環境変数
+- `GCP_PROJECT_ID`: `ai-chatbot-prod-472104`
+- `GCP_DATA_STORE_ID`: `internal-rules-search`
+- `CHATWORK_API_TOKEN`: `d5d750c100c3351b9a6508aa9c65d7c2`
+- `CHATWORK_MY_ID`: `jp-aichat`
+- `CHATWORK_WEBHOOK_TOKEN`: `kBPhP7ID9abRMautz//FHPSEN2z0B4NN...`
+
+### Discovery Engine設定
+- **Data Store名**: `internal-rules-search`
+- **Collection ID**: `175794210581`
+- **Serving Config**: `projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/dataStores/internal-rules-search/servingConfigs/default_config`

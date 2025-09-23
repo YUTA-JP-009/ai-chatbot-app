@@ -136,7 +136,10 @@ async function askAI(question: string): Promise<string> {
   console.log('🔧 Debug - Project ID:', projectId);
   console.log('🔧 Debug - Data Store ID:', dataStoreId);
 
-  const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+  // Discovery Engineの正しいservingConfig構成
+  // Collection IDは画面で確認した値を使用
+  const collectionId = 'default_collection';
+  const servingConfig = `projects/${projectId}/locations/${location}/collections/${collectionId}/dataStores/${dataStoreId}/servingConfigs/default_config`;
   console.log('🔧 Serving Config:', servingConfig);
 
   const request = {
