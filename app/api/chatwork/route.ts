@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   // 現在はテスト目的のため署名チェックをスキップ
   console.log('⚠️ Signature verification skipped for testing');
 
-  console.log('✅ Token verified');
+  console.log('✅ Token verified - FIXED VERSION v2.0');
 
   // 2. Chatworkからのメッセージを取得
   const body = await request.json();
