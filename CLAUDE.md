@@ -162,11 +162,40 @@ const newCredentials = {
 2. **ライブラリのバージョン問題**: 使用中のライブラリバージョンに認証バグが存在する可能性
 3. **Vercel実行環境の問題**: サーバーレス環境特有の認証情報継承問題
 
+### 解決策3: API URL構造の修正とEngine IDの正確な特定
+**発見した問題**: GCPコンソールURLから正しいDiscovery Engine構造を解析
+- **間違っていたURL構造**: `dataStores/{dataStoreId}`
+- **正しいURL構造**: `engines/{engineId}`
+- **正しいEngine ID**: `internal-rules-search_1757941895913`
+
+**解決手順**:
+1. GCPコンソールURLを詳細分析：
+   ```
+   https://console.cloud.google.com/gen-app-builder/locations/global/engines/internal-rules-search_1757941895913/collections/1757942105818/connector/entities?project=ai-chatbot-prod-472104
+   ```
+2. SearchServiceClientを削除してREST API直接呼び出しに変更
+3. API URL構造をEngine basedに修正
+4. Vercel環境変数 `GCP_DATA_STORE_ID` を `internal-rules-search_1757941895913` に更新
+
+**結果**: ✅ 古いプロジェクトID問題完全解決、正しいEngineアクセス成功
+
+### 問題4: Workspace Datastores認証制限
+**エラー内容**:
+```
+Search using service account credentials is not supported for workspace datastores.
+```
+
+**原因**: Google DriveタイプのDatastoreはサービスアカウント認証に対応していない
+
+**現在のデータストア設定**:
+- **タイプ**: Drive（Workspace Datastore）
+- **データソース**: Google Drive連携
+- **ステータス**: 有効
+
 ### 次に試すべき解決策
-1. **環境変数の完全クリア**: GOOGLE_APPLICATION_CREDENTIALS等の削除
-2. **ライブラリバージョンの更新**: @google-cloud/discoveryengineの最新版への更新
-3. **代替認証方法**: JWT認証やOAuth2.0の直接使用
-4. **一時的な回避策**: 固定レスポンスに戻してDiscovery Engine以外の機能を先行実装
+1. **データストアタイプ変更**: DriveからWebsiteタイプに変更
+2. **OAuth2.0認証実装**: ユーザー認証ベースのアクセス
+3. **代替アプローチ**: 直接Google Drive APIを使用してDiscovery Engineを迂回
 
 ---
 
@@ -174,12 +203,13 @@ const newCredentials = {
 
 ### Vercel環境変数
 - `GCP_PROJECT_ID`: `ai-chatbot-prod-472104`
-- `GCP_DATA_STORE_ID`: `internal-rules-search`
+- `GCP_DATA_STORE_ID`: `internal-rules-search_1757941895913` ✅ 更新済み
 - `CHATWORK_API_TOKEN`: `d5d750c100c3351b9a6508aa9c65d7c2`
 - `CHATWORK_MY_ID`: `jp-aichat`
 - `CHATWORK_WEBHOOK_TOKEN`: `kBPhP7ID9abRMautz//FHPSEN2z0B4NN...`
 
 ### Discovery Engine設定
-- **Data Store名**: `internal-rules-search`
-- **Collection ID**: `175794210581`
-- **Serving Config**: `projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/dataStores/internal-rules-search/servingConfigs/default_config`
+- **Engine ID**: `internal-rules-search_1757941895913` ✅ 正確な値
+- **Collection ID**: `1757942105818`
+- **データストアタイプ**: Drive（Workspace Datastore）
+- **API URL**: `projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/engines/internal-rules-search_1757941895913/servingConfigs/default_config:search` ✅ 修正済み
