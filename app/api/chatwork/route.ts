@@ -117,6 +117,7 @@ async function askAI(question: string): Promise<string> {
   const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
   const client = new SearchServiceClient({
     credentials,
+    projectId: process.env.GCP_PROJECT_ID // 明示的にプロジェクトIDを指定
   });
 
   const projectId = process.env.GCP_PROJECT_ID;
