@@ -164,7 +164,14 @@ async function askAI(question: string): Promise<string> {
     // 検索結果から関連性の高い情報を抽出
     const relevantInfo = searchResults.results
       .slice(0, 3) // 上位3件の結果を使用
-      .map((result: any) => {
+      .map((result: {
+        document?: {
+          derivedStructData?: {
+            snippet?: string;
+            title?: string;
+          };
+        };
+      }) => {
         const document = result.document;
         if (document?.derivedStructData) {
           const structData = document.derivedStructData;
