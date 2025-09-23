@@ -142,6 +142,10 @@ async function askAI(question: string): Promise<string> {
 
   console.log('🔧 Debug - Project ID:', projectId);
   console.log('🔧 Debug - Data Store ID:', dataStoreId);
+  console.log('🔧 Debug - Original Credentials Project ID:', credentials.project_id);
+  console.log('🔧 Debug - NewCredentials Project ID:', newCredentials.project_id);
+  console.log('🔧 Debug - Process Env GOOGLE_CLOUD_PROJECT:', process.env.GOOGLE_CLOUD_PROJECT);
+  console.log('🔧 Debug - Process Env GCP_PROJECT_ID:', process.env.GCP_PROJECT_ID);
 
   // Discovery Engineの正しいservingConfig構成
   // Collection IDは画面で確認した値を使用
