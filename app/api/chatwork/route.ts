@@ -116,17 +116,24 @@ async function askAI(question: string): Promise<string> {
 
   const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
 
-  // 認証情報にプロジェクトIDを強制的に設定
-  const credentialsWithProjectId = {
-    ...credentials,
-    project_id: process.env.GCP_PROJECT_ID
+  // 完全に新しい認証情報オブジェクトを作成
+  const newCredentials = {
+    type: credentials.type,
+    project_id: process.env.GCP_PROJECT_ID,
+    private_key_id: credentials.private_key_id,
+    private_key: credentials.private_key,
+    client_email: credentials.client_email,
+    client_id: credentials.client_id,
+    auth_uri: credentials.auth_uri,
+    token_uri: credentials.token_uri,
+    auth_provider_x509_cert_url: credentials.auth_provider_x509_cert_url,
+    client_x509_cert_url: credentials.client_x509_cert_url,
+    universe_domain: credentials.universe_domain || 'googleapis.com'
   };
 
   const client = new SearchServiceClient({
-    credentials: credentialsWithProjectId,
-    projectId: process.env.GCP_PROJECT_ID,
-    // 明示的にプロジェクトIDを複数箇所で指定
-    keyFilename: undefined // ファイルではなく直接認証情報を使用
+    credentials: newCredentials,
+    projectId: process.env.GCP_PROJECT_ID
   });
 
   const projectId = process.env.GCP_PROJECT_ID;
