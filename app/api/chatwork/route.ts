@@ -16,9 +16,12 @@ export async function GET() {
 export async function POST(request: Request) {
   console.log('🔥 Webhook received!');
 
-  // 1. セキュリティチェック
+  // 1. セキュリティチェック - 全ヘッダーをデバッグ出力
+  console.log('📋 All headers:', Object.fromEntries(request.headers.entries()));
+
   const chatworkToken = request.headers.get('X-ChatWorkWebhookToken');
   console.log('🔑 Token check:', chatworkToken ? 'Token present' : 'No token');
+  console.log('🔑 Expected token:', process.env.CHATWORK_WEBHOOK_TOKEN);
 
   if (chatworkToken !== process.env.CHATWORK_WEBHOOK_TOKEN) {
     console.log('❌ Token mismatch - Forbidden');
