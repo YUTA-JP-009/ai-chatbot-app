@@ -1,7 +1,7 @@
 // app/api/chatwork/route.ts
 
 import { NextResponse } from 'next/server';
-import { SearchServiceClient } from '@google-cloud/discoveryengine';
+import { GoogleAuth } from 'google-auth-library';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -94,76 +94,68 @@ async function replyToChatwork(roomId: number, message: string) {
 }
 
 
-// 型定義
-interface SearchResult {
-  document?: {
-    derivedStructData?: {
-      snippet?: string;
-      title?: string;
-    };
-  };
-}
+// 型定義（REST API用）
 
-interface SearchResponse {
-  results?: SearchResult[];
-}
-
-// --- GCP Discovery Engineと通信する関数 ---
+// --- GCP Discovery Engineと通信する関数（REST API直接呼び出し） ---
 async function askAI(question: string): Promise<string> {
   if (!process.env.GCP_PROJECT_ID || !process.env.GCP_CREDENTIALS || !process.env.GCP_DATA_STORE_ID) {
     throw new Error('GCPの環境変数が設定されていません');
   }
 
   const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
-
-  // 完全に新しい認証情報オブジェクトを作成
-  const newCredentials = {
-    type: credentials.type,
-    project_id: process.env.GCP_PROJECT_ID,
-    private_key_id: credentials.private_key_id,
-    private_key: credentials.private_key,
-    client_email: credentials.client_email,
-    client_id: credentials.client_id,
-    auth_uri: credentials.auth_uri,
-    token_uri: credentials.token_uri,
-    auth_provider_x509_cert_url: credentials.auth_provider_x509_cert_url,
-    client_x509_cert_url: credentials.client_x509_cert_url,
-    universe_domain: credentials.universe_domain || 'googleapis.com'
-  };
-
-  const client = new SearchServiceClient({
-    credentials: newCredentials,
-    projectId: process.env.GCP_PROJECT_ID
-  });
-
   const projectId = process.env.GCP_PROJECT_ID;
   const location = 'global';
   const dataStoreId = process.env.GCP_DATA_STORE_ID;
 
   console.log('🔧 Debug - Project ID:', projectId);
   console.log('🔧 Debug - Data Store ID:', dataStoreId);
-  console.log('🔧 Debug - Original Credentials Project ID:', credentials.project_id);
-  console.log('🔧 Debug - NewCredentials Project ID:', newCredentials.project_id);
-  console.log('🔧 Debug - Process Env GOOGLE_CLOUD_PROJECT:', process.env.GOOGLE_CLOUD_PROJECT);
-  console.log('🔧 Debug - Process Env GCP_PROJECT_ID:', process.env.GCP_PROJECT_ID);
+  console.log('🔧 Debug - Using REST API instead of SearchServiceClient');
 
-  // Discovery Engineの正しいservingConfig構成
-  // Collection IDは画面で確認した値を使用
-  const collectionId = 'default_collection';
-  const servingConfig = `projects/${projectId}/locations/${location}/collections/${collectionId}/dataStores/${dataStoreId}/servingConfigs/default_config`;
-  console.log('🔧 Serving Config:', servingConfig);
-
-  const request = {
-    servingConfig,
-    query: question,
-    pageSize: 10,
-    // autoPaginateの警告を解決
-    autoPaginate: false
-  };
+  // GoogleAuth を使用してアクセストークンを取得
+  const auth = new GoogleAuth({
+    credentials: {
+      ...credentials,
+      project_id: projectId // 確実に正しいプロジェクトIDを設定
+    },
+    scopes: ['https://www.googleapis.com/auth/cloud-platform']
+  });
 
   try {
-    const [response] = await client.search(request);
-    const searchResults = response as SearchResponse;
+    const client = await auth.getClient();
+    const accessToken = await client.getAccessToken();
+
+    console.log('🔧 Access Token obtained successfully');
+
+    // Discovery Engine REST API エンドポイント
+    const servingConfigPath = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+    const apiUrl = `https://discoveryengine.googleapis.com/v1/${servingConfigPath}:search`;
+
+    console.log('🔧 API URL:', apiUrl);
+
+    // REST API リクエスト
+    const requestBody = {
+      query: question,
+      pageSize: 10
+    };
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    console.log('🔧 Response Status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('🔧 API Error Response:', errorText);
+      throw new Error(`Discovery Engine API error: ${response.status} ${response.statusText}`);
+    }
+
+    const searchResults = await response.json();
 
     if (!searchResults.results || searchResults.results.length === 0) {
       return '申し訳ありませんが、お探しの情報が見つかりませんでした。';
@@ -172,7 +164,7 @@ async function askAI(question: string): Promise<string> {
     // 検索結果から関連性の高い情報を抽出
     const relevantInfo = searchResults.results
       .slice(0, 3) // 上位3件の結果を使用
-      .map((result: SearchResult) => {
+      .map((result: any) => {
         const document = result.document;
         if (document?.derivedStructData) {
           const structData = document.derivedStructData;
