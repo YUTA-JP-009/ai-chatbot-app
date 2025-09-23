@@ -157,6 +157,23 @@ async function askAI(question: string): Promise<string> {
 
     const searchResults = await response.json();
 
+    // 🔍 詳細デバッグ情報
+    console.log('🔍 DEBUG - Full Search Results:', JSON.stringify(searchResults, null, 2));
+    console.log('🔍 DEBUG - Results Array Length:', searchResults.results?.length || 0);
+
+    if (searchResults.results && searchResults.results.length > 0) {
+      searchResults.results.forEach((result: any, index: number) => {
+        console.log(`🔍 DEBUG - Result ${index}:`, {
+          id: result.id,
+          document: result.document,
+          derivedStructData: result.document?.derivedStructData,
+          snippet: result.document?.derivedStructData?.snippet,
+          title: result.document?.derivedStructData?.title,
+          content: result.document?.derivedStructData?.content
+        });
+      });
+    }
+
     if (!searchResults.results || searchResults.results.length === 0) {
       return '申し訳ありませんが、お探しの情報が見つかりませんでした。';
     }
