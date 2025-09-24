@@ -162,7 +162,16 @@ async function askAI(question: string): Promise<string> {
     console.log('🔍 DEBUG - Results Array Length:', searchResults.results?.length || 0);
 
     if (searchResults.results && searchResults.results.length > 0) {
-      searchResults.results.forEach((result: any, index: number) => {
+      searchResults.results.forEach((result: {
+        id?: string;
+        document?: {
+          derivedStructData?: {
+            snippet?: string;
+            title?: string;
+            content?: string;
+          };
+        };
+      }, index: number) => {
         console.log(`🔍 DEBUG - Result ${index}:`, {
           id: result.id,
           document: result.document,
