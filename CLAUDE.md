@@ -199,20 +199,132 @@ Search using service account credentials is not supported for workspace datastor
 
 ---
 
-## 5. 現在の設定値（記録用）
+## 5. Cloud Storage Datastore移行と新たな課題
 
-### Vercel環境変数
+### 問題5: Cloud Storage Datastoreへの移行実施
+**移行理由**: Google Drive（Workspace）DatastoreはサービスアカウントでのSearch APIアクセスに対応していない
+
+**実施した移行作業**:
+1. 新しいCloud Storage Datastoreを作成
+   - **Datastore名**: `internal-rules-cloudstorage`
+   - **Datastore ID**: `internal-rules-cloudstorage_1758630923408`
+   - **データソース**: Cloud Storage
+   - **バケット**: `ai-chatbot-documents`
+
+2. PDFファイルのアップロード
+   - `（テスト）社内ルール.pdf`をCloud Storageバケットにアップロード
+   - Discovery Engineでインデックス処理を実行
+
+3. 設定値の更新
+   - `GCP_DATA_STORE_ID`: `internal-rules-cloudstorage_1758630923408`
+   - API URL構造を`dataStores`ベースに変更
+
+**結果**: ✅ API接続成功（Response Status: 200）
+
+### 問題6: PDFコンテンツ抽出の不具合【現在の課題】
+
+#### 現象
+- Discovery Engine APIは正常に動作（200レスポンス）
+- ドキュメント検索は成功（`totalSize: 1`）
+- しかし、PDFの実際の内容が抽出されない
+- `snippet: undefined`, `content: undefined`
+- ボットは「（テスト）社内ルール」というファイル名のみ返答
+
+#### デバッグ結果詳細（2025-09-24）
+```json
+{
+  "results": [
+    {
+      "id": "de10413b911bb2874ee7be9b1744efe1",
+      "document": {
+        "name": "projects/263476731898/locations/global/collections/default_collection/dataStores/internal-rules-cloudstorage_1758630923408/branches/0/documents/de10413b911bb2874ee7be9b1744efe1",
+        "id": "de10413b911bb2874ee7be9b1744efe1",
+        "derivedStructData": {
+          "link": "gs://ai-chatbot-documents/（テスト）社内ルール.pdf",
+          "can_fetch_raw_content": "true",
+          "title": "（テスト）社内ルール"
+        }
+      },
+      "rankSignals": {
+        "semanticSimilarityScore": 0.76551867,
+        "topicalityRank": 1
+      }
+    }
+  ],
+  "totalSize": 1,
+  "snippet": undefined,
+  "content": undefined
+}
+```
+
+#### 問題分析
+1. **インデックス処理は完了している**: `can_fetch_raw_content: "true"`
+2. **メタデータは正常**: ファイル名、リンク、IDが正しく設定
+3. **コンテンツが欠落**: `snippet`と`content`フィールドが空
+4. **意味的類似度は計算されている**: `semanticSimilarityScore: 0.76551867`
+
+#### 推定原因
+- Discovery Engine（基本版）の制限により、PDFの内容抽出が不完全
+- 基本版では検索結果にスニペットやコンテンツが含まれない仕様
+- より高度な機能が必要
+
+---
+
+## 6. 解決方針: Vertex AI Search（Enterprise版）への移行
+
+### 選択理由
+**現在の課題**: Discovery Engine（基本版）ではPDFの内容抽出が不十分
+**解決方針**: Vertex AI Search（旧Enterprise Search）への移行で高度な検索機能を利用
+
+### Vertex AI Searchの優位点
+1. **高度なコンテンツ抽出**
+   - PDFの内容を詳細なスニペットとして抽出
+   - `contentSearchSpec`での細かい制御
+   - `summarySpec`での自動要約機能
+
+2. **検索精度の向上**
+   - より精密な意味的検索
+   - カスタム抽出ルール
+   - 複数文書からの統合回答
+
+3. **レスポンス制御**
+   - スニペット数の調整
+   - 引用元の明示
+   - 回答の信頼性向上
+
+4. **性能最適化**
+   - キャッシュ機能
+   - ストリーミングレスポンス
+   - 3秒以内の高速応答実現
+
+### 移行計画
+1. **Phase 1**: Vertex AI Search APIの有効化
+2. **Phase 2**: Enterprise Searchアプリの作成
+3. **Phase 3**: 高度な検索仕様の実装
+4. **Phase 4**: レスポンス最適化とテスト
+
+---
+
+## 7. 現在の設定値（記録用）
+
+### Vercel環境変数（最新）
 - `GCP_PROJECT_ID`: `ai-chatbot-prod-472104`
-- `GCP_DATA_STORE_ID`: `internal-rules-search_1757941895913` ✅ 更新済み
+- `GCP_DATA_STORE_ID`: `internal-rules-cloudstorage_1758630923408` ✅ Cloud Storage版
 - `CHATWORK_API_TOKEN`: `d5d750c100c3351b9a6508aa9c65d7c2`
-- `CHATWORK_MY_ID`: `jp-aichat`
+- `CHATWORK_MY_ID`: `10686206`
 - `CHATWORK_WEBHOOK_TOKEN`: `kBPhP7ID9abRMautz//FHPSEN2z0B4NN...`
 
-### Discovery Engine設定
-- **Engine ID**: `internal-rules-search_1757941895913` ✅ 正確な値
-- **Collection ID**: `1757942105818`
-- **データストアタイプ**: Drive（Workspace Datastore）
-- **API URL**: `projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/engines/internal-rules-search_1757941895913/servingConfigs/default_config:search` ✅ 修正済み
+### 現在のDatastore設定（Cloud Storage版）
+- **Datastore ID**: `internal-rules-cloudstorage_1758630923408`
+- **データストアタイプ**: Cloud Storage
+- **バケット**: `ai-chatbot-documents`
+- **ファイル**: `（テスト）社内ルール.pdf`
+- **インデックス状態**: 完了（`can_fetch_raw_content: "true"`）
+- **API URL**: `projects/ai-chatbot-prod-472104/locations/global/collections/default_collection/dataStores/internal-rules-cloudstorage_1758630923408/servingConfigs/default_config:search`
+
+### 検証済み動作状況
+✅ **正常**: Webhook受信、認証、Discovery Engine接続（200レスポンス）
+❌ **問題**: PDFコンテンツ抽出（`snippet`と`content`が`undefined`）
 
 
 
