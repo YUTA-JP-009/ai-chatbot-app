@@ -109,7 +109,7 @@ async function askAI(question: string): Promise<string> {
 
   console.log('🔧 Debug - Project ID:', projectId);
   console.log('🔧 Debug - Data Store ID:', dataStoreId);
-  console.log('🔧 Debug - Using REST API instead of SearchServiceClient');
+  console.log('🔧 Debug - Using Vertex AI Search Enterprise Edition');
 
   // GoogleAuth を使用してアクセストークンを取得
   const auth = new GoogleAuth({
@@ -126,16 +126,28 @@ async function askAI(question: string): Promise<string> {
 
     console.log('🔧 Access Token obtained successfully');
 
-    // Discovery Engine REST API エンドポイント（DataStore based）
-    const servingConfigPath = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+    // Vertex AI Search Enterprise API エンドポイント
+    const servingConfigPath = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${dataStoreId}/servingConfigs/default_config`;
     const apiUrl = `https://discoveryengine.googleapis.com/v1/${servingConfigPath}:search`;
 
     console.log('🔧 API URL:', apiUrl);
 
-    // REST API リクエスト
+    // Enterprise Search リクエスト（高度なコンテンツ抽出機能付き）
     const requestBody = {
       query: question,
-      pageSize: 10
+      pageSize: 10,
+      contentSearchSpec: {
+        snippetSpec: {
+          maxSnippetCount: 5,
+          returnSnippet: true
+        },
+        summarySpec: {
+          summaryResultCount: 3,
+          includeCitations: true,
+          ignoreAdversarialQuery: true,
+          ignoreNonSummarySeekingQuery: true
+        }
+      }
     };
 
     const response = await fetch(apiUrl, {
@@ -157,10 +169,18 @@ async function askAI(question: string): Promise<string> {
 
     const searchResults = await response.json();
 
-    // 🔍 詳細デバッグ情報
-    console.log('🔍 DEBUG - Full Search Results:', JSON.stringify(searchResults, null, 2));
+    // 🔍 Enterprise版デバッグ情報
+    console.log('🔍 DEBUG - Enterprise Search Results:', JSON.stringify(searchResults, null, 2));
     console.log('🔍 DEBUG - Results Array Length:', searchResults.results?.length || 0);
+    console.log('🔍 DEBUG - Summary Available:', !!searchResults.summary);
 
+    // Enterprise版のsummary機能を優先使用
+    if (searchResults.summary && searchResults.summary.summaryText) {
+      console.log('✨ Using Enterprise Summary:', searchResults.summary.summaryText);
+      return searchResults.summary.summaryText;
+    }
+
+    // スニペット情報をデバッグ
     if (searchResults.results && searchResults.results.length > 0) {
       searchResults.results.forEach((result: {
         id?: string;
@@ -174,8 +194,6 @@ async function askAI(question: string): Promise<string> {
       }, index: number) => {
         console.log(`🔍 DEBUG - Result ${index}:`, {
           id: result.id,
-          document: result.document,
-          derivedStructData: result.document?.derivedStructData,
           snippet: result.document?.derivedStructData?.snippet,
           title: result.document?.derivedStructData?.title,
           content: result.document?.derivedStructData?.content
@@ -187,9 +205,9 @@ async function askAI(question: string): Promise<string> {
       return '申し訳ありませんが、お探しの情報が見つかりませんでした。';
     }
 
-    // 検索結果から関連性の高い情報を抽出
+    // 従来のスニペット抽出方法をフォールバックとして使用
     const relevantInfo = searchResults.results
-      .slice(0, 3) // 上位3件の結果を使用
+      .slice(0, 3)
       .map((result: {
         document?: {
           derivedStructData?: {
@@ -201,7 +219,7 @@ async function askAI(question: string): Promise<string> {
         const document = result.document;
         if (document?.derivedStructData) {
           const structData = document.derivedStructData;
-          return structData.snippet || structData.title || '情報が見つかりました';
+          return structData.snippet || structData.title || '関連情報が見つかりました';
         }
         return '関連情報';
       })
