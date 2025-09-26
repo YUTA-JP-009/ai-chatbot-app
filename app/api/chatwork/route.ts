@@ -126,11 +126,23 @@ async function askAI(question: string): Promise<string> {
 
     console.log('🔧 Access Token obtained successfully');
 
-    // Vertex AI Search Enterprise API エンドポイント
-    const servingConfigPath = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${dataStoreId}/servingConfigs/default_config`;
-    const apiUrl = `https://discoveryengine.googleapis.com/v1/${servingConfigPath}:search`;
+    // Vertex AI Search Enterprise API エンドポイント - 複数パターンをテスト
+    console.log('🔧 Testing different API URL structures...');
 
-    console.log('🔧 API URL:', apiUrl);
+    // パターン1: Apps endpoint (Enterprise Search推奨)
+    const appsEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${dataStoreId}/servingConfigs/default_config`;
+    const appsUrl = `https://discoveryengine.googleapis.com/v1/${appsEndpoint}:search`;
+
+    // パターン2: DataStores endpoint (フォールバック)
+    const dataStoreEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+    const dataStoreUrl = `https://discoveryengine.googleapis.com/v1/${dataStoreEndpoint}:search`;
+
+    console.log('🔧 Apps API URL:', appsUrl);
+    console.log('🔧 DataStore API URL:', dataStoreUrl);
+
+    // 最初にApps endpointを試行
+    let apiUrl = appsUrl;
+    let useAppsEndpoint = true;
 
     // Enterprise Search リクエスト（高度なコンテンツ抽出機能付き）
     const requestBody = {
@@ -150,7 +162,7 @@ async function askAI(question: string): Promise<string> {
       }
     };
 
-    const response = await fetch(apiUrl, {
+    let response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken.token}`,
@@ -159,13 +171,34 @@ async function askAI(question: string): Promise<string> {
       body: JSON.stringify(requestBody)
     });
 
-    console.log('🔧 Response Status:', response.status);
+    console.log('🔧 First attempt (Apps endpoint) Status:', response.status);
+
+    // Apps endpointが404の場合、DataStores endpointにフォールバック
+    if (response.status === 404 && useAppsEndpoint) {
+      console.log('🔄 Apps endpoint failed, trying DataStores endpoint...');
+      apiUrl = dataStoreUrl;
+      useAppsEndpoint = false;
+
+      response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      console.log('🔧 Fallback attempt (DataStores endpoint) Status:', response.status);
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('🔧 API Error Response:', errorText);
+      console.error('🔧 Final API Error Response:', errorText);
+      console.error('🔧 Failed API URL:', apiUrl);
       throw new Error(`Discovery Engine API error: ${response.status} ${response.statusText}`);
     }
+
+    console.log('✅ Successfully connected using:', useAppsEndpoint ? 'Apps endpoint' : 'DataStores endpoint');
 
     const searchResults = await response.json();
 
