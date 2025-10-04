@@ -219,6 +219,7 @@ async function askAI(question: string): Promise<string> {
         id?: string;
         document?: {
           derivedStructData?: {
+            snippets?: Array<{ snippet?: string; snippet_status?: string }>;
             snippet?: string;
             title?: string;
             content?: string;
@@ -227,6 +228,7 @@ async function askAI(question: string): Promise<string> {
       }, index: number) => {
         console.log(`🔍 DEBUG - Result ${index}:`, {
           id: result.id,
+          snippets: result.document?.derivedStructData?.snippets,
           snippet: result.document?.derivedStructData?.snippet,
           title: result.document?.derivedStructData?.title,
           content: result.document?.derivedStructData?.content
@@ -238,12 +240,13 @@ async function askAI(question: string): Promise<string> {
       return '申し訳ありませんが、お探しの情報が見つかりませんでした。';
     }
 
-    // 従来のスニペット抽出方法をフォールバックとして使用
+    // スニペット抽出方法を改善（snippets配列に対応）
     const relevantInfo = searchResults.results
       .slice(0, 3)
       .map((result: {
         document?: {
           derivedStructData?: {
+            snippets?: Array<{ snippet?: string; snippet_status?: string }>;
             snippet?: string;
             title?: string;
           };
@@ -252,6 +255,18 @@ async function askAI(question: string): Promise<string> {
         const document = result.document;
         if (document?.derivedStructData) {
           const structData = document.derivedStructData;
+
+          // snippets配列から成功したスニペットを抽出
+          if (structData.snippets && structData.snippets.length > 0) {
+            const successSnippets = structData.snippets
+              .filter(s => s.snippet_status === 'SUCCESS' && s.snippet)
+              .map(s => s.snippet)
+              .join('\n');
+
+            if (successSnippets) return successSnippets;
+          }
+
+          // フォールバック: 従来の単一snippet, title
           return structData.snippet || structData.title || '関連情報が見つかりました';
         }
         return '関連情報';
