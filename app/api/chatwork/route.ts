@@ -96,6 +96,27 @@ async function replyToChatwork(roomId: number, message: string) {
 
 // 型定義（REST API用）
 
+// --- HTMLタグを削除して読みやすく整形する関数 ---
+function cleanSnippet(snippet: string): string {
+  return snippet
+    // HTMLタグを削除
+    .replace(/<\/?b>/g, '')
+    .replace(/<\/?i>/g, '')
+    .replace(/<\/?em>/g, '')
+    .replace(/<\/?strong>/g, '')
+    // HTML特殊文字を変換
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    // 先頭・末尾の "..." を削除
+    .replace(/^\.\.\.\s*/g, '')
+    .replace(/\s*\.\.\.$/g, '')
+    // 余分な空白を整理
+    .trim();
+}
+
 // --- GCP Discovery Engineと通信する関数（REST API直接呼び出し） ---
 async function askAI(question: string): Promise<string> {
   if (!process.env.GCP_PROJECT_ID || !process.env.GCP_CREDENTIALS || !process.env.GCP_DATA_STORE_ID) {
@@ -260,14 +281,15 @@ async function askAI(question: string): Promise<string> {
           if (structData.snippets && structData.snippets.length > 0) {
             const successSnippets = structData.snippets
               .filter(s => s.snippet_status === 'SUCCESS' && s.snippet)
-              .map(s => s.snippet)
-              .join('\n');
+              .map(s => cleanSnippet(s.snippet!))
+              .join('\n\n');
 
             if (successSnippets) return successSnippets;
           }
 
           // フォールバック: 従来の単一snippet, title
-          return structData.snippet || structData.title || '関連情報が見つかりました';
+          const fallbackSnippet = structData.snippet || structData.title || '関連情報が見つかりました';
+          return cleanSnippet(fallbackSnippet);
         }
         return '関連情報';
       })
