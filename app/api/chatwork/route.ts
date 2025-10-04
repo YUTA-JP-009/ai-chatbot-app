@@ -113,6 +113,14 @@ function cleanSnippet(snippet: string): string {
     // 先頭・末尾の "..." を削除
     .replace(/^\.\.\.\s*/g, '')
     .replace(/\s*\.\.\.$/g, '')
+    // 改行を追加: ○の前で改行（箇条書き風に）
+    .replace(/\s*○\s*/g, '\n○ ')
+    // 改行を追加: ・の前で改行
+    .replace(/\s*・\s*/g, '\n・ ')
+    // 改行を追加: 「」の後で改行
+    .replace(/」\s*/g, '」\n')
+    // 複数の連続する改行を2つまでに制限
+    .replace(/\n{3,}/g, '\n\n')
     // 余分な空白を整理
     .trim();
 }
