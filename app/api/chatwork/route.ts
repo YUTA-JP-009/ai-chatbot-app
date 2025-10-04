@@ -222,7 +222,7 @@ async function askAI(question: string): Promise<string> {
       pageSize: 5,  // 単一ドキュメント用に最適化
       contentSearchSpec: {
         snippetSpec: {
-          maxSnippetCount: 15,  // 2ページ分のドキュメントから広く情報を取得
+          maxSnippetCount: 5,  // API上限（0-5）
           returnSnippet: true
         },
         summarySpec: {
