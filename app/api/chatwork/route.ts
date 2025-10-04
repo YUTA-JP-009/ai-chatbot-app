@@ -53,8 +53,11 @@ export async function POST(request: Request) {
   try {
     const aiResponse = await askAI(question);
 
+    // 3.5. ボットの人格設定を反映
+    const personalizedResponse = applyBotPersonality(aiResponse);
+
     // 4. AIの回答をChatworkに返信する
-    await replyToChatwork(roomId, aiResponse);
+    await replyToChatwork(roomId, personalizedResponse);
 
     // Chatworkには200 OKを返す
     return NextResponse.json({ message: 'OK' });
@@ -123,6 +126,38 @@ function cleanSnippet(snippet: string): string {
     .replace(/\n{3,}/g, '\n\n')
     // 余分な空白を整理
     .trim();
+}
+
+// --- ボットの人格設定を反映した回答を生成する関数 ---
+function applyBotPersonality(answer: string): string {
+  // 環境変数からボット人格設定を取得（オプション）
+  const botPersonality = process.env.BOT_PERSONALITY || '';
+  const botPrefix = process.env.BOT_PREFIX || '';
+  const botSuffix = process.env.BOT_SUFFIX || '';
+
+  let formattedAnswer = answer;
+
+  // カスタム人格設定が指定されている場合
+  if (botPersonality) {
+    // 例: "exclamation" - 文末に!を追加
+    if (botPersonality === 'exclamation') {
+      formattedAnswer = formattedAnswer.replace(/([。\n])/g, '！$1').replace(/！\n/g, '！\n');
+    }
+    // 例: "friendly" - 親しみやすい口調
+    else if (botPersonality === 'friendly') {
+      formattedAnswer = `${formattedAnswer}\n\n何か他にご質問があればお気軽にどうぞ！`;
+    }
+    // 例: "formal" - フォーマルな口調
+    else if (botPersonality === 'formal') {
+      formattedAnswer = `お調べいたしました。\n\n${formattedAnswer}\n\n以上、ご参考になれば幸いです。`;
+    }
+  }
+
+  // プレフィックス・サフィックスを追加
+  if (botPrefix) formattedAnswer = `${botPrefix}\n${formattedAnswer}`;
+  if (botSuffix) formattedAnswer = `${formattedAnswer}\n${botSuffix}`;
+
+  return formattedAnswer;
 }
 
 // --- GCP Discovery Engineと通信する関数（REST API直接呼び出し） ---
