@@ -219,14 +219,14 @@ async function askAI(question: string): Promise<string> {
     // Enterprise Search リクエスト（高度なコンテンツ抽出機能付き）
     const requestBody = {
       query: question,
-      pageSize: 10,
+      pageSize: 5,  // 単一ドキュメント用に最適化
       contentSearchSpec: {
         snippetSpec: {
-          maxSnippetCount: 5,
+          maxSnippetCount: 15,  // 2ページ分のドキュメントから広く情報を取得
           returnSnippet: true
         },
         summarySpec: {
-          summaryResultCount: 3,
+          summaryResultCount: 5,  // 要約結果数も増やす
           includeCitations: true,
           ignoreAdversarialQuery: true,
           ignoreNonSummarySeekingQuery: true
