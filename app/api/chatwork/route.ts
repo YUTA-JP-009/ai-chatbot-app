@@ -51,10 +51,18 @@ export async function POST(request: Request) {
 
   // 3. Discovery Engineを使った実際のAI検索
   try {
+    // 3.1. BOT_PREFIXが設定されている場合、先に即座に送信（体感速度向上）
+    const botPrefix = process.env.BOT_PREFIX;
+    if (botPrefix) {
+      await replyToChatwork(roomId, botPrefix);
+      console.log('📤 BOT_PREFIX sent immediately');
+    }
+
+    // 3.2. AI検索を実行
     const aiResponse = await askAI(question);
 
-    // 3.5. ボットの人格設定を反映
-    const personalizedResponse = applyBotPersonality(aiResponse);
+    // 3.3. ボットの人格設定を反映（BOT_PREFIXは除外）
+    const personalizedResponse = applyBotPersonality(aiResponse, false); // false = PREFIX除外
 
     // 4. AIの回答をChatworkに返信する
     await replyToChatwork(roomId, personalizedResponse);
@@ -129,7 +137,7 @@ function cleanSnippet(snippet: string): string {
 }
 
 // --- ボットの人格設定を反映した回答を生成する関数 ---
-function applyBotPersonality(answer: string): string {
+function applyBotPersonality(answer: string, includePrefix: boolean = true): string {
   // 環境変数からボット人格設定を取得（オプション）
   const botPersonality = process.env.BOT_PERSONALITY || '';
   const botPrefix = process.env.BOT_PREFIX || '';
@@ -153,8 +161,8 @@ function applyBotPersonality(answer: string): string {
     }
   }
 
-  // プレフィックス・サフィックスを追加
-  if (botPrefix) formattedAnswer = `${botPrefix}\n${formattedAnswer}`;
+  // プレフィックスは別メッセージで送信するため、includePrefixがtrueの場合のみ追加
+  if (includePrefix && botPrefix) formattedAnswer = `${botPrefix}\n${formattedAnswer}`;
   if (botSuffix) formattedAnswer = `${formattedAnswer}\n${botSuffix}`;
 
   return formattedAnswer;
