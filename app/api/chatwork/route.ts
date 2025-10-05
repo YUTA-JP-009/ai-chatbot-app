@@ -191,10 +191,10 @@ async function askAI(question: string): Promise<string> {
   const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
   const projectId = process.env.GCP_PROJECT_ID;
   const location = 'global';
-  const engineId = process.env.GCP_ENGINE_ID;  // Engine IDを優先使用
+  const dataStoreId = process.env.GCP_DATA_STORE_ID;
 
   console.log('🔧 Debug - Project ID:', projectId);
-  console.log('🔧 Debug - Engine ID:', engineId);
+  console.log('🔧 Debug - Data Store ID:', dataStoreId);
   console.log('🔧 Debug - Using Vertex AI Search Enterprise Edition');
 
   // GoogleAuth を使用してアクセストークンを取得
@@ -212,27 +212,35 @@ async function askAI(question: string): Promise<string> {
 
     console.log('🔧 Access Token obtained successfully');
 
-    // Vertex AI Search Enterprise API エンドポイント（Engine使用）
-    const engineEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${engineId}/servingConfigs/default_config`;
-    const apiUrl = `https://discoveryengine.googleapis.com/v1/${engineEndpoint}:search`;
+    // Vertex AI Search Enterprise API エンドポイント - 複数パターンをテスト
+    console.log('🔧 Testing different API URL structures...');
 
-    console.log('🔧 Engine API URL:', apiUrl);
+    // パターン1: Apps endpoint (Enterprise Search推奨)
+    const appsEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${dataStoreId}/servingConfigs/default_config`;
+    const appsUrl = `https://discoveryengine.googleapis.com/v1/${appsEndpoint}:search`;
 
-    // Enterprise Search リクエスト（extractiveContentSpec有効）
+    // パターン2: DataStores endpoint (フォールバック)
+    const dataStoreEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
+    const dataStoreUrl = `https://discoveryengine.googleapis.com/v1/${dataStoreEndpoint}:search`;
+
+    console.log('🔧 Apps API URL:', appsUrl);
+    console.log('🔧 DataStore API URL:', dataStoreUrl);
+
+    // 最初にApps endpointを試行
+    let apiUrl = appsUrl;
+    let useAppsEndpoint = true;
+
+    // Enterprise Search リクエスト（高度なコンテンツ抽出機能付き）
     const requestBody = {
       query: question,
-      pageSize: 3,
+      pageSize: 5,  // 単一ドキュメント用に最適化
       contentSearchSpec: {
         snippetSpec: {
-          maxSnippetCount: 5,
+          maxSnippetCount: 5,  // API上限（0-5）
           returnSnippet: true
         },
-        extractiveContentSpec: {
-          maxExtractiveAnswerCount: 3,  // 詳細な抽出回答
-          maxExtractiveSegmentCount: 3   // 長いセグメント
-        },
         summarySpec: {
-          summaryResultCount: 3,
+          summaryResultCount: 5,  // 要約結果数も増やす
           includeCitations: true,
           ignoreAdversarialQuery: true,
           ignoreNonSummarySeekingQuery: true
@@ -240,7 +248,7 @@ async function askAI(question: string): Promise<string> {
       }
     };
 
-    const response = await fetch(apiUrl, {
+    let response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken.token}`,
@@ -249,17 +257,34 @@ async function askAI(question: string): Promise<string> {
       body: JSON.stringify(requestBody)
     });
 
-    console.log('🔧 Engine API Status:', response.status);
+    console.log('🔧 First attempt (Apps endpoint) Status:', response.status);
 
-    // エラーハンドリング
+    // Apps endpointが404の場合、DataStores endpointにフォールバック
+    if (response.status === 404 && useAppsEndpoint) {
+      console.log('🔄 Apps endpoint failed, trying DataStores endpoint...');
+      apiUrl = dataStoreUrl;
+      useAppsEndpoint = false;
+
+      response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      console.log('🔧 Fallback attempt (DataStores endpoint) Status:', response.status);
+    }
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('🔧 Engine API Error Response:', errorText);
+      console.error('🔧 Final API Error Response:', errorText);
       console.error('🔧 Failed API URL:', apiUrl);
       throw new Error(`Discovery Engine API error: ${response.status} ${response.statusText}`);
     }
 
-    console.log('✅ Successfully connected using Engine endpoint');
+    console.log('✅ Successfully connected using:', useAppsEndpoint ? 'Apps endpoint' : 'DataStores endpoint');
 
     const searchResults = await response.json();
 
@@ -310,32 +335,6 @@ async function askAI(question: string): Promise<string> {
     }
 
     const structData = document.derivedStructData;
-
-    // extractiveAnswers（詳細な抽出回答）を優先的に使用
-    if (structData.extractiveAnswers && structData.extractiveAnswers.length > 0) {
-      const extractiveTexts = structData.extractiveAnswers
-        .map((answer: { content?: string }) => answer.content)
-        .filter((content: string | undefined) => content)
-        .join('\n\n');
-
-      if (extractiveTexts) {
-        console.log('📌 Extractive answers found:', extractiveTexts);
-        return cleanSnippet(extractiveTexts);
-      }
-    }
-
-    // extractiveSegments（長いセグメント）を次に試す
-    if (structData.extractiveSegments && structData.extractiveSegments.length > 0) {
-      const segmentTexts = structData.extractiveSegments
-        .map((segment: { content?: string }) => segment.content)
-        .filter((content: string | undefined) => content)
-        .join('\n\n');
-
-      if (segmentTexts) {
-        console.log('📌 Extractive segments found:', segmentTexts);
-        return cleanSnippet(segmentTexts);
-      }
-    }
 
     // snippets配列から成功したスニペットを抽出（最初の1件のみ）
     if (structData.snippets && structData.snippets.length > 0) {
