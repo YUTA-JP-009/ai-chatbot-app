@@ -2,6 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import { GoogleAuth } from 'google-auth-library';
+import { VertexAI } from '@google-cloud/vertexai';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -59,9 +60,12 @@ export async function POST(request: Request) {
     }
 
     // 3.2. AI検索を実行
-    const aiResponse = await askAI(question);
+    const searchResult = await askAI(question);
 
-    // 3.3. ボットの人格設定を反映（BOT_PREFIXは除外）
+    // 3.3. Gemini APIで質問応答形式の回答を生成
+    const aiResponse = await generateAnswerWithGemini(question, searchResult);
+
+    // 3.4. ボットの人格設定を反映（BOT_PREFIXは除外）
     const personalizedResponse = applyBotPersonality(aiResponse, false); // false = PREFIX除外
 
     // 4. AIの回答をChatworkに返信する
@@ -349,5 +353,54 @@ async function askAI(question: string): Promise<string> {
   } catch (error) {
     console.error('Discovery Engine検索エラー:', error);
     throw new Error('検索中にエラーが発生しました');
+  }
+}
+
+// --- Gemini APIで質問応答形式の回答を生成する関数 ---
+async function generateAnswerWithGemini(question: string, searchResult: string): Promise<string> {
+  try {
+    const vertexAI = new VertexAI({
+      project: process.env.GCP_PROJECT_ID!,
+      location: 'asia-northeast1'
+    });
+
+    const model = vertexAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      generationConfig: {
+        temperature: 0.3,  // 低めの温度で一貫性のある回答
+        maxOutputTokens: 200,  // 簡潔な回答
+      }
+    });
+
+    const prompt = `あなたは株式会社AAAの社内ルールに詳しいアシスタントです。
+以下の社内ルール情報を参考に、質問に簡潔かつ明確に回答してください。
+
+【質問】
+${question}
+
+【社内ルール】
+${searchResult}
+
+【回答ルール】
+1. 質問に対して直接的に答える形式で回答してください
+2. 「〜は〜です」や「〜できます」のような明確な表現を使用
+3. 具体的な数値・時間・条件は必ず含めてください
+4. 簡潔に2-3文以内で答えてください
+5. 余計な前置きや説明は不要です
+
+【回答例】
+質問: コアタイムは何時から何時まで？
+回答: コアタイムは11:00～16:00です。この時間帯は原則として業務に従事する必要があります。
+
+質問: リモートワークは週何日まで可能？
+回答: リモートワークは週3日まで可能です。所属チームの状況に応じて柔軟に運用されます。`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
+  } catch (error) {
+    console.error('Gemini API エラー:', error);
+    // Gemini APIが失敗した場合は元の検索結果を返す
+    return searchResult;
   }
 }
