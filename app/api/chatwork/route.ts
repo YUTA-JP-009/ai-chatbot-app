@@ -128,8 +128,8 @@ function cleanSnippet(snippet: string): string {
     .replace(/^#{1,6}\s+/gm, '')
     // Markdown記法を削除: 太字(**text**)を通常テキストに
     .replace(/\*\*([^*]+)\*\*/g, '$1')
-    // Markdown記法を削除: - **項目**: 形式を「項目: 」に変換
-    .replace(/^\s*-\s+([^:]+):\s*/gm, '$1: ')
+    // Markdown記法を削除: - **項目**: 形式を改行+項目名に変換
+    .replace(/^\s*-\s+([^:]+):\s*/gm, '\n$1: ')
     // Markdown記法を削除: 区切り線(---)を削除
     .replace(/^\s*---\s*$/gm, '')
     // 改行を追加: ○の前で改行（箇条書き風に）
@@ -322,41 +322,30 @@ async function askAI(question: string): Promise<string> {
       return '申し訳ありませんが、お探しの情報が見つかりませんでした。';
     }
 
-    // スニペット抽出方法を改善（snippets配列に対応）
-    const relevantInfo = searchResults.results
-      .slice(0, 3)
-      .map((result: {
-        document?: {
-          derivedStructData?: {
-            snippets?: Array<{ snippet?: string; snippet_status?: string }>;
-            snippet?: string;
-            title?: string;
-          };
-        };
-      }) => {
-        const document = result.document;
-        if (document?.derivedStructData) {
-          const structData = document.derivedStructData;
+    // 最も関連性の高い1件目のスニペットのみを返す
+    const topResult = searchResults.results[0];
+    const document = topResult.document;
 
-          // snippets配列から成功したスニペットを抽出
-          if (structData.snippets && structData.snippets.length > 0) {
-            const successSnippets = structData.snippets
-              .filter(s => s.snippet_status === 'SUCCESS' && s.snippet)
-              .map(s => cleanSnippet(s.snippet!))
-              .join('\n\n');
+    if (!document?.derivedStructData) {
+      return '申し訳ありませんが、適切な回答を生成できませんでした。';
+    }
 
-            if (successSnippets) return successSnippets;
-          }
+    const structData = document.derivedStructData;
 
-          // フォールバック: 従来の単一snippet, title
-          const fallbackSnippet = structData.snippet || structData.title || '関連情報が見つかりました';
-          return cleanSnippet(fallbackSnippet);
-        }
-        return '関連情報';
-      })
-      .join('\n\n');
+    // snippets配列から成功したスニペットを抽出（最初の1件のみ）
+    if (structData.snippets && structData.snippets.length > 0) {
+      const successSnippet = structData.snippets.find(
+        s => s.snippet_status === 'SUCCESS' && s.snippet
+      );
 
-    return relevantInfo || '申し訳ありませんが、適切な回答を生成できませんでした。';
+      if (successSnippet?.snippet) {
+        return cleanSnippet(successSnippet.snippet);
+      }
+    }
+
+    // フォールバック: 従来の単一snippet, title
+    const fallbackSnippet = structData.snippet || structData.title || '関連情報が見つかりました';
+    return cleanSnippet(fallbackSnippet);
   } catch (error) {
     console.error('Discovery Engine検索エラー:', error);
     throw new Error('検索中にエラーが発生しました');
