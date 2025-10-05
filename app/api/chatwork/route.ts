@@ -59,13 +59,23 @@ export async function POST(request: Request) {
       console.log('📤 BOT_PREFIX sent immediately');
     }
 
-    // 3.2. AI検索を実行
-    const searchResult = await askAI(question);
+    // 3.2. 事前定義回答のパターンマッチング（高頻度質問は即座に回答）
+    const predefinedAnswer = getPredefinedAnswer(question);
 
-    // 3.3. Gemini APIで質問応答形式の回答を生成
-    const aiResponse = await generateAnswerWithGemini(question, searchResult);
+    let aiResponse: string;
 
-    // 3.4. ボットの人格設定を反映（BOT_PREFIXは除外）
+    if (predefinedAnswer) {
+      console.log('✨ 事前定義回答を使用:', predefinedAnswer.substring(0, 50) + '...');
+      aiResponse = predefinedAnswer;
+    } else {
+      // 3.3. AI検索を実行
+      const searchResult = await askAI(question);
+
+      // 3.4. Gemini APIで質問応答形式の回答を生成
+      aiResponse = await generateAnswerWithGemini(question, searchResult);
+    }
+
+    // 3.5. ボットの人格設定を反映（BOT_PREFIXは除外）
     const personalizedResponse = applyBotPersonality(aiResponse, false); // false = PREFIX除外
 
     // 4. AIの回答をChatworkに返信する
@@ -80,6 +90,25 @@ export async function POST(request: Request) {
     await replyToChatwork(roomId, '申し訳ありません、エラーが発生しました。');
     return new NextResponse('Internal Server Error', { status: 500 });
   }
+}
+
+// --- 事前定義回答のパターンマッチング関数 ---
+function getPredefinedAnswer(question: string): string | null {
+  // 高頻度質問の事前定義回答
+  const predefinedAnswers: { [key: string]: string } = {
+    'リモートワーク': 'リモートワークは週3日まで選択可能です。所属チームの状況に応じて柔軟に運用されます。入社後3ヶ月間のOJT期間は、原則週4日以上出社が必要です。また、リモートワーク環境整備を目的として月額5,000円の手当が支給されます。',
+    '福利厚生': '主な福利厚生は以下の通りです：書籍購入・セミナー参加費補助（月額10,000円まで）、リモートワーク手当（月額5,000円）、アニバーサリー休暇（年間1日）、ピアボーナス制度、部活動支援制度（5名以上で月額20,000円まで補助）、副業許可（事前申請・承認制）、フリードリンク・フリースナック、サンクスカード制度。',
+    'コアタイム': 'コアタイムは11:00～16:00です。この時間帯は原則として業務に従事する必要があります。'
+  };
+
+  // 質問文に含まれるキーワードでマッチング
+  for (const [keyword, answer] of Object.entries(predefinedAnswers)) {
+    if (question.includes(keyword)) {
+      return answer;
+    }
+  }
+
+  return null;
 }
 
 // --- Chatworkに返信する関数（メンション部分を削除） ---
