@@ -46,14 +46,15 @@ Githubへのコミット名は日本語で記載する。
 - GitHubにリポジトリを作成し、ローカルのNext.jsプロジェクトをプッシュ済み。
 - Vercelにプロジェクトを作成し、GitHubリポジトリと連携済み。
 - Vercelの環境変数に以下を設定済み。
-  - `BOT_PREFIX`: `お調べしています...` (Added 4h ago)
-  - `BOT_PERSONALITY`: `friendly` (Added 4h ago)
-  - `GCP_DATA_STORE_ID`: `internal-rules-cloudstorage_175...` (Updated 19h ago)
-  - `GCP_CREDENTIALS`: ダウンロードしたJSONキーファイルの中身を全て設定 (Added Sep 23)
-  - `CHATWORK_WEBHOOK_TOKEN`: `kBPhP7ID9abRMautz//FHPSEN2z0B4NN...` (Updated Sep 23)
-  - `CHATWORK_API_TOKEN`: `d5d750c100c3351b9a6508aa9c65d7c2` (Added Sep 15)
-  - `CHATWORK_MY_ID`: `jp-aichat` (Added Sep 15)
-  - `GCP_PROJECT_ID`: `ai-chatbot-prod-472104` (Added Sep 15)
+  - `BOT_PREFIX`: `お調べしています...` - ボット回答前に送信されるメッセージ
+  - `BOT_PERSONALITY`: `friendly` - ボットの人格設定（friendly/formal/exclamation）
+  - `GCP_DATA_STORE_ID`: `internal-rules-cloudstorage_1758630923408` - Vertex AI SearchのデータストアID
+  - `GCP_CREDENTIALS`: ダウンロードしたJSONキーファイルの中身を全て設定
+  - `GCP_PROJECT_ID`: `ai-chatbot-prod-472104` - GCPプロジェクトID
+  - `CHATWORK_WEBHOOK_TOKEN`: Chatwork Webhook認証トークン
+  - `CHATWORK_API_TOKEN`: Chatwork API トークン
+  - `CHATWORK_MY_ID`: `10686206` - ボット自身のChatwork ID
+  - **`GEMINI_API_KEY`**: Google AI StudioのAPIキー（質問応答形式の回答生成に使用）
 
 ### Step 4: APIエンドポイントの作成
 - ChatworkからのWebhookを受け取るためのAPIルートとして、以下のファイルを正しい階層に作成済み。
@@ -156,8 +157,29 @@ Githubへのコミット名は日本語で記載する。
 - **内容**: 毎月末、日頃の感謝を伝えたい相手に手書きのメッセージカードを渡す文化
 - **設備**: オフィス内に専用ポストを設置
 
+---
 
+## AI回答生成の仕組み
 
+### 処理フロー
+1. **Vertex AI Search**で社内ルールドキュメントを検索
+2. **Gemini 1.5 Flash API**で検索結果を質問応答形式に変換
+3. **cleanSnippet関数**でMarkdown記法を削除し、読みやすく整形
+4. **ボット人格設定**を適用（friendly/formal/exclamation）
+5. **Chatwork**に回答を返信
+
+### Gemini API設定
+- **モデル**: `gemini-1.5-flash`
+- **認証方式**: APIキーベース認証（Google AI SDK使用）
+- **取得方法**: [Google AI Studio](https://aistudio.google.com/app/apikey) でAPIキーを作成
+- **temperature**: 0.3（一貫性のある回答）
+- **maxOutputTokens**: 200（簡潔な回答）
+
+### 回答例
+**質問**: 「コアタイムは何時から何時まで？」
+**回答**: 「コアタイムは11:00～16:00です。この時間帯は原則として業務に従事する必要があります。」
+
+---
 
 ### Vertex AI Search用 JSONL生成ルール
 1. 基本ルール：1行 = 1ドキュメント
