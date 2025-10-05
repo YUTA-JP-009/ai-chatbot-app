@@ -376,7 +376,7 @@ async function generateAnswerWithGemini(question: string, searchResult: string):
       model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.3,
-        maxOutputTokens: 200,
+        maxOutputTokens: 500,  // 思考トークン用に余裕を持たせる
       }
     });
 
