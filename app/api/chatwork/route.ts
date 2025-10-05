@@ -402,8 +402,11 @@ ${searchResult}
 回答: リモートワークは週3日まで可能です。所属チームの状況に応じて柔軟に運用されます。`;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text();
+    const response = result.response;
+
+    // レスポンスからテキストを取得
+    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    return text;
   } catch (error) {
     console.error('Gemini API エラー:', error);
     // Gemini APIが失敗した場合は元の検索結果を返す
