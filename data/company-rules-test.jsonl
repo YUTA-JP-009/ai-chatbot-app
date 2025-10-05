@@ -1,0 +1,2 @@
+{"id":"test_001","structData":{"title":"テストドキュメント1"},"content":{"text":"これはテスト用のドキュメントです。"}}
+{"id":"test_002","structData":{"title":"テストドキュメント2","category":"テストカテゴリ"},"content":{"text":"2つ目のテストドキュメントです。カテゴリ情報を含みます。"}}
