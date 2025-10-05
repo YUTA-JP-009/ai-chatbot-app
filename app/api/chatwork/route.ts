@@ -371,7 +371,7 @@ async function generateAnswerWithGemini(question: string, searchResult: string):
     });
 
     const model = vertexAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash-exp',  // Gemini 2.0 Flash (実験版・最新)
       generationConfig: {
         temperature: 0.3,  // 低めの温度で一貫性のある回答
         maxOutputTokens: 200,  // 簡潔な回答
