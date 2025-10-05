@@ -339,7 +339,7 @@ async function askAI(question: string): Promise<string> {
     // snippets配列から成功したスニペットを抽出（最初の1件のみ）
     if (structData.snippets && structData.snippets.length > 0) {
       const successSnippet = structData.snippets.find(
-        s => s.snippet_status === 'SUCCESS' && s.snippet
+        (s: { snippet_status?: string; snippet?: string }) => s.snippet_status === 'SUCCESS' && s.snippet
       );
 
       if (successSnippet?.snippet) {
