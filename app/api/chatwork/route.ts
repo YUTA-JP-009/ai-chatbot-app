@@ -363,9 +363,13 @@ async function generateAnswerWithGemini(question: string, searchResult: string):
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.error('GEMINI_API_KEY が設定されていません');
+      console.error('❌ GEMINI_API_KEY が設定されていません');
       return searchResult;
     }
+
+    console.log('🤖 Gemini API 呼び出し開始...');
+    console.log('📝 質問:', question);
+    console.log('📄 検索結果:', searchResult.substring(0, 100) + '...');
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
@@ -399,14 +403,20 @@ ${searchResult}
 質問: リモートワークは週何日まで可能？
 回答: リモートワークは週3日まで可能です。所属チームの状況に応じて柔軟に運用されます。`;
 
+    console.log('📤 Gemini APIにリクエスト送信中...');
     const result = await model.generateContent(prompt);
+    console.log('📥 Gemini APIからレスポンス受信');
+
     const response = result.response;
+    console.log('🔍 Response object:', JSON.stringify(response, null, 2));
 
     // レスポンスからテキストを取得
     const text = response.text();
+    console.log('✅ Gemini生成テキスト:', text);
     return text;
   } catch (error) {
-    console.error('Gemini API エラー:', error);
+    console.error('❌ Gemini API エラー:', error);
+    console.error('📋 Error details:', JSON.stringify(error, null, 2));
     // Gemini APIが失敗した場合は元の検索結果を返す
     return searchResult;
   }
