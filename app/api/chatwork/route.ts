@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import { GoogleAuth } from 'google-auth-library';
-import { VertexAI } from '@google-cloud/vertexai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -359,22 +359,20 @@ async function askAI(question: string): Promise<string> {
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
 async function generateAnswerWithGemini(question: string, searchResult: string): Promise<string> {
   try {
-    // GCP認証情報を準備
-    const credentials = JSON.parse(process.env.GCP_CREDENTIALS || '{}');
+    // Google AI SDKを使用（APIキーベース認証）
+    const apiKey = process.env.GEMINI_API_KEY;
 
-    const vertexAI = new VertexAI({
-      project: process.env.GCP_PROJECT_ID!,
-      location: 'us-central1',  // Gemini 1.5 Flashが利用可能なリージョン
-      googleAuthOptions: {
-        credentials: credentials
-      }
-    });
+    if (!apiKey) {
+      console.error('GEMINI_API_KEY が設定されていません');
+      return searchResult;
+    }
 
-    const model = vertexAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',  // Gemini 2.0 Flash (実験版・最新)
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
       generationConfig: {
-        temperature: 0.3,  // 低めの温度で一貫性のある回答
-        maxOutputTokens: 200,  // 簡潔な回答
+        temperature: 0.3,
+        maxOutputTokens: 200,
       }
     });
 
@@ -405,7 +403,7 @@ ${searchResult}
     const response = result.response;
 
     // レスポンスからテキストを取得
-    const text = response.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const text = response.text();
     return text;
   } catch (error) {
     console.error('Gemini API エラー:', error);
