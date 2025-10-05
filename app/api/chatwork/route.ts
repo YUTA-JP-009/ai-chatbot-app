@@ -364,7 +364,7 @@ async function generateAnswerWithGemini(question: string, searchResult: string):
 
     const vertexAI = new VertexAI({
       project: process.env.GCP_PROJECT_ID!,
-      location: 'asia-northeast1',
+      location: 'us-central1',  // Gemini 1.5 Flashが利用可能なリージョン
       googleAuthOptions: {
         credentials: credentials
       }
