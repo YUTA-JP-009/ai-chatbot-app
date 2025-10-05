@@ -239,6 +239,10 @@ async function askAI(question: string): Promise<string> {
           maxSnippetCount: 5,  // API上限（0-5）
           returnSnippet: true
         },
+        extractiveContentSpec: {
+          maxExtractiveAnswerCount: 3,  // より詳細な抽出回答を取得
+          maxExtractiveSegmentCount: 3   // より長いセグメントを取得
+        },
         summarySpec: {
           summaryResultCount: 5,  // 要約結果数も増やす
           includeCitations: true,
@@ -335,6 +339,32 @@ async function askAI(question: string): Promise<string> {
     }
 
     const structData = document.derivedStructData;
+
+    // extractiveAnswers（詳細な抽出回答）を優先的に使用
+    if (structData.extractiveAnswers && structData.extractiveAnswers.length > 0) {
+      const extractiveTexts = structData.extractiveAnswers
+        .map((answer: { content?: string }) => answer.content)
+        .filter((content: string | undefined) => content)
+        .join('\n\n');
+
+      if (extractiveTexts) {
+        console.log('📌 Extractive answers found:', extractiveTexts);
+        return cleanSnippet(extractiveTexts);
+      }
+    }
+
+    // extractiveSegments（長いセグメント）を次に試す
+    if (structData.extractiveSegments && structData.extractiveSegments.length > 0) {
+      const segmentTexts = structData.extractiveSegments
+        .map((segment: { content?: string }) => segment.content)
+        .filter((content: string | undefined) => content)
+        .join('\n\n');
+
+      if (segmentTexts) {
+        console.log('📌 Extractive segments found:', segmentTexts);
+        return cleanSnippet(segmentTexts);
+      }
+    }
 
     // snippets配列から成功したスニペットを抽出（最初の1件のみ）
     if (structData.snippets && structData.snippets.length > 0) {
