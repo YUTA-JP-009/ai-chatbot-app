@@ -359,9 +359,15 @@ async function askAI(question: string): Promise<string> {
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
 async function generateAnswerWithGemini(question: string, searchResult: string): Promise<string> {
   try {
+    // GCP認証情報を準備
+    const credentials = JSON.parse(process.env.GCP_CREDENTIALS || '{}');
+
     const vertexAI = new VertexAI({
       project: process.env.GCP_PROJECT_ID!,
-      location: 'asia-northeast1'
+      location: 'asia-northeast1',
+      googleAuthOptions: {
+        credentials: credentials
+      }
     });
 
     const model = vertexAI.getGenerativeModel({
