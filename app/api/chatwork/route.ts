@@ -373,10 +373,10 @@ async function generateAnswerWithGemini(question: string, searchResult: string):
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.0-flash-exp',
       generationConfig: {
         temperature: 0.3,
-        maxOutputTokens: 500,  // 思考トークン用に余裕を持たせる
+        maxOutputTokens: 300,  // 2.0は思考トークンなしで高速
       }
     });
 
