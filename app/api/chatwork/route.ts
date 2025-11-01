@@ -59,23 +59,13 @@ export async function POST(request: Request) {
       console.log('📤 BOT_PREFIX sent immediately');
     }
 
-    // 3.2. 事前定義回答のパターンマッチング（高頻度質問は即座に回答）
-    const predefinedAnswer = getPredefinedAnswer(question);
+    // 3.2. AI検索を実行（参照URLも取得）
+    const searchResult = await askAI(question);
 
-    let aiResponse: string;
+    // 3.3. Gemini APIで質問応答形式の回答を生成
+    const aiResponse = await generateAnswerWithGemini(question, searchResult.content, searchResult.sourceUrl);
 
-    if (predefinedAnswer) {
-      console.log('✨ 事前定義回答を使用:', predefinedAnswer.substring(0, 50) + '...');
-      aiResponse = predefinedAnswer;
-    } else {
-      // 3.3. AI検索を実行
-      const searchResult = await askAI(question);
-
-      // 3.4. Gemini APIで質問応答形式の回答を生成
-      aiResponse = await generateAnswerWithGemini(question, searchResult);
-    }
-
-    // 3.5. ボットの人格設定を反映（BOT_PREFIXは除外）
+    // 3.4. ボットの人格設定を反映（BOT_PREFIXは除外）
     const personalizedResponse = applyBotPersonality(aiResponse, false); // false = PREFIX除外
 
     // 4. AIの回答をChatworkに返信する
@@ -92,76 +82,7 @@ export async function POST(request: Request) {
   }
 }
 
-// --- 事前定義回答のパターンマッチング関数 ---
-function getPredefinedAnswer(question: string): string | null {
-  // 高頻度質問の事前定義回答（10個のQ&A）
-  const predefinedAnswers: Array<{ keywords: string[]; answer: string }> = [
-    {
-      keywords: ['有給', '当日', '急な申請', '有休'],
-      answer: '原則として当日の申請は不可です。ただし、社会通念上やむを得ない理由や医師の証明がある場合など、事情によっては事後申請が承認される場合があります。申請は期日までに＜KING OF TIME＞で行う必要があります。'
-    },
-    {
-      keywords: ['始業', '遅刻', '遅れ', '連絡'],
-      answer: '遅刻しそうな時、またはその可能性がある時は、それがわかった時点で速やかに管理者または約束相手に電話で連絡することが求められています。チャットやメールでの連絡は、電話で連絡がつかなかった場合のみとしてください。'
-    },
-    {
-      keywords: ['ノートPC', 'パソコン', '私的', '業務時間外', '貸与'],
-      answer: '会社が貸与しているノートパソコンとソフトウェアは法人の資産であり、業務時間以外の使用は厳禁です。万一、業務時間外に使用の必要が生じた場合は、事前に責任者1または2にご相談ください。無断で使用した場合、SKY SEAに履歴が残り、貸与を取り消される可能性があるため、十分に注意が必要です。'
-    },
-    {
-      keywords: ['朝チャット', 'クレド朝礼', 'パート', 'パートタイム'],
-      answer: '朝チャット（雑談タイム）もクレド朝礼も、全社員が対象ですが、パートタイム社員は対象外となります。ただし、クレド朝礼において、新入社員は入社から2週間後よりコメントへの参加が可能となります。'
-    },
-    {
-      keywords: ['休日', '勤務時間外', '緊急連絡', '対応時間'],
-      answer: '会社は原則として休暇・休日・勤務時間外に社員への連絡を行いませんが、緊急時や至急の対応が必要な場合は連絡することがあります。連絡があった場合は、緊急連絡は「約1時間以内」、一般連絡は「約12時間以内」を目安に速やかに返信または対応をおこなってください。返信がない場合は、リーダーが直接連絡し、返信を促します。'
-    },
-    {
-      keywords: ['契約書', '契約内容', '口頭', '説明', '要約'],
-      answer: '顧客との間で交わす「契約書」は唯一の正式な文書であり、契約書に書かれていることがすべてです。そのため、契約書の内容をコピーしたり、一部を引用して文章に書き直したり、説明を加えることは、誤解を招く危険があるため禁止されています。説明する場合も、必ず「契約書そのもの」を根拠とする必要があります。'
-    },
-    {
-      keywords: ['在宅勤務', '服装', 'WEBカメラ', 'カメラ'],
-      answer: '在宅勤務時は、服装、身だしなみは画面上で出社時と同じに見えるようにしてください。また、WEBカメラはオンにして全社チャットに常時入室し、顔の中心を画面の中央にして正面全体が見えるようにする必要があります。勤務時は背景画像を使用しないでください。プライバシー保護のため、可能な限りプライベートな部分が映らないように配慮し、壁を背にするなどの工夫も推奨されています。'
-    },
-    {
-      keywords: ['備品', '消耗品', '購入', '稟議'],
-      answer: '文具などの消耗品は個人で購入してください。業務で使うパソコン、ソフトウェア、デスクなどの備品は会社が購入します。会社のお金で物を買うときは、kintoneで稟議書を提出し、承認を得る必要があります。ただし、1万円以下の現金支払は稟議不要ですが、責任者1の事前承認が必要です。'
-    },
-    {
-      keywords: ['計画取得', '計画取得日', '有給休暇'],
-      answer: '22期の有給休暇の計画取得日は、12月30日（火）と8月10日（月）の2日間です。有給休暇がまだ付与されていない社員（正社員・パートタイム社員）は公休扱いとなります。'
-    },
-    {
-      keywords: ['未入金', '支払い', '入金遅れ', '催促'],
-      answer: '未入金案件の連絡を責任者2から受けた場合は、設計担当者が顧客へ入金の催促を行います。催促したその日を新たな入金締切とします。納品後の入金遅れに対しては、礼儀正しくかつ毅然と催促し、支払がなされるまでは当該顧客のすべての案件の設計作業を中断してください。連絡が取れない場合や、催促しても入金がない場合は責任者1の指示を仰いでください。'
-    }
-  ];
-
-  // 質問文に含まれるキーワードでマッチング（スコアリング方式）
-  let bestMatch: { answer: string; score: number } | null = null;
-
-  for (const qa of predefinedAnswers) {
-    // マッチしたキーワードを収集
-    const matchedKeywords = qa.keywords.filter(keyword => question.includes(keyword));
-
-    if (matchedKeywords.length > 0) {
-      // スコア計算:
-      // 1. マッチしたキーワードの数 × 10点
-      // 2. マッチしたキーワードの合計文字数
-      const keywordCountScore = matchedKeywords.length * 10;
-      const keywordLengthScore = matchedKeywords.reduce((sum, kw) => sum + kw.length, 0);
-      const totalScore = keywordCountScore + keywordLengthScore;
-
-      // より高いスコアの回答を優先
-      if (!bestMatch || totalScore > bestMatch.score) {
-        bestMatch = { answer: qa.answer, score: totalScore };
-      }
-    }
-  }
-
-  return bestMatch ? bestMatch.answer : null;
-}
+// 事前定義回答は廃止: 全ての質問をVertex AI Searchで処理
 
 // --- Chatworkに返信する関数（メンション部分を削除） ---
 async function replyToChatwork(roomId: number, message: string) {
@@ -264,7 +185,7 @@ function applyBotPersonality(answer: string, includePrefix: boolean = true): str
 }
 
 // --- GCP Discovery Engineと通信する関数（REST API直接呼び出し） ---
-async function askAI(question: string): Promise<string> {
+async function askAI(question: string): Promise<{ content: string; sourceUrl: string | null }> {
   if (!process.env.GCP_PROJECT_ID || !process.env.GCP_CREDENTIALS || !process.env.GCP_DATA_STORE_ID) {
     throw new Error('GCPの環境変数が設定されていません');
   }
@@ -377,7 +298,15 @@ async function askAI(question: string): Promise<string> {
     // Enterprise版のsummary機能を優先使用
     if (searchResults.summary && searchResults.summary.summaryText) {
       console.log('✨ Using Enterprise Summary:', searchResults.summary.summaryText);
-      return searchResults.summary.summaryText;
+      // Summaryの場合もソースURLを取得
+      const summarySourceUrl = searchResults.results?.[0]?.document?.derivedStructData?.link ||
+                               searchResults.results?.[0]?.document?.derivedStructData?.uri ||
+                               searchResults.results?.[0]?.document?.name ||
+                               null;
+      return {
+        content: searchResults.summary.summaryText,
+        sourceUrl: summarySourceUrl
+      };
     }
 
     // スニペット情報をデバッグ
@@ -404,7 +333,10 @@ async function askAI(question: string): Promise<string> {
     }
 
     if (!searchResults.results || searchResults.results.length === 0) {
-      return '申し訳ありませんが、お探しの情報が見つかりませんでした。';
+      return {
+        content: '申し訳ありませんが、お探しの情報が見つかりませんでした。',
+        sourceUrl: null
+      };
     }
 
     // 最も関連性の高い1件目のスニペットのみを返す
@@ -412,10 +344,19 @@ async function askAI(question: string): Promise<string> {
     const document = topResult.document;
 
     if (!document?.derivedStructData) {
-      return '申し訳ありませんが、適切な回答を生成できませんでした。';
+      return {
+        content: '申し訳ありませんが、適切な回答を生成できませんでした。',
+        sourceUrl: null
+      };
     }
 
     const structData = document.derivedStructData;
+
+    // 参照URL（ソースURL）を取得
+    const sourceUrl = structData.link || structData.uri || document.name || null;
+    console.log('📎 Source URL:', sourceUrl);
+
+    let content = '';
 
     // snippets配列から成功したスニペットを抽出（最初の1件のみ）
     if (structData.snippets && structData.snippets.length > 0) {
@@ -424,13 +365,17 @@ async function askAI(question: string): Promise<string> {
       );
 
       if (successSnippet?.snippet) {
-        return cleanSnippet(successSnippet.snippet);
+        content = cleanSnippet(successSnippet.snippet);
       }
     }
 
     // フォールバック: 従来の単一snippet, title
-    const fallbackSnippet = structData.snippet || structData.title || '関連情報が見つかりました';
-    return cleanSnippet(fallbackSnippet);
+    if (!content) {
+      const fallbackSnippet = structData.snippet || structData.title || '関連情報が見つかりました';
+      content = cleanSnippet(fallbackSnippet);
+    }
+
+    return { content, sourceUrl };
   } catch (error) {
     console.error('Discovery Engine検索エラー:', error);
     throw new Error('検索中にエラーが発生しました');
@@ -438,7 +383,7 @@ async function askAI(question: string): Promise<string> {
 }
 
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
-async function generateAnswerWithGemini(question: string, searchResult: string): Promise<string> {
+async function generateAnswerWithGemini(question: string, searchResult: string, sourceUrl: string | null): Promise<string> {
   try {
     // Google AI SDKを使用（APIキーベース認証）
     const apiKey = process.env.GEMINI_API_KEY;
@@ -498,8 +443,15 @@ ${searchResult}
     console.log('🔍 Response object:', JSON.stringify(response, null, 2));
 
     // レスポンスからテキストを取得
-    const text = response.text();
+    let text = response.text();
     console.log('✅ Gemini生成テキスト:', text);
+
+    // 参照URLがある場合は回答に追加
+    if (sourceUrl) {
+      text += `\n\n📎 参考: ${sourceUrl}`;
+      console.log('📎 参照URLを追加:', sourceUrl);
+    }
+
     return text;
   } catch (error) {
     console.error('❌ Gemini API エラー:', error);
