@@ -138,15 +138,29 @@ function getPredefinedAnswer(question: string): string | null {
     }
   ];
 
-  // 質問文に含まれるキーワードでマッチング（複数キーワード対応）
+  // 質問文に含まれるキーワードでマッチング（スコアリング方式）
+  let bestMatch: { answer: string; score: number } | null = null;
+
   for (const qa of predefinedAnswers) {
-    // いずれかのキーワードが含まれていればマッチ
-    if (qa.keywords.some(keyword => question.includes(keyword))) {
-      return qa.answer;
+    // マッチしたキーワードを収集
+    const matchedKeywords = qa.keywords.filter(keyword => question.includes(keyword));
+
+    if (matchedKeywords.length > 0) {
+      // スコア計算:
+      // 1. マッチしたキーワードの数 × 10点
+      // 2. マッチしたキーワードの合計文字数
+      const keywordCountScore = matchedKeywords.length * 10;
+      const keywordLengthScore = matchedKeywords.reduce((sum, kw) => sum + kw.length, 0);
+      const totalScore = keywordCountScore + keywordLengthScore;
+
+      // より高いスコアの回答を優先
+      if (!bestMatch || totalScore > bestMatch.score) {
+        bestMatch = { answer: qa.answer, score: totalScore };
+      }
     }
   }
 
-  return null;
+  return bestMatch ? bestMatch.answer : null;
 }
 
 // --- Chatworkに返信する関数（メンション部分を削除） ---
