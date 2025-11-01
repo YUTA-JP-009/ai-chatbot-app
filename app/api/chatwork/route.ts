@@ -353,8 +353,28 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
     const structData = document.derivedStructData;
 
     // 参照URL（ソースURL）を取得
-    const sourceUrl = structData.link || structData.uri || document.name || null;
+    // 優先順位: link > uri > extractive_answers.uri > document.name
+    let sourceUrl = structData.link || structData.uri || null;
+
+    // extractive_answersからURLを取得（kintoneレコードURLなど）
+    if (!sourceUrl && (structData as any).extractive_answers) {
+      const extractiveAnswers = (structData as any).extractive_answers;
+      if (Array.isArray(extractiveAnswers) && extractiveAnswers.length > 0) {
+        sourceUrl = extractiveAnswers[0].uri || extractiveAnswers[0].page_identifier;
+      }
+    }
+
+    // フォールバック: document.nameやstructData内のカスタムフィールド
+    if (!sourceUrl) {
+      sourceUrl = (structData as any).url ||
+                 (structData as any).source_url ||
+                 (structData as any).record_url ||
+                 document.name ||
+                 null;
+    }
+
     console.log('📎 Source URL:', sourceUrl);
+    console.log('🔍 DEBUG - structData keys:', Object.keys(structData));
 
     let content = '';
 
