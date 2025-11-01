@@ -306,3 +306,153 @@ maxOutputTokens: 500 → 300（思考トークン不要なため削減）
 - BOT_PREFIXのさらなる高速化（ログ削減）
 - 事前定義回答の追加（高頻度質問の洗い出し）
 - Cloud StorageへのFAQ.pdf追加（大量Q&A対応）
+
+---
+
+### 2025年11月1日 - kintone URL抽出機能実装セッション
+
+#### 実施内容
+
+1. **事前定義回答の本番データ化（10パターン）**
+   - テスト用の3パターン（リモートワーク、福利厚生、コアタイム）を削除
+   - 本番用10パターンに置き換え（有給休暇、遅刻連絡、PC私的利用、朝チャット、休日連絡、契約書、在宅勤務、備品購入、計画取得日、未入金）
+   - キーワードマッチングをスコアリング方式に変更（keyword count × 10 + keyword length）
+
+2. **アーキテクチャの大幅変更: 事前定義回答を完全廃止**
+   - ユーザーの要望: 「事前定義回答はなし、質問に近い回答はできるだけ持ってくる」
+   - **全ての質問をVertex AI Searchで処理**する方式に変更
+   - 94行の事前定義回答コードを削除
+   - kintone レコードURLを参照URLとして回答に添える仕様に変更
+
+3. **kintone URL抽出機能の実装（未解決）**
+   - **目的**: PDF内に埋め込まれたkintone URL（`https://eu-plan.cybozu.com/k/238/show#record=X`）を抽出
+   - **実装場所**: `app/api/chatwork/route.ts` 377-425行目
+
+   **実装した抽出ロジック（3段階の優先順位）:**
+   ```typescript
+   // ステップ1: スニペット内容を取得
+   let rawSnippet = structData.snippets?.[0]?.snippet || structData.snippet || '';
+
+   // ステップ2: スニペットテキストからkintone URLを正規表現で抽出（最優先）
+   const kintoneUrlPattern = /https:\/\/[^\s<]+cybozu\.com[^\s<]*/g;
+   const urlMatches = rawSnippet.match(kintoneUrlPattern);
+   if (urlMatches) sourceUrl = urlMatches[0];
+
+   // ステップ3: フォールバック（structData.link, uri, extractive_answers, document.name）
+   if (!sourceUrl) {
+     sourceUrl = structData.link || structData.uri || ...
+   }
+   ```
+
+4. **TypeScript型エラーの修正**
+   - ESLintエラー: `@typescript-eslint/no-explicit-any`
+   - 全ての`as any`を削除し、適切な型定義に置き換え
+   - `ExtractiveAnswer`インターフェースを定義
+   - `in`演算子と型アサーションを使用
+
+#### 現在の問題（未解決）
+
+**症状**: kintone URLの抽出に失敗し、Cloud StorageパスがURLとして返される
+
+**デバッグログ:**
+```
+📎 最終的なSource URL: gs://ai-chatbot-documents/U'plan様_Kintone_@年間スケジュール...
+```
+
+**期待される動作:**
+```
+📎 最終的なSource URL: https://eu-plan.cybozu.com/k/238/show#record=34&tab=0
+```
+
+**原因の調査結果:**
+- スニペットにはkintone URLが含まれていることを確認: `"snippet": "レコードID レコードURL 項目 分類 NO ルール 解説 更新日 1 https://eu-plan. ..."`
+- 正規表現パターン `/https:\/\/[^\s<]+cybozu\.com[^\s<]*/g` を実装済み
+- しかし依然としてCloud Storageパスが返される
+
+**考えられる原因:**
+1. スニペットが切り詰められている可能性（`https://eu-plan. ...`）
+2. HTMLエンティティやエンコードの問題
+3. Vertex AI SearchのスニペットにURLが完全な形で含まれていない
+4. `structData.link`が優先されてスニペット抽出処理が実行されていない
+
+#### 試した解決策
+
+1. ✅ スニペット取得を最優先に変更（377-395行目）
+2. ✅ 正規表現パターンの実装（399-406行目）
+3. ✅ デバッグログの追加（386, 405, 422行目）
+4. ❌ **結果変わらず**: 依然としてCloud Storageパスが返される
+
+#### データソース構成
+
+**現在のデータストア:**
+- Data Store ID: `internal-rules-cloudstorage_1758630923408`
+- データソース: Cloud Storage
+- ファイル形式: PDF（kintone URLがテキストとして埋め込まれている）
+
+**PDFの構造:**
+```
+レコードID | レコードURL                                      | 項目 | 分類 | NO | ルール | 解説
+1          | https://eu-plan.cybozu.com/k/238/show#record=34&tab=0 | ...
+```
+
+#### 関連ファイル
+
+1. [app/api/chatwork/route.ts](app/api/chatwork/route.ts#L377-L425) - URL抽出ロジック
+2. [docs/kintone-url-setup.md](docs/kintone-url-setup.md) - kintone URL設定方法のドキュメント
+3. [scripts/add-metadata-to-gcs.sh](scripts/add-metadata-to-gcs.sh) - Cloud Storageメタデータ追加スクリプト
+4. [scripts/list-documents.ts](scripts/list-documents.ts) - Data Storeドキュメント一覧取得スクリプト
+
+#### 主要なコミット
+
+- `ab9b3ee` - スニペットテキストからkintone URLを正規表現で抽出する処理を実装（最新、未解決）
+- `25d3e05` - 事前定義回答を廃止し、全質問をVertex AI Searchで処理
+- `d3a1f02` - TypeScript型エラーを修正（`as any`削除）
+- `f8b5e12` - 事前定義回答を10パターンに拡張
+- `c4a9a3d` - キーワードマッチングをスコアリング方式に変更
+
+#### 次回のタスク（優先度順）
+
+1. **🔴 kintone URL抽出の根本原因調査（最優先）**
+   - Vertex AI SearchのレスポンスJSONを完全にログ出力
+   - `rawSnippet`変数の内容をログ出力（正規表現前）
+   - `urlMatches`の結果をログ出力
+   - `structData.snippets`配列の全件をログ出力
+   - スニペット内のURLが切り詰められているか確認
+
+2. **代替アプローチの検討**
+   - Cloud Storageカスタムメタデータでkintone URLを保存（[docs/kintone-url-setup.md](docs/kintone-url-setup.md) 参照）
+   - PDFのメタデータフィールドにURLを埋め込む
+   - JSON形式でドキュメントを再アップロード（`url`フィールド付き）
+
+3. **デバッグ用スクリプトの実行**
+   - [scripts/list-documents.ts](scripts/list-documents.ts) でData Store内のドキュメント構造を確認
+   - `structData`に含まれるフィールドを全て確認
+
+#### 技術的なメモ
+
+**Vertex AI Searchのスニペット仕様:**
+- `structData.snippets`: 配列形式（複数のスニペット候補）
+- `snippet_status`: `"SUCCESS"` のものを使用
+- スニペットの最大長: 不明（切り詰められる可能性あり）
+- HTMLタグが含まれる: `<b>キーワード</b>` など
+
+**正規表現パターンの詳細:**
+```typescript
+/https:\/\/[^\s<]+cybozu\.com[^\s<]*/g
+```
+- `[^\s<]+`: 空白とHTMLタグの前まで
+- `g`フラグ: 複数マッチに対応
+- `&`記号も含む: `#record=34&tab=0`
+
+**現在の処理フロー:**
+```
+1. Chatwork Webhook受信
+2. BOT_PREFIX送信（「お調べしています...」）
+3. askAI() 実行
+   └─ Vertex AI Search API呼び出し
+   └─ スニペット取得
+   └─ 正規表現でURL抽出 ← ここで失敗
+   └─ structData.linkにフォールバック ← Cloud Storageパスが返される
+4. generateAnswerWithGemini() 実行
+5. 回答 + URL（`📎 参考: {URL}`）をChatworkに送信
+```
