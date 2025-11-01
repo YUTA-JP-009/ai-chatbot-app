@@ -352,58 +352,75 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
 
     const structData = document.derivedStructData;
 
-    // 参照URL（ソースURL）を取得
-    // 優先順位: link > uri > extractive_answers.uri > document.name
-    let sourceUrl = structData.link || structData.uri || null;
-
-    // extractive_answersからURLを取得（kintoneレコードURLなど）
-    interface ExtractiveAnswer {
-      uri?: string;
-      page_identifier?: string;
-    }
-
-    if (!sourceUrl && 'extractive_answers' in structData) {
-      const extractiveAnswers = structData.extractive_answers as ExtractiveAnswer[] | undefined;
-      if (Array.isArray(extractiveAnswers) && extractiveAnswers.length > 0) {
-        sourceUrl = extractiveAnswers[0].uri || extractiveAnswers[0].page_identifier || null;
-      }
-    }
-
-    // フォールバック: document.nameやstructData内のカスタムフィールド
-    if (!sourceUrl) {
-      const dataWithUrl = structData as {
-        url?: string;
-        source_url?: string;
-        record_url?: string;
-      };
-      sourceUrl = dataWithUrl.url ||
-                 dataWithUrl.source_url ||
-                 dataWithUrl.record_url ||
-                 document.name ||
-                 null;
-    }
-
-    console.log('📎 Source URL:', sourceUrl);
-    console.log('🔍 DEBUG - structData keys:', Object.keys(structData));
-
     let content = '';
+    let sourceUrl: string | null = null;
 
+    // ステップ1: スニペット内容を取得（URLを抽出するため）
     // snippets配列から成功したスニペットを抽出（最初の1件のみ）
+    let rawSnippet = '';
     if (structData.snippets && structData.snippets.length > 0) {
       const successSnippet = structData.snippets.find(
         (s: { snippet_status?: string; snippet?: string }) => s.snippet_status === 'SUCCESS' && s.snippet
       );
 
       if (successSnippet?.snippet) {
-        content = cleanSnippet(successSnippet.snippet);
+        rawSnippet = successSnippet.snippet;
+        content = cleanSnippet(rawSnippet);
       }
     }
 
     // フォールバック: 従来の単一snippet, title
-    if (!content) {
-      const fallbackSnippet = structData.snippet || structData.title || '関連情報が見つかりました';
-      content = cleanSnippet(fallbackSnippet);
+    if (!rawSnippet) {
+      rawSnippet = structData.snippet || structData.title || '';
+      content = cleanSnippet(rawSnippet);
     }
+
+    // ステップ2: スニペットテキストからkintone URLを抽出（最優先）
+    // Pattern: https://eu-plan.cybozu.com/k/{数字}/show#record={数字}&tab={数字}
+    const kintoneUrlPattern = /https:\/\/[^\s<]+cybozu\.com[^\s<]*/g;
+    const urlMatches = rawSnippet.match(kintoneUrlPattern);
+
+    if (urlMatches && urlMatches.length > 0) {
+      // 最初に見つかったkintone URLを使用
+      sourceUrl = urlMatches[0];
+      console.log('✅ スニペットからkintone URLを抽出:', sourceUrl);
+    }
+
+    // ステップ3: スニペットにURLがない場合、structDataから取得
+    // 優先順位: link > uri > extractive_answers.uri > document.name
+    if (!sourceUrl) {
+      sourceUrl = structData.link || structData.uri || null;
+
+      // extractive_answersからURLを取得（kintoneレコードURLなど）
+      interface ExtractiveAnswer {
+        uri?: string;
+        page_identifier?: string;
+      }
+
+      if (!sourceUrl && 'extractive_answers' in structData) {
+        const extractiveAnswers = structData.extractive_answers as ExtractiveAnswer[] | undefined;
+        if (Array.isArray(extractiveAnswers) && extractiveAnswers.length > 0) {
+          sourceUrl = extractiveAnswers[0].uri || extractiveAnswers[0].page_identifier || null;
+        }
+      }
+
+      // フォールバック: document.nameやstructData内のカスタムフィールド
+      if (!sourceUrl) {
+        const dataWithUrl = structData as {
+          url?: string;
+          source_url?: string;
+          record_url?: string;
+        };
+        sourceUrl = dataWithUrl.url ||
+                   dataWithUrl.source_url ||
+                   dataWithUrl.record_url ||
+                   document.name ||
+                   null;
+      }
+    }
+
+    console.log('📎 最終的なSource URL:', sourceUrl);
+    console.log('🔍 DEBUG - structData keys:', Object.keys(structData));
 
     return { content, sourceUrl };
   } catch (error) {
