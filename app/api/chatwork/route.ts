@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import { GoogleAuth } from 'google-auth-library';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -62,8 +62,8 @@ export async function POST(request: Request) {
     // 3.2. AI検索を実行（参照URLも取得）
     const searchResult = await askAI(question);
 
-    // 3.3. Gemini APIで質問応答形式の回答を生成
-    const aiResponse = await generateAnswerWithGemini(question, searchResult.content, searchResult.sourceUrl);
+    // 3.3. Claude 4.5 Sonnet APIで質問応答形式の回答を生成
+    const aiResponse = await generateAnswerWithClaude(question, searchResult.content, searchResult.sourceUrl);
 
     // 3.4. ボットの人格設定を反映（BOT_PREFIXは除外）
     const personalizedResponse = applyBotPersonality(aiResponse, false); // false = PREFIX除外
@@ -429,38 +429,27 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
   }
 }
 
-// --- Gemini APIで質問応答形式の回答を生成する関数 ---
-async function generateAnswerWithGemini(question: string, searchResult: string, sourceUrl: string | null): Promise<string> {
+// --- Claude 4.5 Sonnet APIで質問応答形式の回答を生成する関数 ---
+async function generateAnswerWithClaude(question: string, searchResult: string, sourceUrl: string | null): Promise<string> {
   try {
-    // Google AI SDKを使用（APIキーベース認証）
-    const apiKey = process.env.GEMINI_API_KEY;
+    // Anthropic SDKを使用（APIキーベース認証）
+    const apiKey = process.env.ANTHROPIC_API_KEY;
 
     if (!apiKey) {
-      console.error('❌ GEMINI_API_KEY が設定されていません');
+      console.error('❌ ANTHROPIC_API_KEY が設定されていません');
       return searchResult;
     }
 
-    console.log('🤖 Gemini API 呼び出し開始...');
+    console.log('🤖 Claude 4.5 Sonnet API 呼び出し開始...');
     console.log('📝 質問:', question);
     console.log('📄 検索結果:', searchResult.substring(0, 100) + '...');
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp',
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 300,  // 2.0は思考トークンなしで高速
-      }
+    const anthropic = new Anthropic({
+      apiKey: apiKey,
     });
 
-    const prompt = `あなたは社内ルールに詳しいアシスタントです。
+    const systemPrompt = `あなたは社内ルールに詳しいアシスタントです。
 以下の社内ルール情報を参考に、質問に簡潔かつ明確に回答してください。
-
-【質問】
-${question}
-
-【社内ルール】
-${searchResult}
 
 【回答ルール】
 1. 質問に対して直接的に答える形式で回答してください
@@ -482,16 +471,35 @@ ${searchResult}
 回答:
 在宅勤務時は、服装、身だしなみは画面上で出社時と同じに見えるようにしてください。また、WEBカメラはオンにして全社チャットに常時入室し、顔の中心を画面の中央にして正面全体が見えるようにする必要があります。勤務時は背景画像を使用しないでください。`;
 
-    console.log('📤 Gemini APIにリクエスト送信中...');
-    const result = await model.generateContent(prompt);
-    console.log('📥 Gemini APIからレスポンス受信');
+    const userPrompt = `【質問】
+${question}
 
-    const response = result.response;
-    console.log('🔍 Response object:', JSON.stringify(response, null, 2));
+【社内ルール】
+${searchResult}`;
+
+    console.log('📤 Claude APIにリクエスト送信中...');
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 300,
+      temperature: 0.3,
+      system: systemPrompt,
+      messages: [
+        {
+          role: 'user',
+          content: userPrompt
+        }
+      ]
+    });
+
+    console.log('📥 Claude APIからレスポンス受信');
+    console.log('🔍 Response object:', JSON.stringify(message, null, 2));
 
     // レスポンスからテキストを取得
-    let text = response.text();
-    console.log('✅ Gemini生成テキスト:', text);
+    let text = '';
+    if (message.content[0].type === 'text') {
+      text = message.content[0].text;
+    }
+    console.log('✅ Claude生成テキスト:', text);
 
     // 参照URLがある場合は回答に追加
     if (sourceUrl) {
@@ -501,9 +509,9 @@ ${searchResult}
 
     return text;
   } catch (error) {
-    console.error('❌ Gemini API エラー:', error);
+    console.error('❌ Claude API エラー:', error);
     console.error('📋 Error details:', JSON.stringify(error, null, 2));
-    // Gemini APIが失敗した場合は元の検索結果を返す
+    // Claude APIが失敗した場合は元の検索結果を返す
     return searchResult;
   }
 }
