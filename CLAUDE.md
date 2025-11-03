@@ -456,3 +456,144 @@ maxOutputTokens: 500 → 300（思考トークン不要なため削減）
 4. generateAnswerWithGemini() 実行
 5. 回答 + URL（`📎 参考: {URL}`）をChatworkに送信
 ```
+
+---
+
+### 2025年11月2日 - LLM切り替え実験セッション（Claude 4.5 Sonnet）
+
+#### 実施内容
+
+1. **LLMをGemini 2.0 Flash-exp → Claude 4.5 Sonnetに変更**
+   - **目的**: より高精度な日本語理解と回答生成を実現
+   - **実装場所**: `app/api/chatwork/route.ts`
+   - **主な変更点**:
+     - パッケージ: `@google/generative-ai` → `@anthropic-ai/sdk`
+     - モデル: `gemini-2.0-flash-exp` → `claude-sonnet-4-20250514`
+     - 関数名: `generateAnswerWithGemini()` → `generateAnswerWithClaude()`
+     - 環境変数: `GEMINI_API_KEY` → `ANTHROPIC_API_KEY`
+
+2. **Anthropic SDK実装の詳細**
+   ```typescript
+   const anthropic = new Anthropic({ apiKey: apiKey });
+   const message = await anthropic.messages.create({
+     model: 'claude-sonnet-4-20250514',
+     max_tokens: 300,
+     temperature: 0.3,
+     system: systemPrompt,
+     messages: [{ role: 'user', content: userPrompt }]
+   });
+   ```
+
+3. **環境変数の設定**
+   - Vercelに`ANTHROPIC_API_KEY`を追加
+   - 既存の`GEMINI_API_KEY`は保持（ロールバック用）
+
+#### 検証結果
+
+**✅ 実装成功**: Claude 4.5 Sonnetへの接続は正常に動作
+
+**❌ クレジット不足エラー**:
+```
+Error: 400 {"type":"error","error":{"type":"invalid_request_error",
+"message":"Your credit balance is too low to access the Anthropic API.
+Please go to Plans & Billing to upgrade or purchase credits."}}
+```
+
+**ログ証拠**:
+```
+🤖 Claude 4.5 Sonnet API 呼び出し開始...
+📤 Claude APIにリクエスト送信中...
+❌ Claude API エラー: Error: 400 ...
+```
+
+#### アーキテクチャの確認
+
+**手動RAG（2段階処理）を継続**:
+```
+1. Vertex AI Search（検索エンジン）
+   ↓ スニペット取得
+2. LLM（Gemini/Claude）で質問応答形式に変換
+   ↓ 自然な回答生成
+3. Chatworkに返信
+```
+
+**重要な気づき**:
+- **以前から手動RAG**: Vertex AI Search（検索）+ Gemini（回答生成）
+- **今回も手動RAG**: Vertex AI Search（検索）+ Claude（回答生成）
+- **組み込みRAG未使用**: Vertex AI SearchのLLM Addon（`summarySpec`）は`LLM_ADDON_NOT_ENABLED`のため利用不可
+
+#### 回答精度の問題分析
+
+**根本原因はVertex AI Searchの検索品質**:
+
+1. **スニペット品質の問題**
+   - 質問「有給休暇の取得手順」に対して、**チャット連絡ルール**のスニペットが返される
+   - PDFの**テーブルヘッダー**（レコードID、レコードURL、項目...）がスニペットに含まれる
+   - **肝心のルール本文**が欠落
+
+2. **ランキングスコアが低い**
+   ```json
+   "rankSignals": {
+     "keywordSimilarityScore": 2.31,      // 低い
+     "semanticSimilarityScore": 0.75,     // 低い（1.0が最高）
+     "topicalityRank": 3                   // 3位 = 最適ではない
+   }
+   ```
+
+3. **PDFフォーマットの問題**
+   - テーブル形式のPDFは、テキスト抽出時に構造が崩れる
+   - 列見出しとデータが混在
+   - URLが切り詰められる（`https://eu-plan. ...`）
+
+#### 対応方針
+
+**優先度1: Vertex AI Searchの検索品質改善**
+- PDFフォーマットを自然文形式に変更
+- チャンク設定の最適化
+- Markdown形式のデータソース追加
+
+**優先度2: LLMの切り替えは後回し**
+- Claude 4.5は実装完了済み（コード保存済み）
+- Anthropic APIクレジット購入後にいつでも切り替え可能
+- 現在はGemini 2.0 Flash-expで継続
+
+#### 最終決定
+
+**LLMをGemini 2.0 Flash-expに戻す**:
+- 理由: Anthropic APIクレジット不足
+- 戻し作業完了: コミット `d305fb5`
+- 検索品質改善を優先
+
+#### 主要なコミット
+
+- `b1fbaae` - LLMをGemini 2.0 Flash-exp → Claude 4.5 Sonnetに変更
+- `d305fb5` - Claude 4.5 Sonnet → Gemini 2.0 Flash-expに戻す（クレジット不足のため）
+
+#### 次回の優先タスク
+
+1. **🔴 Vertex AI Searchの検索品質改善（最優先）**
+   - PDFフォーマットを自然文形式に変更
+   - スニペット品質の向上
+   - チャンク設定の最適化（`maxSnippetCount`など）
+
+2. **🟡 kintone URL抽出問題の解決**
+   - スニペット切り詰め問題の調査
+   - Cloud Storageメタデータの活用検討
+
+3. **🟢 Claude 4.5への切り替え（将来）**
+   - Anthropic APIクレジット購入後
+   - 実装コードは保存済み（`b1fbaae`コミット参照）
+
+#### 技術的な学び
+
+**手動RAGのメリット**:
+- LLMを自由に切り替え可能（Gemini ⇔ Claude）
+- プロンプトを細かく制御可能
+- コスト最適化が容易
+
+**課題**:
+- **検索品質がボトルネック**: LLMがいくら優秀でも、検索結果が不適切なら回答精度は低い
+- **Vertex AI Searchの最適化が必須**: スニペット品質、PDFフォーマット、チャンク設定
+
+**結論**:
+「良いLLM」よりも「良い検索結果」が重要。まずはVertex AI Searchの改善に注力する。
