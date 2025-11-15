@@ -113,45 +113,6 @@ async function replyToChatwork(roomId: number, message: string) {
 
 // 型定義（REST API用）
 
-// --- HTMLタグを削除して読みやすく整形する関数 ---
-function cleanSnippet(snippet: string): string {
-  return snippet
-    // HTMLタグを削除
-    .replace(/<\/?b>/g, '')
-    .replace(/<\/?i>/g, '')
-    .replace(/<\/?em>/g, '')
-    .replace(/<\/?strong>/g, '')
-    // HTML特殊文字を変換
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    // 先頭・末尾の "..." を削除
-    .replace(/^\.\.\.\s*/g, '')
-    .replace(/\s*\.\.\.$/g, '')
-    // Markdown記法を削除: 見出し記号(#)を削除
-    .replace(/^#{1,6}\s+/gm, '')
-    // Markdown記法を削除: 太字(**text**)を通常テキストに
-    .replace(/\*\*([^*]+)\*\*/g, '$1')
-    // Markdown記法を削除: - **項目**: 形式を改行+項目名に変換
-    .replace(/^\s*-\s+([^:]+):\s*/gm, '\n$1: ')
-    // Markdown記法を削除: 区切り線(---)を削除
-    .replace(/^\s*---\s*$/gm, '')
-    // 改行を追加: ○の前で改行（箇条書き風に）
-    .replace(/\s*○\s*/g, '\n○ ')
-    // 改行を追加: ・の前で改行
-    .replace(/\s*・\s*/g, '\n・ ')
-    // 改行を追加: 「」の後で改行
-    .replace(/」\s*/g, '」\n')
-    // 改行を追加: 。の後に次の文が続く場合に改行
-    .replace(/。([ぁ-んァ-ヶー一-龠])/g, '。\n$1')
-    // 複数の連続する改行を2つまでに制限
-    .replace(/\n{3,}/g, '\n\n')
-    // 余分な空白を整理
-    .trim();
-}
-
 // --- ボットの人格設定を反映した回答を生成する関数 ---
 function applyBotPersonality(answer: string, includePrefix: boolean = true): string {
   // 環境変数からボット人格設定を取得（オプション）
@@ -185,7 +146,7 @@ function applyBotPersonality(answer: string, includePrefix: boolean = true): str
 }
 
 // --- Q&Aデータベースから全件取得する関数（Vertex AI Search不使用） ---
-async function askAI(question: string): Promise<{ content: string; sourceUrl: string | null }> {
+async function askAI(_question: string): Promise<{ content: string; sourceUrl: string | null }> {
   console.log('📚 Q&Aデータベースから全97問を取得します');
 
   // 全Q&Aをテキスト形式で取得
@@ -203,7 +164,7 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
 }
 
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
-async function generateAnswerWithGemini(question: string, searchResult: string, sourceUrl: string | null): Promise<string> {
+async function generateAnswerWithGemini(question: string, searchResult: string, _sourceUrl: string | null): Promise<string> {
   try {
     // Google AI SDKを使用（APIキーベース認証）
     const apiKey = process.env.GEMINI_API_KEY;
@@ -262,7 +223,7 @@ Q91によると、有給休暇の申請は...（← Q番号は不要）
     console.log('🔍 Response object:', JSON.stringify(response, null, 2));
 
     // レスポンスからテキストを取得
-    let text = response.text();
+    const text = response.text();
     console.log('✅ Gemini生成テキスト:', text);
 
     // Geminiが回答内に「参照URL:」を含めているので、そのまま返す
