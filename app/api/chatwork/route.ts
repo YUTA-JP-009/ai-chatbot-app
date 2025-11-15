@@ -348,90 +348,115 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
       };
     }
 
-    // 最も関連性の高い1件目のスニペットのみを返す
-    const topResult = searchResults.results[0];
-    const document = topResult.document;
+    // 上位3件の検索結果を取得（Geminiに複数候補を渡す）
+    const topResults = searchResults.results.slice(0, 3);
+    console.log(`🔍 上位${topResults.length}件の検索結果をGeminiに渡します`);
 
-    if (!document?.derivedStructData) {
+    const combinedSnippets: string[] = [];
+    const sourceUrls: string[] = [];
+
+    // 各結果からスニペットとURLを抽出
+    topResults.forEach((result: typeof searchResults.results[0], index: number) => {
+      const document = result.document;
+
+      if (!document?.derivedStructData) {
+        console.log(`⚠️ Result ${index}: derivedStructDataなし`);
+        return;
+      }
+
+      const structData = document.derivedStructData;
+      let resultContent = '';
+      let resultSourceUrl: string | null = null;
+
+      // ステップ1: スニペット内容を取得
+      let rawSnippet = '';
+      if (structData.snippets && structData.snippets.length > 0) {
+        const successSnippet = structData.snippets.find(
+          (s: { snippet_status?: string; snippet?: string }) => s.snippet_status === 'SUCCESS' && s.snippet
+        );
+
+        if (successSnippet?.snippet) {
+          rawSnippet = successSnippet.snippet;
+          resultContent = cleanSnippet(rawSnippet);
+        }
+      }
+
+      // フォールバック: 従来の単一snippet, title
+      if (!rawSnippet) {
+        rawSnippet = structData.snippet || structData.title || '';
+        resultContent = cleanSnippet(rawSnippet);
+      }
+
+      // ステップ2: スニペットテキストからkintone URLを抽出
+      const kintoneUrlPattern = /https:\/\/[^\s<]+cybozu\.com[^\s<]*/g;
+      const urlMatches = rawSnippet.match(kintoneUrlPattern);
+
+      if (urlMatches && urlMatches.length > 0) {
+        resultSourceUrl = urlMatches[0];
+        console.log(`✅ Result ${index}: スニペットからkintone URLを抽出:`, resultSourceUrl);
+      }
+
+      // ステップ3: スニペットにURLがない場合、structDataから取得
+      if (!resultSourceUrl) {
+        resultSourceUrl = structData.link || structData.uri || null;
+
+        // extractive_answersからURLを取得
+        interface ExtractiveAnswer {
+          uri?: string;
+          page_identifier?: string;
+        }
+
+        if (!resultSourceUrl && 'extractive_answers' in structData) {
+          const extractiveAnswers = structData.extractive_answers as ExtractiveAnswer[] | undefined;
+          if (Array.isArray(extractiveAnswers) && extractiveAnswers.length > 0) {
+            resultSourceUrl = extractiveAnswers[0].uri || extractiveAnswers[0].page_identifier || null;
+          }
+        }
+
+        // フォールバック
+        if (!resultSourceUrl) {
+          const dataWithUrl = structData as {
+            url?: string;
+            source_url?: string;
+            record_url?: string;
+          };
+          resultSourceUrl = dataWithUrl.url ||
+                     dataWithUrl.source_url ||
+                     dataWithUrl.record_url ||
+                     document.name ||
+                     null;
+        }
+      }
+
+      // 結果を配列に追加（スニペットがある場合のみ）
+      if (resultContent) {
+        combinedSnippets.push(`【検索結果 ${index + 1}】\n${resultContent}`);
+        if (resultSourceUrl) {
+          sourceUrls.push(resultSourceUrl);
+        }
+      }
+
+      console.log(`📎 Result ${index} のSource URL:`, resultSourceUrl);
+    });
+
+    // 検索結果が1つも取得できなかった場合
+    if (combinedSnippets.length === 0) {
       return {
         content: '申し訳ありませんが、適切な回答を生成できませんでした。',
         sourceUrl: null
       };
     }
 
-    const structData = document.derivedStructData;
+    // 複数のスニペットを結合
+    const combinedContent = combinedSnippets.join('\n\n---\n\n');
 
-    let content = '';
-    let sourceUrl: string | null = null;
+    // 最も関連性の高い（最初の）URLを使用
+    const primarySourceUrl = sourceUrls.length > 0 ? sourceUrls[0] : null;
 
-    // ステップ1: スニペット内容を取得（URLを抽出するため）
-    // snippets配列から成功したスニペットを抽出（最初の1件のみ）
-    let rawSnippet = '';
-    if (structData.snippets && structData.snippets.length > 0) {
-      const successSnippet = structData.snippets.find(
-        (s: { snippet_status?: string; snippet?: string }) => s.snippet_status === 'SUCCESS' && s.snippet
-      );
+    console.log('📦 結合されたスニペット数:', combinedSnippets.length);
+    console.log('📎 最終的なSource URL:', primarySourceUrl);
 
-      if (successSnippet?.snippet) {
-        rawSnippet = successSnippet.snippet;
-        content = cleanSnippet(rawSnippet);
-      }
-    }
-
-    // フォールバック: 従来の単一snippet, title
-    if (!rawSnippet) {
-      rawSnippet = structData.snippet || structData.title || '';
-      content = cleanSnippet(rawSnippet);
-    }
-
-    // ステップ2: スニペットテキストからkintone URLを抽出（最優先）
-    // Pattern: https://eu-plan.cybozu.com/k/{数字}/show#record={数字}&tab={数字}
-    const kintoneUrlPattern = /https:\/\/[^\s<]+cybozu\.com[^\s<]*/g;
-    const urlMatches = rawSnippet.match(kintoneUrlPattern);
-
-    if (urlMatches && urlMatches.length > 0) {
-      // 最初に見つかったkintone URLを使用
-      sourceUrl = urlMatches[0];
-      console.log('✅ スニペットからkintone URLを抽出:', sourceUrl);
-    }
-
-    // ステップ3: スニペットにURLがない場合、structDataから取得
-    // 優先順位: link > uri > extractive_answers.uri > document.name
-    if (!sourceUrl) {
-      sourceUrl = structData.link || structData.uri || null;
-
-      // extractive_answersからURLを取得（kintoneレコードURLなど）
-      interface ExtractiveAnswer {
-        uri?: string;
-        page_identifier?: string;
-      }
-
-      if (!sourceUrl && 'extractive_answers' in structData) {
-        const extractiveAnswers = structData.extractive_answers as ExtractiveAnswer[] | undefined;
-        if (Array.isArray(extractiveAnswers) && extractiveAnswers.length > 0) {
-          sourceUrl = extractiveAnswers[0].uri || extractiveAnswers[0].page_identifier || null;
-        }
-      }
-
-      // フォールバック: document.nameやstructData内のカスタムフィールド
-      if (!sourceUrl) {
-        const dataWithUrl = structData as {
-          url?: string;
-          source_url?: string;
-          record_url?: string;
-        };
-        sourceUrl = dataWithUrl.url ||
-                   dataWithUrl.source_url ||
-                   dataWithUrl.record_url ||
-                   document.name ||
-                   null;
-      }
-    }
-
-    console.log('📎 最終的なSource URL:', sourceUrl);
-    console.log('🔍 DEBUG - structData keys:', Object.keys(structData));
-
-    return { content, sourceUrl };
+    return { content: combinedContent, sourceUrl: primarySourceUrl };
   } catch (error) {
     console.error('Discovery Engine検索エラー:', error);
     throw new Error('検索中にエラーが発生しました');
@@ -463,20 +488,22 @@ async function generateAnswerWithGemini(question: string, searchResult: string, 
     });
 
     const prompt = `あなたは社内ルールに詳しいアシスタントです。
-以下の社内ルール情報を参考に、質問に簡潔かつ明確に回答してください。
+以下の複数の検索結果から、質問に最も適切に答えられる情報を選んで、簡潔かつ明確に回答してください。
 
 【質問】
 ${question}
 
-【社内ルール】
+【検索結果（複数）】
 ${searchResult}
 
 【回答ルール】
-1. 質問に対して直接的に答える形式で回答してください
-2. 「〜は〜です」や「〜できます」のような明確な表現を使用
-3. 具体的な数値・時間・条件は必ず含めてください
-4. 簡潔に2-4文以内で答えてください
-5. 余計な前置きや説明は不要です
+1. 複数の検索結果の中から、質問に最も関連性の高い情報を選んで回答してください
+2. 質問に対して直接的に答える形式で回答してください
+3. 「〜は〜です」や「〜できます」のような明確な表現を使用
+4. 具体的な数値・時間・条件は必ず含めてください
+5. 簡潔に2-4文以内で答えてください
+6. 余計な前置きや説明は不要です
+7. 検索結果が質問と関係ない場合は、その旨を伝えてください
 
 【回答例】
 質問: 有給休暇について、当日の急な申請は可能ですか？
