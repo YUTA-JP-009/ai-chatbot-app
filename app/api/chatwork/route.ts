@@ -1,8 +1,8 @@
 // app/api/chatwork/route.ts
 
 import { NextResponse } from 'next/server';
-import { GoogleAuth } from 'google-auth-library';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getAllQAAsText } from '@/app/data/qa-database';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -184,283 +184,22 @@ function applyBotPersonality(answer: string, includePrefix: boolean = true): str
   return formattedAnswer;
 }
 
-// --- GCP Discovery Engineと通信する関数（REST API直接呼び出し） ---
+// --- Q&Aデータベースから全件取得する関数（Vertex AI Search不使用） ---
 async function askAI(question: string): Promise<{ content: string; sourceUrl: string | null }> {
-  if (!process.env.GCP_PROJECT_ID || !process.env.GCP_CREDENTIALS || !process.env.GCP_DATA_STORE_ID) {
-    throw new Error('GCPの環境変数が設定されていません');
-  }
+  console.log('📚 Q&Aデータベースから全97問を取得します');
 
-  const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
-  const projectId = process.env.GCP_PROJECT_ID;
-  const location = 'global';
-  const dataStoreId = process.env.GCP_DATA_STORE_ID;
+  // 全Q&Aをテキスト形式で取得
+  const allQAText = getAllQAAsText();
 
-  console.log('🔧 Debug - Project ID:', projectId);
-  console.log('🔧 Debug - Data Store ID:', dataStoreId);
-  console.log('🔧 Debug - Using Vertex AI Search Enterprise Edition');
+  console.log('✅ Q&Aデータベース取得完了（97問）');
+  console.log('📝 データ長:', allQAText.length, '文字');
 
-  // GoogleAuth を使用してアクセストークンを取得
-  const auth = new GoogleAuth({
-    credentials: {
-      ...credentials,
-      project_id: projectId // 確実に正しいプロジェクトIDを設定
-    },
-    scopes: ['https://www.googleapis.com/auth/cloud-platform']
-  });
-
-  try {
-    const client = await auth.getClient();
-    const accessToken = await client.getAccessToken();
-
-    console.log('🔧 Access Token obtained successfully');
-
-    // Vertex AI Search Enterprise API エンドポイント - 複数パターンをテスト
-    console.log('🔧 Testing different API URL structures...');
-
-    // パターン1: Apps endpoint (Enterprise Search推奨)
-    const appsEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/engines/${dataStoreId}/servingConfigs/default_config`;
-    const appsUrl = `https://discoveryengine.googleapis.com/v1/${appsEndpoint}:search`;
-
-    // パターン2: DataStores endpoint (フォールバック)
-    const dataStoreEndpoint = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${dataStoreId}/servingConfigs/default_config`;
-    const dataStoreUrl = `https://discoveryengine.googleapis.com/v1/${dataStoreEndpoint}:search`;
-
-    console.log('🔧 Apps API URL:', appsUrl);
-    console.log('🔧 DataStore API URL:', dataStoreUrl);
-
-    // 最初にApps endpointを試行
-    let apiUrl = appsUrl;
-    let useAppsEndpoint = true;
-
-    // Enterprise Search リクエスト（高度なコンテンツ抽出機能付き）
-    const requestBody = {
-      query: question,
-      pageSize: 5,  // 単一ドキュメント用に最適化
-      contentSearchSpec: {
-        snippetSpec: {
-          maxSnippetCount: 5,  // API上限（0-5）
-          returnSnippet: true
-        },
-        summarySpec: {
-          summaryResultCount: 5,  // 要約結果数も増やす
-          includeCitations: true,
-          ignoreAdversarialQuery: true,
-          ignoreNonSummarySeekingQuery: true
-        }
-      }
-    };
-
-    let response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    });
-
-    console.log('🔧 First attempt (Apps endpoint) Status:', response.status);
-
-    // Apps endpointが404の場合、DataStores endpointにフォールバック
-    if (response.status === 404 && useAppsEndpoint) {
-      console.log('🔄 Apps endpoint failed, trying DataStores endpoint...');
-      apiUrl = dataStoreUrl;
-      useAppsEndpoint = false;
-
-      response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${accessToken.token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      console.log('🔧 Fallback attempt (DataStores endpoint) Status:', response.status);
-    }
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('🔧 Final API Error Response:', errorText);
-      console.error('🔧 Failed API URL:', apiUrl);
-      throw new Error(`Discovery Engine API error: ${response.status} ${response.statusText}`);
-    }
-
-    console.log('✅ Successfully connected using:', useAppsEndpoint ? 'Apps endpoint' : 'DataStores endpoint');
-
-    const searchResults = await response.json();
-
-    // 🔍 Enterprise版デバッグ情報
-    console.log('🔍 DEBUG - Enterprise Search Results:', JSON.stringify(searchResults, null, 2));
-    console.log('🔍 DEBUG - Results Array Length:', searchResults.results?.length || 0);
-    console.log('🔍 DEBUG - Summary Available:', !!searchResults.summary);
-
-    // Enterprise版のsummary機能を優先使用
-    if (searchResults.summary && searchResults.summary.summaryText) {
-      console.log('✨ Using Enterprise Summary:', searchResults.summary.summaryText);
-      // Summaryの場合もソースURLを取得
-      const summarySourceUrl = searchResults.results?.[0]?.document?.derivedStructData?.link ||
-                               searchResults.results?.[0]?.document?.derivedStructData?.uri ||
-                               searchResults.results?.[0]?.document?.name ||
-                               null;
-      return {
-        content: searchResults.summary.summaryText,
-        sourceUrl: summarySourceUrl
-      };
-    }
-
-    // スニペット情報をデバッグ（全件表示）
-    if (searchResults.results && searchResults.results.length > 0) {
-      console.log(`🔍 DEBUG - 検索結果総数: ${searchResults.results.length}件`);
-      searchResults.results.forEach((result: {
-        id?: string;
-        document?: {
-          derivedStructData?: {
-            snippets?: Array<{ snippet?: string; snippet_status?: string }>;
-            snippet?: string;
-            title?: string;
-            content?: string;
-            link?: string;
-          };
-        };
-        rankSignals?: {
-          keywordSimilarityScore?: number;
-          semanticSimilarityScore?: number;
-          topicalityRank?: number;
-        };
-      }, index: number) => {
-        const structData = result.document?.derivedStructData;
-        const snippetText = structData?.snippets?.[0]?.snippet || structData?.snippet || '';
-        console.log(`🔍 DEBUG - Result ${index}:`, {
-          id: result.id,
-          title: structData?.title,
-          snippetPreview: snippetText.substring(0, 150) + '...',  // 最初の150文字のみ
-          link: structData?.link,
-          rankSignals: result.rankSignals
-        });
-      });
-    }
-
-    if (!searchResults.results || searchResults.results.length === 0) {
-      return {
-        content: '申し訳ありませんが、お探しの情報が見つかりませんでした。',
-        sourceUrl: null
-      };
-    }
-
-    // 上位3件の検索結果を取得（Geminiに複数候補を渡す）
-    const topResults = searchResults.results.slice(0, 3);
-    console.log(`🔍 上位${topResults.length}件の検索結果をGeminiに渡します`);
-
-    const combinedSnippets: string[] = [];
-    const sourceUrls: string[] = [];
-
-    // 各結果からスニペットとURLを抽出
-    topResults.forEach((result: typeof searchResults.results[0], index: number) => {
-      const document = result.document;
-
-      if (!document?.derivedStructData) {
-        console.log(`⚠️ Result ${index}: derivedStructDataなし`);
-        return;
-      }
-
-      const structData = document.derivedStructData;
-      let resultContent = '';
-      let resultSourceUrl: string | null = null;
-
-      // ステップ1: スニペット内容を取得
-      let rawSnippet = '';
-      if (structData.snippets && structData.snippets.length > 0) {
-        const successSnippet = structData.snippets.find(
-          (s: { snippet_status?: string; snippet?: string }) => s.snippet_status === 'SUCCESS' && s.snippet
-        );
-
-        if (successSnippet?.snippet) {
-          rawSnippet = successSnippet.snippet;
-          resultContent = cleanSnippet(rawSnippet);
-        }
-      }
-
-      // フォールバック: 従来の単一snippet, title
-      if (!rawSnippet) {
-        rawSnippet = structData.snippet || structData.title || '';
-        resultContent = cleanSnippet(rawSnippet);
-      }
-
-      // ステップ2: スニペットテキストからkintone URLを抽出
-      const kintoneUrlPattern = /https:\/\/[^\s<]+cybozu\.com[^\s<]*/g;
-      const urlMatches = rawSnippet.match(kintoneUrlPattern);
-
-      if (urlMatches && urlMatches.length > 0) {
-        resultSourceUrl = urlMatches[0];
-        console.log(`✅ Result ${index}: スニペットからkintone URLを抽出:`, resultSourceUrl);
-      }
-
-      // ステップ3: スニペットにURLがない場合、structDataから取得
-      if (!resultSourceUrl) {
-        resultSourceUrl = structData.link || structData.uri || null;
-
-        // extractive_answersからURLを取得
-        interface ExtractiveAnswer {
-          uri?: string;
-          page_identifier?: string;
-        }
-
-        if (!resultSourceUrl && 'extractive_answers' in structData) {
-          const extractiveAnswers = structData.extractive_answers as ExtractiveAnswer[] | undefined;
-          if (Array.isArray(extractiveAnswers) && extractiveAnswers.length > 0) {
-            resultSourceUrl = extractiveAnswers[0].uri || extractiveAnswers[0].page_identifier || null;
-          }
-        }
-
-        // フォールバック
-        if (!resultSourceUrl) {
-          const dataWithUrl = structData as {
-            url?: string;
-            source_url?: string;
-            record_url?: string;
-          };
-          resultSourceUrl = dataWithUrl.url ||
-                     dataWithUrl.source_url ||
-                     dataWithUrl.record_url ||
-                     document.name ||
-                     null;
-        }
-      }
-
-      // 結果を配列に追加（スニペットがある場合のみ）
-      if (resultContent) {
-        combinedSnippets.push(`【検索結果 ${index + 1}】\n${resultContent}`);
-        if (resultSourceUrl) {
-          sourceUrls.push(resultSourceUrl);
-        }
-      }
-
-      console.log(`📎 Result ${index} のSource URL:`, resultSourceUrl);
-    });
-
-    // 検索結果が1つも取得できなかった場合
-    if (combinedSnippets.length === 0) {
-      return {
-        content: '申し訳ありませんが、適切な回答を生成できませんでした。',
-        sourceUrl: null
-      };
-    }
-
-    // 複数のスニペットを結合
-    const combinedContent = combinedSnippets.join('\n\n---\n\n');
-
-    // 最も関連性の高い（最初の）URLを使用
-    const primarySourceUrl = sourceUrls.length > 0 ? sourceUrls[0] : null;
-
-    console.log('📦 結合されたスニペット数:', combinedSnippets.length);
-    console.log('📎 最終的なSource URL:', primarySourceUrl);
-
-    return { content: combinedContent, sourceUrl: primarySourceUrl };
-  } catch (error) {
-    console.error('Discovery Engine検索エラー:', error);
-    throw new Error('検索中にエラーが発生しました');
-  }
+  // 全Q&AをGeminiに渡すため、contentにそのまま返す
+  // sourceUrlはGeminiが回答を選んだ後に抽出する
+  return {
+    content: allQAText,
+    sourceUrl: null  // Geminiが回答を生成した後に抽出
+  };
 }
 
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
@@ -488,35 +227,32 @@ async function generateAnswerWithGemini(question: string, searchResult: string, 
     });
 
     const prompt = `あなたは社内ルールに詳しいアシスタントです。
-以下の複数の検索結果から、質問に最も適切に答えられる情報を選んで、簡潔かつ明確に回答してください。
+以下のQ&Aデータベース（全97問）から、質問に最も適切に答えられる情報を選んで、簡潔かつ明確に回答してください。
 
 【質問】
 ${question}
 
-【検索結果（複数）】
+【社内ルールQ&Aデータベース（全97問）】
 ${searchResult}
 
 【回答ルール】
-1. 複数の検索結果の中から、質問に最も関連性の高い情報を選んで回答してください
-2. 質問に対して直接的に答える形式で回答してください
+1. Q&Aデータベースから質問に最も関連性の高い情報を選んで回答してください
+2. 回答は必ず2行で構成してください：
+   - 1行目: 回答内容（A:の部分を使用）
+   - 2行目: 参照URL（そのままコピー）
 3. 「〜は〜です」や「〜できます」のような明確な表現を使用
 4. 具体的な数値・時間・条件は必ず含めてください
 5. 簡潔に2-4文以内で答えてください
 6. 余計な前置きや説明は不要です
-7. 検索結果が質問と関係ない場合は、その旨を伝えてください
+7. データベースに該当する情報がない場合は、その旨を伝えてください
 
-【回答例】
-質問: 有給休暇について、当日の急な申請は可能ですか？
-回答:
-原則として当日の申請は不可です。ただし、社会通念上やむを得ない理由や医師の証明がある場合など、事情によっては事後申請が承認される場合があります。申請は期日までに＜KING OF TIME＞で行う必要があります。
+【回答フォーマット】
+有給休暇の申請は、KING OF TIMEで行ってください。遅刻・残業なども同じくKING OF TIMEで申請を行います。
+参照URL: https://eu-plan.cybozu.com/k/296/show#record=25
 
-質問: 始業時刻や約束の時間に遅れそうな場合、どのように連絡すべきですか？
-回答:
-遅刻しそうな時、またはその可能性がある時は、それがわかった時点で速やかに管理者または約束相手に電話で連絡することが求められています。チャットやメールでの連絡は、電話で連絡がつかなかった場合のみとしてください。
-
-質問: 在宅勤務を行う際の服装やWEBカメラ使用のルールについて教えてください。
-回答:
-在宅勤務時は、服装、身だしなみは画面上で出社時と同じに見えるようにしてください。また、WEBカメラはオンにして全社チャットに常時入室し、顔の中心を画面の中央にして正面全体が見えるようにする必要があります。勤務時は背景画像を使用しないでください。`;
+【悪い回答例】
+Q91によると、有給休暇の申請は...（← Q番号は不要）
+質問についてお答えします。（← 前置き不要）`;
 
     console.log('📤 Gemini APIにリクエスト送信中...');
     const result = await model.generateContent(prompt);
@@ -529,12 +265,7 @@ ${searchResult}
     let text = response.text();
     console.log('✅ Gemini生成テキスト:', text);
 
-    // 参照URLがある場合は回答に追加
-    if (sourceUrl) {
-      text += `\n\n📎 参考: ${sourceUrl}`;
-      console.log('📎 参照URLを追加:', sourceUrl);
-    }
-
+    // Geminiが回答内に「参照URL:」を含めているので、そのまま返す
     return text;
   } catch (error) {
     console.error('❌ Gemini API エラー:', error);
