@@ -309,8 +309,9 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
       };
     }
 
-    // スニペット情報をデバッグ
+    // スニペット情報をデバッグ（全件表示）
     if (searchResults.results && searchResults.results.length > 0) {
+      console.log(`🔍 DEBUG - 検索結果総数: ${searchResults.results.length}件`);
       searchResults.results.forEach((result: {
         id?: string;
         document?: {
@@ -319,15 +320,23 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
             snippet?: string;
             title?: string;
             content?: string;
+            link?: string;
           };
         };
+        rankSignals?: {
+          keywordSimilarityScore?: number;
+          semanticSimilarityScore?: number;
+          topicalityRank?: number;
+        };
       }, index: number) => {
+        const structData = result.document?.derivedStructData;
+        const snippetText = structData?.snippets?.[0]?.snippet || structData?.snippet || '';
         console.log(`🔍 DEBUG - Result ${index}:`, {
           id: result.id,
-          snippets: result.document?.derivedStructData?.snippets,
-          snippet: result.document?.derivedStructData?.snippet,
-          title: result.document?.derivedStructData?.title,
-          content: result.document?.derivedStructData?.content
+          title: structData?.title,
+          snippetPreview: snippetText.substring(0, 150) + '...',  // 最初の150文字のみ
+          link: structData?.link,
+          rankSignals: result.rankSignals
         });
       });
     }
