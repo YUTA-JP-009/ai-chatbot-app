@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { getAllQAAsText } from '@/app/data/qa-database';
+import { getAllQAAsText } from '../../data/qa-database';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
