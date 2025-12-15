@@ -52,6 +52,16 @@ export async function POST(request: Request) {
 
   // 3. Discovery Engineを使った実際のAI検索
   try {
+    // 3.0. 事前定義回答をチェック（特別優先枠）
+    const predefinedAnswer = getPredefinedAnswer(question);
+    if (predefinedAnswer) {
+      console.log('⚡ 事前定義回答を使用（特別優先枠）');
+      const formattedAnswer = `${predefinedAnswer.answer}\n\n📎 参照URL: ${predefinedAnswer.url}`;
+      const personalizedResponse = applyBotPersonality(formattedAnswer, true); // PREFIX含む
+      await replyToChatwork(roomId, personalizedResponse);
+      return NextResponse.json({ message: 'OK (Predefined)' });
+    }
+
     // 3.1. BOT_PREFIXが設定されている場合、先に即座に送信（体感速度向上）
     const botPrefix = process.env.BOT_PREFIX;
     if (botPrefix) {
@@ -143,6 +153,21 @@ function applyBotPersonality(answer: string, includePrefix: boolean = true): str
   if (botSuffix) formattedAnswer = `${formattedAnswer}\n${botSuffix}`;
 
   return formattedAnswer;
+}
+
+// --- 事前定義回答（特別優先枠）：キーワードマッチで即座に返答 ---
+function getPredefinedAnswer(question: string): { answer: string; url: string } | null {
+  const q = question.toLowerCase();
+
+  // 前受金（優先ルール）- Q216
+  if (q.includes('前受金') || q.includes('前受') || q.includes('ぜんうけきん')) {
+    return {
+      answer: '税込22万円以下は全額前受、22万1円以上は半額前受金です。\n※前受金は50％かつ、1000円未満は切り捨てです（2020年3月以降　暫定ルール）',
+      url: 'https://eu-plan.cybozu.com/k/296/show#record=26'
+    };
+  }
+
+  return null;
 }
 
 // --- Q&Aデータベースから全件取得する関数（Vertex AI Search不使用） ---
