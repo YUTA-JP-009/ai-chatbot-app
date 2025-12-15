@@ -1,6 +1,6 @@
 // 社内ルールQ&Aデータベース
-// 更新日: 2025年11月16日
-// 総Q&A数: 229問（社内ルール97問 + 年間スケジュール132問）
+// 更新日: 2025年12月15日
+// 総Q&A数: 267問（社内ルール97問 + 年間スケジュール132問 + リファラル採用29問 + 代休9問）
 
 export interface QAItem {
   id: string;
@@ -1651,6 +1651,276 @@ export const qaDatabase: QAItem[] = [
     answer: "お客様に請求できる状態になった物件を、「請求案件」といいます。構造設計を行った担当者と、請求書を作成する経理担当者が、それぞれの内容（金額・件名・宛先・日づけ）を確認しあうことを「請求案件の照会」といいます。納品月の月末に請求書を発行して、翌月末にご入金いただくことがユウプランの基本の支払い条件です。ただし、例外のお客様もあるので、見積案件管理アプリの支払い条件欄や備考欄を必ず確認し、請求書発行時期を間違えないようにしてください。内容：社員が管理している売上管理表とkintoneデータを突合して請求案件に間違いがないか確認する。パートナー企業からの請求書も間違いがないか確認する。目的：お客様への請求書をミスなく作成するため。日程：翌月営業日の初日。※火曜日の場合は翌営業日。※イレギュラー日程に注意。",
     category: "請求案件照会",
     url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=0"
+  },
+
+  // リファラル採用
+  {
+    id: "Q133",
+    question: "リファラル採用とは何ですか？",
+    answer: "社員が自分の知り合いでU'planに合いそうな人を紹介し、採用につなげる仕組みです。信頼できる人からのおすすめで仲間を増やす採用方法です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q134",
+    question: "リファラル採用のメリットは何ですか？",
+    answer: "採用のミスマッチが少ないこと、入社後の定着率が高いことが挙げられます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q135",
+    question: "リファラル採用はいつから始まりましたか？",
+    answer: "2025年12月1日から開始しています。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q136",
+    question: "必ず誰かを紹介しなければいけませんか？",
+    answer: "いいえ、無理に紹介する必要はありません。ゆるやかな仕組みとして運用しています。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q137",
+    question: "紹介した人は必ず採用されますか？",
+    answer: "いいえ、合否判定はリファラルであることに関係なく、通常の選考基準で行われます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q138",
+    question: "誰でも紹介者になれますか？",
+    answer: "正社員・パートタイム社員であれば誰でも紹介可能です。ただし役員は対象外です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q139",
+    question: "業務委託の人を紹介できますか？",
+    answer: "いいえ、正社員採用のみが対象です。業務委託は対象外です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q140",
+    question: "過去にU'planに応募したことがある人を紹介できますか？",
+    answer: "原則としてリファラル制度の対象外となります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q141",
+    question: "どんな人を紹介すればいいですか？",
+    answer: "構造設計経験者（中途採用）、または構造系の大学・大学院を卒業している（卒業予定の）方（新卒）が対象です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q142",
+    question: "紹介したい人がいる場合、どうすればいいですか？",
+    answer: "社長への個人労務チャットで連絡してください。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q143",
+    question: "紹介時に何を伝えればいいですか？",
+    answer: "以下の4点を伝えてください：候補者名、年齢、簡単な経歴、連絡OKの確認済みであること。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q144",
+    question: "紹介前に候補者本人の了承は必要ですか？",
+    answer: "はい、「連絡OK」の確認を事前に取ってから紹介してください。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q145",
+    question: "紹介後の流れはどうなりますか？",
+    answer: "採用担当が候補者へカジュアルに連絡し、返信があれば選考（面談・筆記・SPI）に進みます。合格すれば入社となります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q146",
+    question: "紹介するとインセンティブはもらえますか？",
+    answer: "はい、段階に応じてインセンティブが支給されます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q147",
+    question: "紹介インセンティブはいくらですか？",
+    answer: "10,000円です。候補者が採用担当からの連絡に返答した時点で対象となります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q148",
+    question: "受験インセンティブはいくらですか？",
+    answer: "40,000円です。候補者が筆記・面接に合格し、SPI受験を完了した時点で対象となります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q149",
+    question: "SPIに不合格でも受験インセンティブはもらえますか？",
+    answer: "はい、SPIの合否は問いません。受験完了が条件です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q150",
+    question: "採用インセンティブはいくらですか？",
+    answer: "50,000円です。候補者が入社した時点で対象となります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q151",
+    question: "紹介者への最大インセンティブ総額はいくらですか？",
+    answer: "紹介10,000円＋受験40,000円＋採用50,000円＝合計100,000円です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q152",
+    question: "候補者にもインセンティブはありますか？",
+    answer: "はい、キャリアスタート祝金として100,000円が支給されます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q153",
+    question: "キャリアスタート祝金はいつ支給されますか？",
+    answer: "入社日以降、最も近い給与締日（毎月15日）を基準とし、その締日に対応する給与支給日に支給されます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q154",
+    question: "インセンティブはいつ支給されますか？",
+    answer: "該当事由が発生した日以降、最も近い給与締日（毎月15日）を基準とし、その締日に対応する給与支給日に支給されます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q155",
+    question: "紹介インセンティブの支給タイミングは？",
+    answer: "候補者が採用担当からの連絡に返信した日以降、最も近い給与締日に対応する給与支給日です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q156",
+    question: "受験インセンティブの支給タイミングは？",
+    answer: "SPI受験完了日以降、最も近い給与締日に対応する給与支給日です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q157",
+    question: "採用インセンティブの支給タイミングは？",
+    answer: "候補者の入社日以降、最も近い給与締日に対応する給与支給日です。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q158",
+    question: "複数の社員が同じ人を紹介した場合はどうなりますか？",
+    answer: "最初に紹介連絡をした人が紹介者として認められます。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q159",
+    question: "同じ候補者を複数人で紹介することはできますか？",
+    answer: "いいえ、できません。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q160",
+    question: "架空の人を紹介したらどうなりますか？",
+    answer: "架空紹介は禁止されており、判明した場合はインセンティブの返金を求められることがあります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q161",
+    question: "紹介した人がすぐに退職した場合はどうなりますか？",
+    answer: "短期離職を促す行為は禁止されています。判明した場合は返金を求められることがあります。",
+    category: "リファラル採用",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+
+  // 代休（振替休日）
+  {
+    id: "Q162",
+    question: "代休はいつまでに取得すべきですか？",
+    answer: "原則として、当該月の15日までに取得してください。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q163",
+    question: "代休は何日単位で取得できますか？",
+    answer: "0.5日単位で取得できます。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q164",
+    question: "なぜ15日までに代休を取る必要があるのですか？",
+    answer: "体を休めること、勤務日数の個人差をなるべく作らないためです。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q165",
+    question: "休日出勤が決まったら何を提出すればいいですか？",
+    answer: "kintoneで「休日勤務申請書」と「振替休日申請書」を併せて提出してください。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q166",
+    question: "代休の申請はいつすればいいですか？",
+    answer: "休日出勤が決まった時点で提出してください。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q167",
+    question: "締日（15日）に近い休日出勤で振替休日が取れない場合は？",
+    answer: "「休日勤務申請書」のみを提出してください。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q168",
+    question: "振替休日を取得できなかった場合はどうなりますか？",
+    answer: "当月精算となります。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q169",
+    question: "0.5日に満たない休日勤務はどうなりますか？",
+    answer: "当月精算となります。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+  {
+    id: "Q170",
+    question: "振替休日が取れなかった後に有給を取った場合、備考に理由を書く必要はありますか？",
+    answer: "いいえ、記載不要です。休日出勤に対する振替休日と有給休暇は性質が違うためです。",
+    category: "代休（振替休日）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
   }
 ];
 
