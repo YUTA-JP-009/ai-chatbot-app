@@ -1,6 +1,6 @@
 // 社内ルールQ&Aデータベース
 // 更新日: 2025年12月15日
-// 総Q&A数: 267問（社内ルール97問 + 年間スケジュール132問 + リファラル採用29問 + 代休9問）
+// 総Q&A数: 307問（社内ルール97問 + 年間スケジュール132問 + リファラル採用29問 + 代休9問 + 社員面談40問）
 
 export interface QAItem {
   id: string;
@@ -1921,6 +1921,288 @@ export const qaDatabase: QAItem[] = [
     answer: "いいえ、記載不要です。休日出勤に対する振替休日と有給休暇は性質が違うためです。",
     category: "代休（振替休日）",
     url: "https://eu-plan.cybozu.com/k/238/show#record=1&tab=0"
+  },
+
+  // 社員面談（個人面談）
+  {
+    id: "Q171",
+    question: "社員面談は年に何回ありますか？",
+    answer: "年2回です（5月と11月）。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q172",
+    question: "22期1回目の面談はいつですか？",
+    answer: "11月4日（火）・5日（水）・6日（木）の3日間です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q173",
+    question: "技術パートタイムの面談日はいつですか？",
+    answer: "出社日に合わせて実施されます。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q174",
+    question: "面談の対象者は誰ですか？",
+    answer: "正社員とパートタイム社員（在籍6ヶ月以上）が対象です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q175",
+    question: "面談の対象外となるのは誰ですか？",
+    answer: "スタートアップ研修中の社員と、在籍6ヶ月未満のパートタイム社員です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q176",
+    question: "11月の面談がない社員は誰ですか？",
+    answer: "董 傲然さん（スタートアップ研修中）と小林春陽さん（6か月未満）です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q177",
+    question: "面談はどこで行われますか？",
+    answer: "所属オフィスに出社して行います。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q178",
+    question: "完全リモートワーク社員はどうすればいいですか？",
+    answer: "自宅からTeamsで参加します（山田さん、藤村さんが該当）。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q179",
+    question: "対面以外の方法はありますか？",
+    answer: "Teamsでも可能です。各種ミーティング「面談」で社長が開催します。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q180",
+    question: "面談当日はいつから待機すればいいですか？",
+    answer: "開始時刻の3分前から面談室の近くで待機してください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q181",
+    question: "待機場所はどこですか？",
+    answer: "面談の声が聞こえない距離で待機してください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q182",
+    question: "いつ面談室に入ればいいですか？",
+    answer: "呼ばれてから面談室または該当Teamsに入ってください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q183",
+    question: "面談が終わったら何をすればいいですか？",
+    answer: "速やかに次の人に面談室（または該当Teams）に入るように促してください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q184",
+    question: "11月4日は何ユニットの面談ですか？",
+    answer: "UNユニットとYDユニットです。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q185",
+    question: "11月4日の面談スケジュールを教えてください。",
+    answer: "09:00〜09:30 岡崎麻佑、09:30〜10:00 修庾迪、10:00〜10:30 上野顕司、10:30〜11:00 近藤彩夏、11:00〜11:30 藤村廉、11:30〜12:00 山田寛子です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q186",
+    question: "11月5日は何ユニットの面談ですか？",
+    answer: "NSユニットです。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q187",
+    question: "11月5日の面談スケジュールを教えてください。",
+    answer: "09:00〜09:30 蔡俊雅、09:30〜10:00 坂入小雪、10:00〜10:30 根岸一則、10:30〜11:00 兼子香織、11:00〜11:30 高井宏起です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q188",
+    question: "11月6日は何ユニットの面談ですか？",
+    answer: "ZNユニットとSMユニットです。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q189",
+    question: "11月6日の面談スケジュールを教えてください。",
+    answer: "09:00〜09:30 速水奨悟、09:30〜10:00 矢羽大樹、10:00〜10:30 張建鋒、10:30〜11:00 ムンフタイワン・ムンフオルギル、11:00〜11:30 ドーフー・トゥブシントゥグス、11:30〜12:00 杉本大樹です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q190",
+    question: "SGシートはいつまでに記入すればいいですか？",
+    answer: "全員10月10日（金）までに記入してください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q191",
+    question: "リーダーコメントの記入期限はいつですか？",
+    answer: "10月20日（月）までです。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q192",
+    question: "管理職コメントの記入期限はいつですか？",
+    answer: "10月24日（金）までです。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q193",
+    question: "SGシートの記入方法がわからない場合はどうすればいいですか？",
+    answer: "必ず先輩社員に確認してください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q194",
+    question: "11月の面談では何を行いますか？",
+    answer: "前期（21期）の評価および新給与の提示を行います。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q195",
+    question: "11月の評価方法を教えてください。",
+    answer: "【成果評価】と【行動評価】それぞれの項目を採点形式で評価します。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q196",
+    question: "誰が評価を行いますか？",
+    answer: "本人を含む3名で評価します。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q197",
+    question: "11月の面談で給与改定はありますか？",
+    answer: "はい、新給与の提示があります。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q198",
+    question: "給与の内訳に含まれるものは何ですか？",
+    answer: "基本給＋研修手当＋資格手当（直接の業務に関する手当など）です。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q199",
+    question: "給与の内訳に含まれないものは何ですか？",
+    answer: "通勤手当、在宅手当、転勤手当など直接に業務に関しないものは含まれません。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q200",
+    question: "リーダーが評価者として面談に参加する場合、給与の話は聞けますか？",
+    answer: "いいえ、給与改定の説明時はリーダーは席を外します。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q201",
+    question: "5月の面談では何を行いますか？",
+    answer: "22期前半の評価を行います。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q202",
+    question: "5月の評価方法を教えてください。",
+    answer: "【行動評価】の項目を採点形式で評価します。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q203",
+    question: "5月に成果評価はありますか？",
+    answer: "採点はありませんが、現状でのフィードバックを行います（期の途中のため）。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q204",
+    question: "5月の面談で給与改定はありますか？",
+    answer: "基本的に5月には給与改定は行いません。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q205",
+    question: "面談に向けて何を準備すればいいですか？",
+    answer: "SGシートの記入と、最後に聞かれる質問への回答を準備してください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q206",
+    question: "本人コメント欄は読み上げる必要がありますか？",
+    answer: "いいえ、評価者は確認済みなので読み上げる必要はありません。記載しているコメントの補足や特に伝えたいことをコメントしてください。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q207",
+    question: "面談の最後に聞かれる質問は何ですか？",
+    answer: "以下の3つです（5分程度）：①今期に取り組むべきことについて方向性が分かってきましたか？ ②評価の理由がよくわからない部分はありますか？ ③業務上で何か困っていることはありますか。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q208",
+    question: "事前に確認しておくべきことはありますか？",
+    answer: "過去の自分のデータを見て傾向を把握しておきましょう。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q209",
+    question: "「生産性」とは何を意味していますか？",
+    answer: "売上÷総労働時間を意味しています。それぞれ一定以上の数値をクリアする必要があることを理解しておきましょう。",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
+  },
+  {
+    id: "Q210",
+    question: "面談に関する詳細情報はどこで確認できますか？",
+    answer: "以下のURLで確認できます：https://eu-plan.cybozu.com/k/238/show#record=8&tab=2",
+    category: "社員面談（個人面談）",
+    url: "https://eu-plan.cybozu.com/k/238/show#record=8&tab=2"
   }
 ];
 
