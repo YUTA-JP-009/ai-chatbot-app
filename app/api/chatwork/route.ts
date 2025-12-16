@@ -172,12 +172,12 @@ function getPredefinedAnswer(question: string): { answer: string; url: string } 
 
 // --- Q&Aデータベースから全件取得する関数（Vertex AI Search不使用） ---
 async function askAI(_question: string): Promise<{ content: string; sourceUrl: string | null }> {
-  console.log('📚 Q&Aデータベースから全340問を取得します');
+  console.log('📚 Q&Aデータベースから全568問を取得します');
 
   // 全Q&Aをテキスト形式で取得
   const allQAText = getAllQAAsText();
 
-  console.log('✅ Q&Aデータベース取得完了（340問）');
+  console.log('✅ Q&Aデータベース取得完了（568問）');
   console.log('📝 データ長:', allQAText.length, '文字');
 
   // 全Q&AをGeminiに渡すため、contentにそのまま返す
@@ -213,12 +213,12 @@ async function generateAnswerWithGemini(question: string, searchResult: string, 
     });
 
     const prompt = `あなたは社内ルールに詳しいアシスタントです。
-以下のQ&Aデータベース（全340問）から、質問に最も適切に答えられる情報を選んで、簡潔かつ明確に回答してください。
+以下のQ&Aデータベース（全568問）から、質問に最も適切に答えられる情報を選んで、簡潔かつ明確に回答してください。
 
 【質問】
 ${question}
 
-【社内ルールQ&Aデータベース（全340問）】
+【社内ルールQ&Aデータベース（全568問）】
 ${searchResult}
 
 【回答ルール】
