@@ -1,6 +1,6 @@
 // 社内ルールQ&Aデータベース
 // 更新日: 2025年12月15日
-// 総Q&A数: 312問（社内ルール96問 + 年間スケジュール132問 + リファラル採用29問 + 代休9問 + 社員面談40問 + 贈答品2問 + 郵便物3問 + 前受金1問【優先枠】）
+// 総Q&A数: 340問（社内ルール96問 + 年間スケジュール132問 + リファラル採用29問 + 代休9問 + 社員面談40問 + 贈答品2問 + 郵便物3問 + 前受金1問【優先枠】+ JM記録アプリ28問）
 // ※前受金Q216は特別優先枠として実装（事前定義回答で即座に返答）
 
 export interface QAItem {
@@ -2244,6 +2244,236 @@ export const qaDatabase: QAItem[] = [
     answer: "税込22万円以下は全額前受、22万1円以上は半額前受金です。※前受金は50％かつ、1000円未満は切り捨てです（2020年3月以降　暫定ルール）",
     category: "前受金",
     url: "https://eu-plan.cybozu.com/k/296/show#record=26"
+  },
+
+  // ============================================================
+  // JM記録アプリ - 全体ミーティング（2024/10/6）（Q217～Q246）
+  // ============================================================
+
+  // ノートPC・企業型DC
+  {
+    id: "Q217",
+    question: "ノートPCの再起動はどのくらいの頻度で行うべきですか？",
+    answer: "週に1回行ってください。",
+    category: "ノートPC・企業型DC",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q218",
+    question: "企業型DCの運用はいつから開始ですか？",
+    answer: "2024年10月20日から開始です。",
+    category: "ノートPC・企業型DC",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q219",
+    question: "企業型DCについてわからないことがある場合はどうすればいいですか？",
+    answer: "個人労務チャットで相談してください。KOが丁寧に説明します。",
+    category: "ノートPC・企業型DC",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // Job Instruction
+  {
+    id: "Q220",
+    question: "Job Instructionのフォーマットは何が変わりましたか？",
+    answer: "jobの中に期のタブが作成されました。",
+    category: "Job Instruction",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q221",
+    question: "【✖】のついた項目は何ですか？",
+    answer: "20期のものなので使わないでください。",
+    category: "Job Instruction",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q222",
+    question: "5W3Hはどうなりましたか？",
+    answer: "削除されました。",
+    category: "Job Instruction",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q223",
+    question: "新しいjobへの引継ぎはいつ行いますか？",
+    answer: "新たな等級が決まってから（12月〜1月）引継ぎを行います。",
+    category: "Job Instruction",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q224",
+    question: "新しいjobは4月の新等級開始まで待つ必要がありますか？",
+    answer: "いいえ、4月の新等級開始を待たず、引継ぎ後から新たなjobを行います。",
+    category: "Job Instruction",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // Revitの目標
+  {
+    id: "Q225",
+    question: "Revitの習熟度に関する全社目標は何ですか？",
+    answer: "社員全員が2026年9月末までに習熟度レベル5に到達することを目指します。",
+    category: "Revitの目標",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q226",
+    question: "Revitの目標は構造種別によって異なりますか？",
+    answer: "いいえ、構造種別を問わず全員が対象です。",
+    category: "Revitの目標",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q227",
+    question: "Revitの目標から除外される社員はいますか？",
+    answer: "事情によりスタートが遅れる社員（濱本さん、修さん、董さん、福岡さん）は含まれません。",
+    category: "Revitの目標",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // Revit習熟度レベル
+  {
+    id: "Q228",
+    question: "Revit習熟度レベル1とはどのような状態ですか？",
+    answer: "マニュアルを参照しながら基本的な操作ができる状態です。",
+    category: "Revit習熟度レベル",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q229",
+    question: "Revit習熟度レベル2とはどのような状態ですか？",
+    answer: "マニュアルを参照しながら作図ができるが、実務レベルの精度・スピードには達していない状態です。",
+    category: "Revit習熟度レベル",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q230",
+    question: "Revit習熟度レベル3とはどのような状態ですか？",
+    answer: "実務レベルでRevitを使用し、構造図を作図できる状態です（例：既存物件のトレースを制限時間内に完了できる）。",
+    category: "Revit習熟度レベル",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q231",
+    question: "Revit習熟度レベル4とはどのような状態ですか？",
+    answer: "実務において他者のサポートを最小限にしつつ、Revitを活用して構造図を作図でき、設計変更や修正対応にも柔軟に対応し、チームの成果物品質を担保できる状態です。",
+    category: "Revit習熟度レベル",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q232",
+    question: "Revit習熟度レベル5とはどのような状態ですか？",
+    answer: "自立してRevitを使用し、構造図の作図を完結でき、構造設計実務の中でRevitを自然に運用でき、他メンバーへの指導・助言も行える状態です。",
+    category: "Revit習熟度レベル",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // Revitの進め方
+  {
+    id: "Q233",
+    question: "先行メンバーはいつまでにレベル3に到達する予定ですか？",
+    answer: "1月末までにレベル3に到達する予定です。",
+    category: "Revitの進め方",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q234",
+    question: "先行メンバーの役割は何ですか？",
+    answer: "レベル3に到達することと、その他の社員がスムーズにレベル3に到達できるようにマニュアルを作成することです。",
+    category: "Revitの進め方",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q235",
+    question: "その他のメンバーはいつからRevitの習得を始めますか？",
+    answer: "2月から順番にマニュアルに沿って操作を習得します。",
+    category: "Revitの進め方",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q236",
+    question: "全員がレベル3に到達する目標時期はいつですか？",
+    answer: "7月末までです。",
+    category: "Revitの進め方",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // Revitマニュアル作成の理由
+  {
+    id: "Q237",
+    question: "Revitの基本的な考え方を教えてください。",
+    answer: "様々な情報をもった3Dモデルを作成し、3Dモデルを任意の断面で切り出して構造図を出力し、出力した図面に固有の情報を付け加えていく、という流れです。",
+    category: "Revitマニュアル作成の理由",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q238",
+    question: "なぜRevitのマニュアルを作成する必要があるのですか？",
+    answer: "Revitには様々な機能があり、3Dモデルを作成するだけでも複数の方法があります。モデル作成から図面作成までの流れを個々に任せると社内で統一ができず、会社全体での効率化が図れないためです。",
+    category: "Revitマニュアル作成の理由",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q239",
+    question: "Revitが2DCADと異なる点は何ですか？",
+    answer: "2DCADは線か文字の情報だけですが、Revitは「柱である」「梁である」のように属性の情報を持ちます。",
+    category: "Revitマニュアル作成の理由",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q240",
+    question: "U'plan用にアレンジしないとどうなりますか？",
+    answer: "Revitを使用した時の効率化が十分に発揮されません。",
+    category: "Revitマニュアル作成の理由",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // Revitの現状
+  {
+    id: "Q241",
+    question: "先行メンバーの現在の習熟状況はどうですか？",
+    answer: "Revitでの3Dモデルの作成方法などについてはほぼ理解している状態です。ただし、マニュアルがないため全員がレベル0の状態です。",
+    category: "Revitの現状",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q242",
+    question: "10月・11月の先行メンバーの作業内容は何ですか？",
+    answer: "図面作成のためのフォーマットテンプレートを作成します。",
+    category: "Revitの現状",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+
+  // 物件管理シート
+  {
+    id: "Q243",
+    question: "物件管理シートはいつから使用開始ですか？",
+    answer: "翌日のユニットミーティングから使用開始です。",
+    category: "物件管理シート",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q244",
+    question: "物件管理シートを使うために何をすればいいですか？",
+    answer: "物件管理シートへアクセスのリクエストと承認を行ってください。",
+    category: "物件管理シート",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q245",
+    question: "アクセス用のURLは誰から送られますか？",
+    answer: "OZから送られます。",
+    category: "物件管理シート",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
+  },
+  {
+    id: "Q246",
+    question: "物件管理シートへのアクセスは全員承認が必要ですか？",
+    answer: "承認を要求される人と必要がない人がいる可能性があります。",
+    category: "物件管理シート",
+    url: "https://eu-plan.cybozu.com/k/117/show#record=373"
   }
 ];
 
