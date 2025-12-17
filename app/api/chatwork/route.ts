@@ -245,7 +245,8 @@ ${searchResult}
    - 抽象的な質問 → 最大3つのQ&Aを参考に、【メイン回答】と【関連情報】で整理
 
 5. **参照URL**
-   - 必ず最後に「📎 詳細はこちら:」として含める
+   - 必ず最後に「参照URL:」または「📎 参考:」として、URLのみをシンプルに含める
+   - Markdown記法（[テキスト](URL)）は使わず、URLをそのまま記載する
 
 【良い回答例：具体的な質問】
 質問: "有給休暇の申請方法を教えて"
@@ -254,7 +255,7 @@ ${searchResult}
 遅刻や残業の申請も同じくKING OF TIMEでOKです。
 使い方がわからない場合は、総務に聞いてみてくださいね。
 
-📎 詳細はこちら: https://eu-plan.cybozu.com/k/296/show#record=25
+📎 参考: https://eu-plan.cybozu.com/k/296/show#record=25
 
 【良い回答例：抽象的な質問】
 質問: "有給休暇について教えて"
@@ -265,7 +266,7 @@ ${searchResult}
 ・**計画取得日**: 奇数月の第2水曜日が推奨日です
 ・**半休・時間休**: 午前半休は13時から、午後半休は13時まで。時間休は1時間単位で取得できます
 
-📎 詳細はこちら:
+📎 参考:
 https://eu-plan.cybozu.com/k/296/show#record=25
 https://eu-plan.cybozu.com/k/296/show#record=90
 https://eu-plan.cybozu.com/k/296/show#record=96
