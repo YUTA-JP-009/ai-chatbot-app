@@ -170,22 +170,43 @@ function getPredefinedAnswer(question: string): { answer: string; url: string } 
   return null;
 }
 
-// --- Q&Aデータベースから全件取得する関数（Vertex AI Search不使用） ---
-async function askAI(_question: string): Promise<{ content: string; sourceUrl: string | null }> {
-  console.log('📚 Q&Aデータベースから全568問を取得します');
+// --- データ取得関数（Q&AデータベースまたはKintone統合データ） ---
+async function askAI(question: string): Promise<{ content: string; sourceUrl: string | null }> {
+  // 環境変数でデータソースを切り替え
+  const useKintoneData = process.env.USE_KINTONE_DATA === 'true';
 
-  // 全Q&Aをテキスト形式で取得
-  const allQAText = getAllQAAsText();
+  if (useKintoneData) {
+    // Kintone統合データを使用（JM記録 + 年間スケジュール + ルールブック）
+    console.log('📊 Kintone統合データを取得します（JM記録 + 年間スケジュール + ルールブック）');
 
-  console.log('✅ Q&Aデータベース取得完了（568問）');
-  console.log('📝 データ長:', allQAText.length, '文字');
+    // kintone-client.tsから統合データを取得（キーワードフィルタリング付き）
+    const { fetchAllKintoneData } = await import('../../lib/kintone-client');
+    const kintoneData = await fetchAllKintoneData(question);
 
-  // 全Q&AをGeminiに渡すため、contentにそのまま返す
-  // sourceUrlはGeminiが回答を選んだ後に抽出する
-  return {
-    content: allQAText,
-    sourceUrl: null  // Geminiが回答を生成した後に抽出
-  };
+    console.log('✅ Kintone統合データ取得完了');
+    console.log('📝 データ長:', kintoneData.length, '文字');
+
+    return {
+      content: kintoneData,
+      sourceUrl: null  // Geminiが回答を生成した後にkintone URLを抽出
+    };
+  } else {
+    // 既存Q&Aデータベース（568問）を使用
+    console.log('📚 Q&Aデータベースから全568問を取得します');
+
+    // 全Q&Aをテキスト形式で取得
+    const allQAText = getAllQAAsText();
+
+    console.log('✅ Q&Aデータベース取得完了（568問）');
+    console.log('📝 データ長:', allQAText.length, '文字');
+
+    // 全Q&AをGeminiに渡すため、contentにそのまま返す
+    // sourceUrlはGeminiが回答を選んだ後に抽出する
+    return {
+      content: allQAText,
+      sourceUrl: null  // Geminiが回答を生成した後に抽出
+    };
+  }
 }
 
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
@@ -212,16 +233,22 @@ async function generateAnswerWithGemini(question: string, searchResult: string, 
       }
     });
 
+    // 環境変数でデータソースを判定
+    const useKintoneData = process.env.USE_KINTONE_DATA === 'true';
+    const dataSourceLabel = useKintoneData
+      ? '社内データベース（JM記録アプリ + 年間スケジュールアプリ + ルールブックアプリ）'
+      : '社内ルールQ&Aデータベース（全568問）';
+
     const prompt = `あなたは社内ルールに詳しい、親しみやすいアシスタントです✨
 社員の皆さんが気軽に質問できる、頼れる先輩のような存在として振る舞ってください。
 
-以下のQ&Aデータベース（全568問）から、質問に最も適切に答えられる情報を選んで、
+以下の${dataSourceLabel}から、質問に最も適切に答えられる情報を選んで、
 親しみやすく、わかりやすい言葉で回答してください。
 
 【質問】
 ${question}
 
-【社内ルールQ&Aデータベース（全568問）】
+【${dataSourceLabel}】
 ${searchResult}
 
 【回答スタイル】

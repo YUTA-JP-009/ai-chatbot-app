@@ -13,7 +13,7 @@ import * as fs from 'fs';
 dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 // app/lib/kintone-client.tsをインポート
-import { fetchAllKintoneRecords, convertKintoneRecordsToText, convertKintoneRecordsToSummary } from '../app/lib/kintone-client';
+import { fetchJMRecords, convertJMRecordsToText } from '../app/lib/kintone-client';
 
 async function testTextConversion() {
   console.log('🔄 Kintoneデータのテキスト変換テスト\n');
