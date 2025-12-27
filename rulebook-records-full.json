@@ -1,0 +1,4185 @@
+[
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "1"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194311",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-03-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "年末年始休業、夏期休業中のお客様への対応\n・U'plan側の瑕疵で急ぎの対応が必要な場合や、顧客側の緊急事態については、\n　休暇中であっても対応が必要な場合があるので、管理者に速やかに連絡する\n・その他の緊急事態についても管理者に速やかに連絡する\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194312",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-03-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "休日の連絡事項について\n・返信がない場合は、所属チーム（東京・大阪）のリーダーが連絡を取って返信を促す。\n・所属チーム（東京・大阪）のリーダーが不在の場合は、所属チーム（東京・大阪）以外のリーダーが連絡を取って返信を促す。\n・リーダー同士についても同様とする。\n・チャットの一文目に＜緊急＞＜重要＞がついている場合は1時間以内、\n　一般連絡の場合は12時間以内に返信をする。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "休日の連絡は、なるべく行わないことが望ましいですが、\n緊急時や非常時は行います。\nそれ以外でも、まれに行うことがあります。\n複数の人が関与するスケジュール変更などがその一例です。\nこの場合も、その理由を理解して早めの返信をしてください。\n緊急連絡は管理職以外は行ってはいけないと思っているかも\nしれませんが、社員のみなさんが行わなければならない場合も\nあります。\nその場合は、勇気をもって躊躇せず、正しい判断をしてください。\n\n\n\n"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "kagawa@eu-plan.co.jp",
+        "name": "香川　恵里佳"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "33"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "緊急時と休日の連絡について"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "10"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-09-03T04:42:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2021-03-01T01:03:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "1"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "2"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194314",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・在宅勤務の場合、気がゆるんだり気が散ってしまう可能性がある。\n　出社するときと同じ心構えで勤務する。\n・自身のプライバシーを守るうえで、可能な限りプライベートな部分が映らないように気を付ける。\n　壁を背にした方がプライベートな部分は映りにくい。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194315",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "音声・映像の共有について\n・社内の音声・映像を共有するソフトウェアはchatworkを使用する。\n・WEBカメラとヘッドセットを使用して、音声・映像を共有する。\n・オフィスでの作業と異なり、ヘッドセットでは他者の音声が過剰に聞こえるため、\n　マイクは基本的にオフにしておく。\n・他者のマイクをミュートにする機能は原則的には使用しない。\n　ただし、場合によっては上級者が使用する場合がある。\n・毎朝のchatworkliveは一番に出社した社員が接続する。全社チャットで行う。\n・会議を開催するときは、入社歴が最も浅い人が開催する。\n・正面を映す。顔が中心になるように映す。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194316",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2020-04-14"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・共有ドライブとの接続はchromeリモートデスクトップにて行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194317",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "リモートワーク時の印刷（スキャン）について\n・下記のどちらかで印刷をする。\n　　①自宅で印刷する\n　　②コンビニで印刷する\n　（計算書一式など大量に印刷が必要になった場合は、別途相談）\n・コンビニ印刷の場合は領収書を取っておいて立替経費として精算する。\n・コンビニ印刷の場合はＵＳＢなどの媒体の取り忘れに注意する。\n・印刷する場合は下記フォーマットを使用し全社チャットにて、\n　事前に管理者へ報告する。（返信、承認は不要）\n　　　　【印刷】　\n　　　　印刷方法：自宅orコンビニ\n　　　　物件名：\n　　　　枚数　：10枚程度\n・スキャンについても、運用はプリンタと同じ。\n・USBは原則会社支給のものを使用する。\n\n※印刷のセキュリティも鑑みて、現段階ではコンビニでの印刷も許可する。（2020.04.13）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194318",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "データの移行について\n・会社PCとリモートPC間でのデータ移行は専用チャットにて行うこと。\n・基本的にはデータのみアップし、削除しない。\n・各自の判断で持ち出してはいけないと思うデータ(売上表など)は\n　管理者にTOをつけて理由を書いてアップすること。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "kagawa@eu-plan.co.jp",
+        "name": "香川　恵里佳"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "32"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "リモートワーク"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:57:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-04-14T07:34:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "2"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "3"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194320",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・ゴミ出しは曜日ごとの担当者が行う。\n　※ゴミがたまった場合は\n　　その都度ゴミ捨て場へ持って行く\n\n・分別方法については、利用規約を参照する\n・ゴミ袋には会社名を記載する\n・等級CDは毎週ゴミ袋の在庫を確認する\n・ゴミ袋が残り5枚となった場合は、等級Sに発注を依頼する\n（燃えるゴミ、燃えないゴミ：45ℓ　シュレッダー用燃えるゴミ：70ℓ）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194321",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【大阪】コラボオフィス\n・毎日、夜中に回収してもらえる。\n　（段ボールなども一カ所にまとめておく。）\n・ビン・カン・ペットボトル、食べ残し等は、湯沸室の共用ごみ箱に捨てる。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ueno@eu-plan.co.jp",
+        "name": "上野　顕司"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "31"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "ゴミの分別と出し方"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "11"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-03-19T10:09:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-27T00:13:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "3"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "4"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194323",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・iPadでTeams会議から退出する。\n・最後にオフィスを出る社員は、\n　電気消灯，空調OFF，ブラインドを下げ，戸締りを行う。\n・カードキーは首から外し、バッグにしまってからオフィスを出る。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194324",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【大阪】コラボオフィス\n17時以降に、K835を最後に退勤するスタッフは、\nセキュリティのセット・電気消灯・空調OFF・ブラインドを下げ、業務が行われない状況にする。\n※7階・その他の場所で仕事をしているスタッフがいる場合や、そのスタッフの\n　荷物が置かれている場合であっても１７時以降の退出社は一旦そのような状態を作る。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "yamamoto@eu-plan.co.jp",
+        "name": "山本　美空"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "30"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "退勤時のオフィス管理"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "9"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-16T04:25:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-27T00:08:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "4"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "5"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194327",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\nポスト確認はOZが行う。\nポスト番号：左回りBを2回、右回り1を1回"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・宅配ボックスの使用方法はGROWTHの利用規約を参照する"
+            }
+          }
+        },
+        {
+          "id": "194328",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【大阪】コラボオフィス\n出社した社員の中で、最も入社歴の浅い社員が、\n15時前後に７階郵便物の確認をして、管理者のデスクの上に置いて連絡をする。\n※ポスト番号はキントーン「ｺﾗﾎﾞｵﾌｨｽ/ﾅﾚｯｼﾞｻﾛﾝ(入居社員)」にて管理\n※連絡は下記のフォーマットを使用し、大阪本社チャットで管理者に下付TOで送ること。\n　　「郵便物はありませんでした。」\n　　「郵便物をデスクに置きました」"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194329",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "建築関係で個人宛てのカタログ等は各自に渡す。\nその他は一旦管理者に渡す。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194330",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "チラシで明らかに不要と判断できるものは捨ててもよい。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ueno@eu-plan.co.jp",
+        "name": "上野　顕司"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "29"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "郵便受けの確認"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "11"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-03-19T10:09:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-27T00:06:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "5"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "6"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194332",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "席を離れる時はＰＣモニターの電源を消す。\nノートPCは閉じる若しくは布をかける。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194333",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "自身の一人称は「私」とする。\n管理職は役職で呼び、管理職以外は「さん」付けで呼ぶ。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194335",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-10-04"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "管理者の席で話す時は、モニターやデスクの上が見えない位置に立つ事。（経理や人事関係の業務中である場合の守秘義務の為。）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194336",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "信仰は個人の自由であるが、社内・顧客・関係先への布教・勧誘はしてはならない。\n広く社会に容認された宗教行事（地鎮祭・初詣・クリスマス・お祓いなど）への業務上の参加が必要な場合は、拒否してはならない。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194337",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "顧客・関係先からの贈答品は、例え社員個人に渡された物であっても、管理者に報告し指示を受ける。\nペン・ファイル等、粗品としていただいたものはこの限りでない。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194338",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-08"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "業務での時刻表示は、24時制を用いる。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194339",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-08"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "指示された業務については、内容に応じて随時の中間報告と完了報告、または完了報告のみを行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194340",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "マスク着用のマナーについて\nマスク着用の目的は、風邪の予防・くしゃみなどのウィルスの飛散防止であるが\n次の①～③の際は外すようにする。\n　　\n　①冠婚葬祭時\n　②来客時・挨拶などの初対面の時\n　③社内会議の時\n　・どうしても外せないときは、相手に断わってから着用する。\n\n※感染病などの拡大により管理者がマスク着用を必要と判断した場合はこの限りではない"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194341",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2017-06-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "くしゃみのエチケットについて(感染症予防のため)\n咳・くしゃみをする際は、ティッシュやハンカチで押さえる、もしくはマスクを着用すること。\n緊急時は手で押さえ、しぶきのついた手をすぐに洗うこと。\n\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194342",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-10-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "植物の水やりは週の初めに出社した者が行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194344",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-03-19"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "OB・OG訪問を受ける時は、事務所内にて行うこと。\n双方の安全と会社の信頼のため社外では決して行わないこと。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194345",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-03-19"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "USBアカウントキーの管理について\nUSBは指定の保管場所にて保管すること。\n最終退勤者は、退勤時にUSB保管場所を確認し、返却忘れがあればチャットにて連絡をすること。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194346",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2020-01-20"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "年末年始の造花を飾る期間は、12月最終営業日から1月最終営業日までとする。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194347",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "トライアル研修の資料は、キントーンアプリに保存してある。（トライアル研修テキスト）\nまた、これらの資料はコピー・持出し不可。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "338328",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-05-09"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・東京のipadがTEAMSからすぐに落ちてしまう場合の対処方法について\nなお、作業は入社歴の浅い社員が行うこととする。\n\n①下記の作業を行う。\n・キャッシュデータの削除\n・iPADの再起動\n・TEAMSのアップデート\n\n②①を試しても直らなかった場合は、下記2点の作業を行う。\n・TEAMSの再インストール\n・iPADの電源を落とす（約1日間）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "338918",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-05-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・執務室以外で業務を行う場合のルール\n\n①ノートパソコンには、のぞき見防止フィルターをセットする。\n・会社が用意した取り外し式のものを使用。\n\n②当該スペースにあるモニタ類を使用する場合\n・機密情報など、社外に知られてはいけないデータを表示しない。\n・もし表示するのであれば、表示時間を短くしたり、全容がわからないように気を配る。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・のぞき見防止フィルターのセット方法について\n\nフィルター同梱の短い爪を１セット切り取る\n　↓\n画面の両端に貼る（粘着式のため一度貼ったら外さない）\n　↓\n画面上部からフィルターを差し込む"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "negishi@eu-plan.co.jp",
+        "name": "根岸　一則"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "36"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "その他社内ルール"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "11"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-05-12T10:47:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T13:06:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "6"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "7"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194349",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【社内ルールへの追記】について\n・JMの連絡事項で★が付いている項目は、オフィスチームが翌日の18：00までに追記する。\n・追記した場合は管理者への確認後、連絡担当者に追記した旨を報告する。\n・やむを得ない事情により期日までに追記できない場合は、オフィスチームが連絡担当者に追記可能な時間を自ら報告する。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "28"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "社内ルール追記について"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:58:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:56:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "7"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "8"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194351",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "1つのメッセージを複数人に送る時。\n　全員から返信が欲しいときは、全員のtoを一番上につける。\n　返信不要だが、確認して欲しい人がいる場合は、その人のtoを一番下につける。\n　一番下にtoの場合は、絵文字を使ってリアクションをする。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194352",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-11-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "引用文に、to ALL　が付いている場合は、外す。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "27"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "チャットワークについて"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:59:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:55:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "8"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "9"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194354",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "①\t全ての木造物件について、チェックリストを使用し、構造図作成者がチェックを行う。\n②\t未完の項目はチェックを付けない。\n③\t項目すべてにチェックが入ったら、構造図作成者がサインする。\n④\t構造図作成者サイン後、上級者が項目すべてにチェックが入っていることを確認し、サインする。\n⑤\t両者のサインが入ったチェックリストをPDFにして、物件フォルダに保存する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "26"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "木造物件チェック"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:59:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:54:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "9"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "10"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194356",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-04-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\n・お客様との約束（面談、納品、送付、その他）は、その内容と期日をメールや\n　チャットに記載し、お客様と共有しておく\n\n・お客様との約束を忘れないためのスケジュール管理を身につける\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "あいまいな約束　⇨　「できる限りがんばります」\n　　　　　　　　　　「明日中に送ります」\n　　　　　　　　　　「考えておきます」"
+            }
+          }
+        },
+        {
+          "id": "227461",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-09-11"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194357",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "お客様よりクレームがあった場合は速やかに上司に報告する。(報告ルート：社員→リーダー→管理者)"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194358",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-05-27"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "顧客に提出する業務契約書以外の書類について\n・顧客から、外注登録書・反社会勢力排除に関する誓約書、秘密保持誓約書などの提出を求められた際は、\n　リーダーにその旨を伝えたうえで、物件担当者が専務または所長に記入を依頼する。\n・顧客に提出した書類は、物件担当者がDocuデータに変換して、顧客ファイルに保存する。紙での保存は不要。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "25"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "お客様対応"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "5"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-09-11T07:12:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:53:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "10"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "12"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194364",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-05-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "5月1日～9月30日をクールビズ期間とし、冷房時の室温23℃～28℃で快適に過ごすことのできる服装で業務に当たる。\n着用してはいけないもの。\n男女共通　×ジーンズ・スポーツタイプのスニーカー・袖のないシャツ（タンクトップ等）\n男性　　　×襟のないシャツ（Tシャツ等）、サンダル、丈の短いズボン\n女性　　　×ミュール（バックベルトのない物）、丈の短いパンツやスカート"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "24"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "クールビズ"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "7"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-09-03T04:34:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:48:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "12"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "13"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194366",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "送付物には「書類送付状」を添付する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194367",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "法人格は、「（株）」などと略さず「株式会社」と書く。\n社名も、略さず正式名称を書く。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194368",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "使用済の箱などを梱包材として再利用する場合は、古い宛名状などをはがしてシュレッダーにかける。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "23"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "宅配便の出し方・受け取り方"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "3"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:54:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:48:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "13"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "14"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194373",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\n・コピー機とシュレッダーは管理会社所有の機器であるから、使い方のルールを守り\n　大切に取り扱う\n　万一、破損させた場合は放置せず、速やかに管理会社に連絡する\n　\n　\n・業務で使用した後に不要となった用紙はすべてシュレッダーにかけて処分する\n（カタログなどは一般ゴミとして廃棄してよい）\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "227460",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-09-11"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194374",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194375",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2018-11-14"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "22"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "コピー機とシュレッダーの取り扱い"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "7"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-09-11T06:51:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-26T12:45:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "14"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "15"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194377",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\nオフィスで使用する事務用品・日常消耗品はなくなる使い切る前に、オフィス担当者に購入を依頼する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194378",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\n受け取り後は所定の場所に保管する。箱に貼ってある宛先ラベルは住所などが記載してあるので、はがしてシュレッダーにかける。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194379",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2020-04-09"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\nヨドバシ・Amazonなどの明細書は保存不要（シュレッダーにかける）\n※下記についてはこれまで通り保管する\n　・10万円（税抜き）以上の明細書\n　・請求書（※明細書と請求書は違う）\n　・宅配便に貼られている送り状（配送記録を確認するため）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "21"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "備品の購入と受け取り時の注意"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "8"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-09-11T06:44:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:42:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "15"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "16"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194381",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-10-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\n・個人が使用する基本的な文具（ペン・消しゴム・定規・はさみ・ノート・付箋など）、\n　備品（ティッシュ・名刺入れ・コップ・・）は個人で準備する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【＋OURS】\n個人の文具などは各自まとめてかごに入れて保管する。（保留）"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "negishi@eu-plan.co.jp",
+        "name": "根岸　一則"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "20"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "個人で準備する文具や備品"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "5"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-10-13T14:33:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:42:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "16"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "17"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194383",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・コピー機はオフィスビルに設置されているものを使用する\n・シュレッダーはU'plan所有の物を使用する\n・事務用品（ファイル、セロテープセロテープ、封筒、会社案内など）は\n　必要に応じて使用する\n・印鑑、レターパック、収入印紙、切手、粗品は使用後にkintone「印鑑・切手・・・」　に使用状況を記録する"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "コピー機の使用方法やドライバのインストール方法などは、GROWTHの利用規約を参照。"
+            }
+          }
+        },
+        {
+          "id": "194384",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【コラボオフィス】\n・シュレッダーとコピー機はオフィスビルに設置されているものを使用する\n・ロッカー内の事務用品（ファイル、セロテープセロテープ、封筒、会社案内など）は\n　必要に応じて使用する\n・印鑑、レターパック、収入印紙、切手、粗品は使用後にkintone「印鑑・切手・・・」\n　に使用状況を記録する\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "fujiwara@eu-plan.co.jp",
+        "name": "藤原　涼"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "19"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "備品・設備の使用"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "8"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-20T08:25:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:41:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "17"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "18"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194386",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "新入社員研修にて行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "18"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "名刺のマナー"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "3"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:53:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:41:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "18"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "19"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194388",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2014-10-10"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "メールは随時確認する。出退勤時には必ず確認する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194389",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2014-10-10"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "メール作成時には、基本フォーマットを使用する。\n（一定基準のビジネス文書の基本を身につける為）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "17"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "メール・チャット応対"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "3"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:53:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:40:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "19"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "20"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194391",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "新入社員研修にて行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194392",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2018-11-14"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "昼休み中の電話は原則取次ぎせず、休憩時間後に折り返す旨を伝える。\n（「○○は食事に出かけております。戻りましたらご連絡を差し上げましょうか」）\n＊社内に居ても、出かけていることにする。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194393",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "ミーティング中など不在の社員へ電話があった場合、\n電話を受けた社員がチャットワークで連絡をする。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194394",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "社員が遅刻している場合、事由に関わらず（不明な場合も含めて）、お客様には「○○は一件立ち寄りがございまして」と伝える。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194395",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2017-06-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "長時間外出している社員へ電話があった場合、電話を受けた社員がチャットワークで連絡をする。\n緊急の場合は役員、社員に関わらず電話で連絡する。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194396",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "JM・見積ミーティング・打合せ等、会議の際の電話応対は、①～③の者が順に行う。\n１JM\n　①\t新入社員\n　②\t下級者から順に\n※緊急の用件以外は取り次ぎをせず、会議の進行を優先させる。\n２見積ミーティング\n　①\t新入社員\n　②\t下級者から順に\n※緊急の用件以外は取り次ぎをせず、会議の進行を優先させる。\n３打合せ等のミーティング\n　①\tミーティングの参加していない下級者から順に\n※緊急の用件以外は取り次ぎをせず、会議の進行を優先させる。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194397",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2014-12-26"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "夏期休業・年末年始休業などの前には留守番電話を設定する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "246840",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-12-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "「少々お待ちください」の後に\n「今から○○に転送いたします。接続までに時間がかかることがございますのでご了承ください。」\n\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "246841",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-12-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "電話は明るい声で。\nいつもより2段階高い声で対応する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "hamamoto@eu-plan.co.jp",
+        "name": "濵本　千明"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "16"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "電話応対"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-12-13T05:09:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:40:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "20"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "21"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194399",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\n事前連絡のないメンテンスや点検作業は、受け入れない。\n作業内容・事前許可の有無・会社名・氏名・連絡先を聞く、又は名刺を貰った上で、こちらから連絡すると伝えてお断りする。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "15"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "メンテナンス作業を受ける際の対応"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "5"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-09-09T09:15:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:38:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "21"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "22"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194401",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・会議室で来訪者対応を行う。\n・805号室は原則として使用しない。\n・必要に応じてペットボトル飲料を出す。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "－－－－－来訪前－－－－－\n●来訪いただくお客様へは、下記の内容をメールやチャットの本文などで案内してください。\n受付の方が来客の到着を教えに、部屋まで来てくれます。\n\n【本文】\nGROWTH　BY　IOQに到着されましたら、\nエントランスで805を呼び出してください。\nU'planへの訪問である旨お伝えいただければ、開錠いたします。\n\n-----来訪時-----\nお客様とは、１階ロビーにて待ち合わせを行う。\n\n会議室やプレイラウンジで打合せを行う場合は、事前に予約が必要となる。\n※別途利用料が必要となるため、上位者の承認を得る。"
+            }
+          }
+        },
+        {
+          "id": "227265",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-09-09"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【コラボオフィス】\n7階のナレッジサロンで来訪者対応を行う。\n8階のコラボオフィスは原則として使用しない。\n必要に応じてペットボトル飲料を出す。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194402",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【共通】\n訪問者に失礼のない服装で迎える。\n来訪が予めわかっていた訪問者には、「お待ちしておりました。」と挨拶する。\n帰りはエレベーターホールまで見送り、「本日は、お越しいただきありがとうございました。」と挨拶する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194403",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "yamamoto@eu-plan.co.jp",
+        "name": "山本　美空"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "14"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "来客対応（アポあり。主に顧客・関係先）"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "9"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-16T04:21:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:37:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "22"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "23"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194406",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n・iPadでTeams会議に参加する\n・換気を行う\n・入社歴の一番浅い社員は郵便受けを確認する。\n　(複数名いる場合はその中でローテーションを組む）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "227459",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-09-11"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【コラボオフィス】\n・チャットワークライブの接続"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "fujiwara@eu-plan.co.jp",
+        "name": "藤原　涼"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "13"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "業務開始前の準備"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "12"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-20T08:24:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:36:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "23"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "オフィスの運営"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "24"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194410",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【GROWTH by IOQ】\n\n・月曜日木曜日の体操後に\n　掃除機，ハンディモップ，ゴミ捨て，換気などを\n　出社している全員が行う\n\n・退勤時に各自で\n　使用した机や椅子，モニターを\n　アルコールウェットティッシュで拭く\n　\n・大掃除は未定\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "●下記№31も参照。\nhttps://eu-plan.cybozu.com/k/296/show#record=3&l.sort_0=f5530190&l.order_0=ASC&l.offset=20&l.view=5522546&l.q&l.next=2&l.prev=4"
+            }
+          }
+        },
+        {
+          "id": "227458",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-09-11"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【コラボオフィス】\n　・社員が行う掃除\n　　　　第1、第3月曜日および第2、第4金曜日の見積もりミーティング後\n　　　　モップでのホコリ落としと手が触れるところの拭上げ\n　　　　\n　・管理会社が行う掃除\n　　　　毎月曜日～金曜日\n　　　　床掃除とゴミ捨て\n\n　・大掃除は未定"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ueno@eu-plan.co.jp",
+        "name": "上野　顕司"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "12"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "オフィス掃除"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "21"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-03-19T10:11:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:34:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "24"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "25"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194413",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "有給休暇・遅刻・残業などは、KING OF TIMEで申請を行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194414",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "社内で扱う書類は、共有フォルダ内の元データを使用する。その際は直接書き込まず、一旦コピーしてから使用する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194415",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "【月次資料】\n・締日（毎月15日）から2営業日目の１６：００まで\n・全社チャットでのお知らせはしない\n・kintoneの月次資料提出アプリにて提出\n　1.勤怠管理：KING OF TIME\n　2.業務日報：Googleカレンダー\n　3.健康管理アンケート：kintone\n　4.立替経費精算書：kintone\n　5.休日出勤：KING OF TIME"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194416",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "通勤経路申請書：入社後に管理者に提出する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194417",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "日常消耗品以外の物品を購入する場合は、稟議書を管理者またはその代理者に提出し、管理者の承認決裁を得る。\n金額が明確でない場合は大体の参考価格を記入する。 "
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194418",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2015-11-26"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "業務報告書：毎年10月15日を締日として前期の業務報告書を作成する。\n＜保存先：Z:\\17.業務内容報告書(10月15日締切)＞"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "11"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "労務関連書類"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "3"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:51:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:33:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "25"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "26"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194420",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2016-03-28"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "受注前の支払い条件の確認を行った場合、先方の代表者や支払責任者が「多分、支払えると思う」等とおっしゃる場合、念を押して弊社支払条件を了承して頂くよう確認する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194421",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-05-14"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "見積書発注欄に記載漏れ等があった場合は、発注者様に訂正していただき、担当者は記入しない。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "公文書は公官庁や公務員が、その業務において作成するもので、\n私文書は民間企業やその社員が、その業務において作成するものです。\nどちらの文書も経済取引などの社会生活で重要な役割を果たしているので、\n偽造すると処罰されます。\n他人の印章、署名を無断で使用したり、文章を無断で変更したり新たに"
+            }
+          }
+        },
+        {
+          "id": "194422",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2018-06-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "受注金額が一定額以上の場合は前受金の支払いを行ってもらう。適判を除く総額から、新規顧客は30万＋税以上で50％、既存顧客は50万＋税以上で30％とする。百円以下単位は切り捨てとする。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194423",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2015-01-26"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "発注書を頂いてから構造設計業務に取り掛かること。発注書を頂けない特別な事情がある時は社長または専務に相談すること。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194424",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2020-06-03"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "大阪・東京間で、受注担当者と構造担当者が異なる場合は、担当を明確にするために、以下の手順でチェックを行う。\n①\t受注担当者が、構造担当者に担当であることを明確に伝える。\n②\t「構造設計のご依頼ありがとうございます」メールを構造担当者が送る。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194425",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2014-10-10"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "印鑑については別紙参照"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "10"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "受発注業務"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:51:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:30:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "26"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "27"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194427",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "ビジネススキル\n・グロービスのWebシステムによる勉強会\n・毎月第3　水曜日　18：30～　60分程度\n・担当者が開催の責任を持つ\n・記録は研修記録アプリを用い、責任者の指名を受けた人が研修日のよく営業日中に\n　記入する\n　記入後は責任者に報告する"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194428",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "技術\n・グループに分かれて勉強会を行う\n・開催日時は年間スケジュールを参照する\n・責任者が勉強会を開催する\n・記録は研修記録アプリを用いる\n　責任者の指名を受けた人が研修日の翌営業日中に記入\n　記入後は責任者に報告する\n・１８：００以降に研修を行う場合は時間外勤務となる\n・新入社員はトライアル研修修了後から参加\n　（参加する勉強会は研修後に指定）"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "196677",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-04-02"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "その他\n・外部の研修、講習に参加した場合も同様に記録をする"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "yamamoto@eu-plan.co.jp",
+        "name": "山本　美空"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "9"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "勉強会・研修・講習"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "5"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-16T04:18:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:28:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "27"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "28"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194430",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-10-04"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "おしゃれとは違う\n・社会人として、共に仕事をする相手への配慮と、自分が仕事をする人間として\n　どのように見られたいかという意識に基づくもの\n・習慣と少しの努力でできるもの"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194431",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "★会社は「内」ではなく「外」、「OFF」ではなく「ON」である場所"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・U'planに応募したときの顔写真や、面接の日の自分の姿を思い出してください。\n　その姿がU'planを受験するにふさわしいと判断したのでしょうし、U'planも\n　その姿のあなたが入社するにふさわしいと判断したのです。\n　入社後に奇抜に変身してはいけないし、身だしなみをダウンさせてもいけません。"
+            }
+          }
+        },
+        {
+          "id": "194432",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "身だしなみのポイント\n・髪の毛、歯、口の中、爪を清潔に保つ\n・靴の履き方（かかとを踏まない）に注意する\n・靴を汚れたままで履かない\n・汗のケアと臭いの防止\n・服の手入れ（しわ・汚れ・くたびれ感）\n・人目に触れる小物は社会人向けのものを持つ\n・ひげの手入れ\n・適切な化粧"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・好きなファッションはプライベートで楽しんでください。\n・「今日は身だしなみがよくないな・・」という日は、声、身のこなし、姿勢、表情でカバーしてみてください。"
+            }
+          }
+        },
+        {
+          "id": "196947",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-04-05"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "禁止事項\n・赤、青などの奇抜な染髪\n・モヒカン、盛髪などの奇抜な髪型\n・人から見えるタトゥー\n・人から見える奇抜なピアス"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・今の時代に構造設計者として信頼を得るためには、これらのファッシは得策ではありません。\n・ただし、未来はわかりません。（150年前はちょんまげの男性が普通でした）\n・「生まれつき金髪の人はどうするんだ」と思った人は、文章をよく読んでください。\n・髪型、髪色については業務に支障のない範囲の変化は認める\n・赤、青などの原色系の髪色や、モヒカン・盛り髪など\n　構造設計者として社内外の信頼関係に影響を与えると\n　判断するものについては制限の対象とする"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ueno@eu-plan.co.jp",
+        "name": "上野　顕司"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "8"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "★身だしなみ"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "10"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-09-29T06:18:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:27:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "28"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "29"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194434",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "ジョイントミーティング（ＪＭ）\n・毎週月曜日15：00から全員参加で行う定例会議。　\n　業務スケジュールの共有と個別の連絡事項が伝えられる。\n　所属や役職、目的ごとに、オフィスチームミーティング、テクニカルチームミーティ\n　ング、グループリーダーミーティング、　パートナーミーティング、ボードミーティ\n　ング、見積ミーティングなどがある。　\n・開催日が休日の場合は、順延とする。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・ミーティングを欠席した場合は、個人の責任でレジメを確認し内容を理解しておく。\n　わからないことはメンターに聞く。\n\n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "これらの他に、目的や所属・役職ごとに、オフィスチームミーティング、テクニカルチームミーティング、グループリーダーミーティング、　パートナーミーティング、ボードミーティングなどがあります。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+            }
+          }
+        },
+        {
+          "id": "194435",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "見積ミーティング\n・毎日13：00から指名されている技術者が参加して行う定例会議。\n　構造上の要点を話し合い、担当・金額・納期の概要を決める。　\n・見積物件の担当者は、事前に「見積件数エクセル」に物件数を記入しておく。\n・トライアル研修中の社員は、原則毎日参加する。\n　やむを得ず欠席する場合は、事前にメンターに理由を説明し許可を得る。\n\n・開催しない条件（下記いずれか）\n・13時に何らかの事情でBP、OZともに不在の場合\n（※12時にBP、OZが不在でも開催しないとは限らない）\n・BP、OZがあらかじめ見積ミーティングを開催しないと宣言している場合"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "yamamoto@eu-plan.co.jp",
+        "name": "山本　美空"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "7"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "ミーティング"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "9"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-16T04:16:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:25:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "29"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "30"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194437",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-11-20"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "時間外勤務申請（深夜時間）は２２時から５時までの間に勤務することを指す。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194438",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "申請を提出する前に社員はリーダー、リーダーは管理者に時間外勤務を回避するための相談を行う。\nリーダー、管理者が回避できないと判断した場合に限って時間外勤務申請を提出することができる。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194439",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-11-20"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "申請は当日の17時までに行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194440",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "管理者が申請に気づかないこともあるので、承認が出ない場合は申請者が当日１９時までに直接確認する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194441",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-11-20"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "未承認のまま時間外の勤務を行わない。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194442",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-11-20"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "申請した内容（業務内容・時間）の通り業務を行う。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194443",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "申請内容と実際が異なっていないか、管理者が検証を行うため口頭もしくはチャットにて\n翌日の午前中に業務内容と所要時間を所長へ報告する。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194444",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2019-11-20"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "所定休日に出勤する場合も上記と同様の手続きを踏まえること。\n休日出勤の場合は、当日を前日へ読み替える。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "5"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "時間外勤務について"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:26:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:24:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "30"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "31"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194446",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "勤怠管理\n・出退勤時は、勤怠管理アプリ（KING OF TIME）を使って打刻する。　　　\n　打刻忘れや打刻間違いをした時は、修正申請を行い、承認を受けてから修正する。　　　　　　　　　　　　　　　　　　　　　　　　　　　\n★休日出勤や深夜残業(20:00以降)は行わないことが望ましいが、やむを得ない状況に\n　なった場合は一人で判断せず、速やかにリーダーまたは管理者に相談する。　　\n　リーダーまたは管理者の許可を得られた場合は、kintoneの申請書アプリで申請を行\n　い、承認を受けた後KING OF TIMEで申請を行う。　　\n　申請は当日の17：00までに行う。\n・早退または私用による業務中断などは、管理者の承認を受けてからKING OF TIMEに\n　打刻する。\n　やむを得ない事情以外での、業務中断は認めない。\n・会社指定の勉強会や研修は勤務時間に含める。　　　\n\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "勤怠データは給与算出のベースであり、また労働生産性の指標となるものなので、正しい打刻をしましょう。　　\nKING OF TIMEの出勤時刻というのは、会社に到着した時刻のことではなく、業務を始める準備を完了して実際に仕事を開始する時刻を指します。　　　　　　　　　　　　　　　　　　　　　　　　　　退勤時刻も同様で、実際に業務を終えた時刻を指します。　\n\n休日出勤や深夜残業は管理者の承認なしに行ってはいけません。　\n\n始業時刻とは出社する時刻ではなく、業務を始めるための準備を終え、実際の業務を開始する時刻のことです。\n退勤時刻とは会社を出る時間でなく、実際の業務を終える時刻のことです。"
+            }
+          }
+        },
+        {
+          "id": "194447",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "社内会議\n・5分前に準備・着席する。\n顧客訪問\n・余裕を持って10分前に現地に到着し、5分前に相手先を訪問する。\n遅刻\n★出社または約束時刻に遅れそうな時、またはその可能性がある時は、それがわかった\n　時点で速やかに管理者または約束相手に電話で連絡する。　　　　　　　　　　　　　　\n　チャットやメールでの連絡は、電話で連絡がつかなかった場合のみとする。　　　\n　"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "５分早く来ると信用を得ることができ、5分遅く来ると信用を失うことができます。　\n\n遅刻については、その可能性が出た時点で、どんなに気まずくてもすぐに電話してください。\n「間に合うと思った」「言ったら叱られると思った」などと自分の判断の甘さや思い込みを言い訳にすることは社会人としてふさわしくないことです。\n　　　　　　　　　　　　　　　　　　　　　　　　"
+            }
+          }
+        },
+        {
+          "id": "194448",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "社内会議は完全に準備できた状態で開始を待つ。　　　　　　　　　　　　　　　　　　　　　　　顧客を迎える時は10分前に準備が出来た状態にする。　　　　　　　　　　　　　　　　　顧客を訪問する時は、5-10分前に訪問先に到着している状態にする。　　　　　　　　　　　　始業時刻や約束時刻に遅れるとき、またはその可能性が少しでもある時は、それがわかった時点で速やかに電話で連絡する。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　チャットやメールでの連絡は電話で連絡がつかなかった場合のみとする。　　　　　　　　　　外出予定はグーグルカレンダーに記入し、外出時と帰社時には周りの人に声をかけると同時に、全社ライン知らせる。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　定時以外の出退勤についても、同様とする。  "
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "社内会議はどのくらい前から開始を待てばよいでしょう。　　　　　　　　\n顧客を迎える際の準備は、10分前に終えておかなければならないのはなぜでしょう。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　訪問先に30分早く到着した時はどうすればよいと思いますか。　　　　　　　　　　　　　　　　　　　　　　　　　遅刻には、自分に非がない場合（電車の遅延など）と、非がある場合の遅刻（朝寝坊など）があります。これらの違いについて、自分と相手の立場で考えてください。　"
+            }
+          }
+        },
+        {
+          "id": "194450",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-12"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "★外出予定はキントーン「グーグルカレンダー」に記入し、外出時・帰社時は声をかける。\n（「いってきます。」「ただいま戻りました。」）　\n外出先での業務が終了した時点で、全社のラインで連絡をし、帰社予定時刻を伝える。\n急を要する報告がある場合は、速やかに電話で伝える。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ozaki@eu-plan.co.jp",
+        "name": "尾崎　光"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "6"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "★時間管理"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "25"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-06-28T00:54:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:21:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "31"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "33"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194459",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2013-04-01"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "記録\n・会議や打合せでは、PC・ノートなどの記録できるツールを使い、相手に記録を取って \n   いることがわかる状態で記録を取る。　\nスケジュール管理\n・複数のタスクを管理する技術を身につける。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "記録やスケジュール管理は自分のためだけに行うのではありません。　　　　　　　　　　　　　　　　　　　　　一緒に仕事をする相手の信頼を得るために行うものでもあるのです。　　\nしかし人間の記憶はあいまいで、ずっと覚え続けておくことはできません。\n記録は自分の頭から忘れていい状態を作るために行うものなのです。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "4"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "★記録とスケジュール管理"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "11"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2022-04-07T01:23:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:17:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "33"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "会社のルール"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "34"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194461",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-10-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "個人ロッカー\n・施錠と鍵の管理は個人の責任において行う。\n　スペアキーは管理者1名が保管している。\n　緊急時には個人の許可なく開錠または施錠することがある。\n　業務を行う上で必要なもの以外は置かない。　\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "保留"
+            }
+          }
+        },
+        {
+          "id": "194462",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-10-13"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "キャビネット、デスク\n・施錠と鍵の管理はオフィスの管理者またはリーダーが行う。\n　鍵は上記の者が所有している。\n　緊急時には個人の許可なく開錠または施錠することがある。\n　業務を行う上で必要なもの以外は置かない。　\n\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "保留"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "negishi@eu-plan.co.jp",
+        "name": "根岸　一則"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "3"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": " 個人ロッカーとキャビネット"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "8"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-10-13T14:30:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T03:15:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "34"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "35"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194464",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "指示や質問を受けた時は、確認の意思表示としてはじめに、はっきりと「はい」または\n「いいえ」と返事をする。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "返事は責任と意思と理解の表明です。\n相手に正しく伝わるよう、明確に伝えてください。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　ex.　\n・はい\n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　・いいえ　\n・もう一度言っていただけますか。\n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　"
+            }
+          }
+        },
+        {
+          "id": "194465",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "日常のあいさつ\n・出社時（午前中）おはようございます　⇔　 おはようございます\n・退社時　　　　　お先に失礼します　　⇔　 お疲れ様でした\n・外出時　　　　　行ってまいります　　⇔　 行ってらっしゃい\n・帰社時　　　　　ただ今帰りました　　⇔　 お帰りなさい　お疲れ様でした\n・お礼　　　　　　ありがとうございます　　×すみません\n・お詫び　　　　　申し訳ございません　　　×すみません\n　　　　　　　　　以後気をつけます。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "★あいさつは決められた短い言葉ですが、世界中どこの国でも使われています。　\n人間関係の心証を保ち、不信を芽生えさせない効果的なシグナルがあいさつです。　\n出勤・退勤・外出・帰社の際は、大きな声で明るくはっきりとあいさつをしてください。　　　　                                                                              "
+            }
+          }
+        },
+        {
+          "id": "194466",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "特別なときのあいさつ\n・年末　　　　　1年間、お世話になりました。来年もよろしくお願いいたします。\n　　　　　　　　どうぞよいお年をお迎えください。\n年始　　　　　　新年おめでとうございます。本年もよろしくお願いいたします。\n社員面談　　　　よろしくお願いいたします。／　ありがとうございました。\n社員研修　　　　よろしくお願いいたします。／　ありがとうございました。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ueno@eu-plan.co.jp",
+        "name": "上野　顕司"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "2"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "★あいさつと返事"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "20"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-10-02T09:58:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T02:44:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "35"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "36"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194468",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "会社の機密情報\n・技術・顧客・物件・社員・経営・営業などに関するU'plan固有の情報を指す。\n・業務で得たこれらの情報は、会社の許可なく第三者にもらしたり私的に利用したり\n　してはならない。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "世の中で仕事をしていると、日々あらゆる情報に触れる機会がありますが、そのすべてがともに仕事をするステークホルダーのものです。\nあなた個人のものではありません。\n他者の情報に責任を持ち正しく扱うことが、自分の情報も正しく扱われることになります。"
+            }
+          }
+        },
+        {
+          "id": "194469",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "パソコン\n・会社から貸与されたもの以外は業務に使用してはならない。\n・会社で使用しているソフトへのアクセスもしてはならない。\n　例：計算ソフト、クラウドサイン、各種ＭＦ、勤怠ソフト、kintone等\n・会社の許可なく第三者に使用させてはならない。\n・付与されたID・パスワードは厳重に管理し第三者に教えてはならない。\n・業務で使用しているソフトウェアのUSBキーは持ち出してはならない。\n　また個人所有の複写可能な機器を持ち込んではならない。\n・業務とは関係のないホームページを閲覧してはならない。\n・私用端末からチャットワークなど会社のデータへアクセスする場合は、\n【私用端末利用許可申請書】にて申請を行い、許可を得ること。\n※休日の緊急連絡は、LINEオープンチャットを使用する。\n"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194470",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "メール・チャットワーク\n・会社指定のアドレス、アカウント以外は作成や使用をしてはならない。\n・私的な送受信を行ってはならない。\n・私用端末からチャットワークなど会社のデータへアクセスする場合は、\n【私用端末利用許可申請書】にて申請を行い、許可を得ること。\n※休日の緊急連絡は、LINEオープンチャットを使用する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194471",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "携帯電話\n・会社から貸与されたもの以外は業務に使用してはならない。\n・個人携帯の番号は、顧客や関連業者に教えない。\n・私用端末からチャットワークなど会社のデータへアクセスする場合は、\n【私用端末利用許可申請書】にて申請を行い、許可を得ること。\n※休日の緊急連絡は、LINEオープンチャットを使用する。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194472",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-25"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "書類・データ\n・業務に関するすべての書類・情報のコピー、ダウンロード、\n　持出をしてはならない。\n　例：電算、図面、計算ツール、顧客データ、プロジェクトに関する\n　　　情報、労務ツールなど"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        },
+        {
+          "id": "194473",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-02-18"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ozaki@eu-plan.co.jp",
+        "name": "尾崎　光"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "yamada@eu-plan.co.jp",
+        "name": "山田　寛子"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "1"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "機密情報　（重要：就業規則第6章を参照）"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "13"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-02-06T02:51:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2020-01-23T02:40:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "36"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "37"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194509",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-03-26"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "自分が確認した事実をもって、自分の責任において行動する。　\n都合のよい解釈や、やらないことへの言い訳をしない。\n相手の意向を確認する。\nメールやチャットは送りっぱなしにしない。　\n返事がなければ再度自分から確認する。　　　　\n返事がないということをもって「やらなくてよいこと」と勝手に判断しない。"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "35"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "仕事をする上での考え方"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "8"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2021-04-05T09:57:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2021-03-26T07:54:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "37"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "38"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "194511",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2023-01-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "外出予定はkintoneの「Googleカレンダー」に記入し、外出時と帰社時には周りの人に声をかけると同時に、全社チャット知らせる。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　定時以外の出退勤についても、同様とする。  "
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "仕事は会社と社員間の契約で成り立っていますので、勤務時間中は業務に専念しなければなりません。"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "yamamoto@eu-plan.co.jp",
+        "name": "山本　美空"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "34"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "所在を明確にしておく"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "5"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2023-01-16T04:26:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2021-03-26T08:14:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "38"
+    }
+  },
+  {
+    "分類": {
+      "type": "DROP_DOWN",
+      "value": "社会人のマナー"
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "40"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "199099",
+          "value": {
+            "更新日": {
+              "type": "DATE",
+              "value": "2021-04-16"
+            },
+            "ルール": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・ 一般企業は原則屋内禁煙             \n・喫煙室を設置しても完全な分煙はできない\n・喫煙後約２分間は呼気に肺に残った煙が吐き出される受動喫煙が発生するので\n　すぐに自席に戻らない\n・煙が吐き出され終わった後も口臭や衣服のタバコ臭による三次喫煙による被害が発生\n　していることを喫煙者は自覚する"
+            },
+            "ルール_0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "・2020/4に改正健康増進法が施行されました。\n　食生活、運動、休養、飲酒、喫煙、歯の健康を保つための法律ですが、大きく変わっ\n　たのはたばこについての考え方です。\n　日本は諸外国に比べたばこに関する法律が緩いことから、東京オリンピックで\n　外国人客を迎えるために作られた法律であるとも言われています。\n   タバコを個人の嗜好と捉える時代は終わりました。\n　喫煙者はタバコは第三者の健康も害するものであることを知ってください。\n\n"
+            }
+          }
+        }
+      ]
+    },
+    "項目_0": {
+      "type": "MULTI_LINE_TEXT",
+      "value": ""
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "ueno@eu-plan.co.jp",
+        "name": "上野　顕司"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "office@eu-plan.co.jp",
+        "name": "岸岡　仁美"
+      }
+    },
+    "数値": {
+      "type": "NUMBER",
+      "value": "37"
+    },
+    "項目": {
+      "type": "MULTI_LINE_TEXT",
+      "value": "喫煙"
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "4"
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-10-02T10:23:00Z"
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2021-04-16T02:19:00Z"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "40"
+    }
+  }
+]

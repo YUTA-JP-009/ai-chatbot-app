@@ -1,0 +1,382 @@
+{
+  "record": {
+    "添付ファイル_1": {
+      "type": "FILE",
+      "value": []
+    },
+    "レコード番号": {
+      "type": "RECORD_NUMBER",
+      "value": "381"
+    },
+    "Table": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "468249",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "連絡、確認"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "年間スケジュールの確認\n★\nhttps://eu-plan.cybozu.com/k/238/show#record=8"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "dookhuu@eu-plan.co.jp",
+                  "name": "ドーフー　トゥブシントゥグス"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "10"
+            }
+          }
+        },
+        {
+          "id": "469468",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "説明"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "前月の売上等の報告\n・前月および今月以降の売上状況の確認\n・前月の納品前報告評価の確認\n\n※月末最終勤務日では退勤までに売上管理表の下記を確認してください。\n・自分がメイン担当した物件が納品済または納品未請求になっているか。\n　アシストで担当された方の欄も全て確認する。\n・自身の欄に記載されているものが全て納品済または納品未請求になっているか。\n　アシストで担当したものも含めて。なっていなければメイン担当に確認する。\n・請求金額が整合しているか。\n・当月の時間外労働時間を入力する(退勤後速やかに)。\n\n\n--書記--\n単月の売上目標の89%の達成度"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "ueno@eu-plan.co.jp",
+                  "name": "上野　顕司"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "5"
+            }
+          }
+        },
+        {
+          "id": "471428",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "連絡、確認"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "上野課長の勤続10年祝い\n日時：2026/2/12㈭　11：45～13：30\n場所：とうふ屋うかいで昼食　\n　　　2階和室　畳にイス\n　　　https://www.ukai.co.jp/shiba/\n参加：24名で予約中（役員・正社員・パートタイム社員・内定者）\n備考：原則は社員旅行などの機会に行うこととする\n\n　　　＜正社員＞\n　　　・勤務時間内に全員参加\n　　　　KING OF TIMEの操作は不要\n  \n　　　＜パートタイム社員＞\n　　　・高井さんと小林さんは労務チャットで岸岡が連絡\n　　　　福岡さんは「26年内定者チャット」で根岸さんより案内\n　　　　（案内文は岸岡作成）\n　　　　参加は自由\n　　　　勤務日で参加する場合は、通常の勤怠を適用\n　　　　勤務日でなく参加する場合または内定者は交通費として1,000円のみ\n　　　　現金支給\n　　　　返信期限：2025年12月26日㈮15：00まで\n\n　　　＜フルリモート社員＞\n　　　・山田さん、藤村さんは日帰り参加\n　　　　交通費支給\n　　　　ただし、当日は業務時間はほぼ取れない\n　　　　スケジュール的に厳しければ不参加を認める\n　　　　返信期限：2025年12月26日㈮15：00まで\n\nその他：食材アレルギーについては「なし」として予約\n　　　　ある場合は2025/12/26までに個人チャットで岸岡に連絡すること\n\n\n\n"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "office@eu-plan.co.jp",
+                  "name": "岸岡　仁美"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "5"
+            }
+          }
+        },
+        {
+          "id": "471868",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "連絡、確認"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "健康診断結果の保管\n・ジョブカン労務HRのプロフィール欄より保管"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "office@eu-plan.co.jp",
+                  "name": "岸岡　仁美"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "1"
+            }
+          }
+        },
+        {
+          "id": "472076",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "注意事項"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "郵便物の受け取り報告について\n・必ず口頭もしくはチャットで受取の報告を。\n\n会議中はWEB会議でも聞くことに集中する。\n・WEB会議中に他の作業をしていて話を聞いていないように見える人が散見される。\n・会議を主催している人が許可したとき以外は他の作業はしない。\n\n--書記--\nWEB会議中も対面の会議と同様に行う。\n万が一会議中に作業を行う場合は事前に相談する。"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "ozaki@eu-plan.co.jp",
+                  "name": "尾崎　光"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "3"
+            }
+          }
+        },
+        {
+          "id": "472084",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "説明"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "大和ハウス様の仕事について\n\n--書記--\nすごく大事な仕事なので責任感を持って行ってもらいたい。"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "ozaki@eu-plan.co.jp",
+                  "name": "尾崎　光"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "3"
+            }
+          }
+        },
+        {
+          "id": "472086",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "連絡、確認"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "営業電話はOZの判断により、ブロックしている。\nCＤの業務負担削減のため。"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "ozaki@eu-plan.co.jp",
+                  "name": "尾崎　光"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "3"
+            }
+          }
+        },
+        {
+          "id": "472080",
+          "value": {
+            "ドロップダウン_0": {
+              "type": "DROP_DOWN",
+              "value": "連絡、確認"
+            },
+            "文字列__複数行_": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "kintoneの社内ルール及びJM年間スケジュール専用AIチャットボットの試用を開始\n\n--書記--\n後ほどチャットに招待をする。\n内容をブラッシュアップしてもらいたい。\n質問すればするほど精度が上がってくる。\n\nonedriveの検索システムを現在制作中"
+            },
+            "ユーザー選択_1": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "ozaki@eu-plan.co.jp",
+                  "name": "尾崎　光"
+                }
+              ]
+            },
+            "添付ファイル": {
+              "type": "FILE",
+              "value": []
+            },
+            "数値": {
+              "type": "NUMBER",
+              "value": "3"
+            }
+          }
+        }
+      ]
+    },
+    "更新者": {
+      "type": "MODIFIER",
+      "value": {
+        "code": "hayami_shg7398@eu-plan.co.jp",
+        "name": "速水　奨悟"
+      }
+    },
+    "作成者": {
+      "type": "CREATOR",
+      "value": {
+        "code": "kondou_ayk5864@eu-plan.co.jp",
+        "name": "近藤　彩夏"
+      }
+    },
+    "Table_1": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "468250",
+          "value": {
+            "ユーザー選択_9": {
+              "type": "USER_SELECT",
+              "value": []
+            },
+            "文字列__複数行__0": {
+              "type": "MULTI_LINE_TEXT",
+              "value": ""
+            }
+          }
+        }
+      ]
+    },
+    "ドロップダウン": {
+      "type": "DROP_DOWN",
+      "value": "22期"
+    },
+    "Table_3": {
+      "type": "SUBTABLE",
+      "value": [
+        {
+          "id": "468251",
+          "value": {
+            "添付ファイル_0": {
+              "type": "FILE",
+              "value": []
+            },
+            "文字列__複数行__2": {
+              "type": "MULTI_LINE_TEXT",
+              "value": "＜オフィス環境改善アンケート実施について＞\nオフィス環境改善アンケートを12月第一週目に予定しております。\nアンケートの配布は当日チャットにてお送りいたします。\n\n--書記--\nKO) DNへ非常口の場所とヘルメットについての説明をお願いします。"
+            },
+            "ユーザー選択_3": {
+              "type": "USER_SELECT",
+              "value": [
+                {
+                  "code": "dookhuu@eu-plan.co.jp",
+                  "name": "ドーフー　トゥブシントゥグス"
+                }
+              ]
+            },
+            "数値_0": {
+              "type": "NUMBER",
+              "value": "1"
+            }
+          }
+        }
+      ]
+    },
+    "$revision": {
+      "type": "__REVISION__",
+      "value": "19"
+    },
+    "ユーザー選択": {
+      "type": "USER_SELECT",
+      "value": [
+        {
+          "code": "yaba_dik6593@eu-plan.co.jp",
+          "name": "矢羽　大樹"
+        }
+      ]
+    },
+    "文字列__1行__0": {
+      "type": "SINGLE_LINE_TEXT",
+      "value": ""
+    },
+    "更新日時": {
+      "type": "UPDATED_TIME",
+      "value": "2025-12-01T05:39:00Z"
+    },
+    "文字列__1行__2": {
+      "type": "SINGLE_LINE_TEXT",
+      "value": ""
+    },
+    "ユーザー選択_6": {
+      "type": "USER_SELECT",
+      "value": []
+    },
+    "ユーザー選択_2": {
+      "type": "USER_SELECT",
+      "value": []
+    },
+    "ユーザー選択_4": {
+      "type": "USER_SELECT",
+      "value": []
+    },
+    "作成日時": {
+      "type": "CREATED_TIME",
+      "value": "2025-10-27T04:09:00Z"
+    },
+    "ユーザー選択_0": {
+      "type": "USER_SELECT",
+      "value": [
+        {
+          "code": "hayami_shg7398@eu-plan.co.jp",
+          "name": "速水　奨悟"
+        }
+      ]
+    },
+    "日付": {
+      "type": "DATE",
+      "value": "2025-12-01"
+    },
+    "$id": {
+      "type": "__ID__",
+      "value": "381"
+    }
+  }
+}
