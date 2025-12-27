@@ -88,29 +88,31 @@ curl -X POST "http://localhost:3000/api/chatwork-test" \
   -d '{"question": "夏期休業はいつ？"}'
 ```
 
-### 3. [.env.local](./.env.local)
+### 3. 環境変数設定
 
-環境変数設定ファイル。
+環境変数は `.env.local`（ローカルテスト用）およびVercel（本番環境）に設定します。
 
 ```bash
 # Kintone API接続用
 KINTONE_DOMAIN=eu-plan.cybozu.com
 
 # JM記録アプリ（アプリID 117）
-KINTONE_API_TOKEN_JM=rSIPyQzzioQ3r2wbXFBF0jCC6I0RhYms9q8aAOzm
+KINTONE_API_TOKEN_JM=[Vercelに設定済み]
 KINTONE_APP_ID_JM=117
 
 # 年間スケジュールアプリ（アプリID 238）
-KINTONE_API_TOKEN_SCHEDULE=nM4eNyO6En5WrQFGbZEkIpZnrPU7YULzZX51mWtD
+KINTONE_API_TOKEN_SCHEDULE=[Vercelに設定済み]
 KINTONE_APP_ID_SCHEDULE=238
 
 # ルールブックアプリ（アプリID 296）
-KINTONE_API_TOKEN_RULEBOOK=xXaIMQ6u1YgAmVS2xS1nBPcATpYoeom4HJIjO8Lq
+KINTONE_API_TOKEN_RULEBOOK=[Vercelに設定済み]
 KINTONE_APP_ID_RULEBOOK=296
 
 # Gemini API
-GEMINI_API_KEY=AIzaSyCYkvmW-aSv82MEvau5j79ZVW6YwCrMQH0
+GEMINI_API_KEY=[Vercelに設定済み]
 ```
+
+**セキュリティ注意**: APIトークンは`.env.local`には記載せず、Vercelの環境変数のみで管理してください。
 
 ## 📈 パフォーマンス指標
 
@@ -198,13 +200,17 @@ npx tsx scripts/test-combined-data.ts
 ### 本番環境への展開
 
 1. **Vercel環境変数の設定**
+
+   以下の環境変数がVercelに設定されていることを確認してください:
    ```bash
-   KINTONE_API_TOKEN_JM=rSIPyQzzioQ3r2wbXFBF0jCC6I0RhYms9q8aAOzm
-   KINTONE_API_TOKEN_SCHEDULE=nM4eNyO6En5WrQFGbZEkIpZnrPU7YULzZX51mWtD
-   KINTONE_API_TOKEN_RULEBOOK=xXaIMQ6u1YgAmVS2xS1nBPcATpYoeom4HJIjO8Lq
+   KINTONE_DOMAIN=eu-plan.cybozu.com
+   KINTONE_API_TOKEN_JM=[管理者が設定]
+   KINTONE_API_TOKEN_SCHEDULE=[管理者が設定]
+   KINTONE_API_TOKEN_RULEBOOK=[管理者が設定]
    KINTONE_APP_ID_JM=117
    KINTONE_APP_ID_SCHEDULE=238
    KINTONE_APP_ID_RULEBOOK=296
+   GEMINI_API_KEY=[管理者が設定]
    ```
 
 2. **既存のChatworkエンドポイント更新**
