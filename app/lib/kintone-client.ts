@@ -409,7 +409,9 @@ function filterRelevantData(question: string, allData: string): string {
 
     // キーワードマッチング
     keywords.forEach(keyword => {
-      const regex = new RegExp(keyword, 'gi');
+      // 正規表現の特殊文字をエスケープ
+      const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedKeyword, 'gi');
       const matches = section.match(regex);
       if (matches) {
         score += matches.length * 10; // マッチ回数 × 10点
