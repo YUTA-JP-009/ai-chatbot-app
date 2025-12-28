@@ -37,6 +37,13 @@ export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord
   const apiToken = process.env.KINTONE_API_TOKEN_JM;
   const appId = process.env.KINTONE_APP_ID_JM || '117';
 
+  // デバッグ: 環境変数の値を確認（本番環境では削除推奨）
+  console.log('🔍 環境変数デバッグ:');
+  console.log(`  KINTONE_DOMAIN: ${domain ? '設定済み' : '未設定'}`);
+  console.log(`  KINTONE_API_TOKEN_JM: ${apiToken ? `設定済み（${apiToken.substring(0, 4)}...）` : '未設定'}`);
+  console.log(`  KINTONE_APP_ID_JM: ${appId}`);
+  console.log(`  USE_KINTONE_DATA: ${process.env.USE_KINTONE_DATA}`);
+
   if (!domain || !apiToken) {
     throw new Error('KINTONE_DOMAIN または KINTONE_API_TOKEN_JM が設定されていません');
   }
