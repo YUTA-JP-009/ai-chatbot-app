@@ -160,7 +160,7 @@ export async function fetchRulebookRecords(): Promise<KintoneRecord[]> {
 }
 
 /**
- * JM記録アプリの議事録をテキストに変換
+ * JM記録アプリの議事録をXML形式に変換
  */
 export function convertJMRecordsToText(records: KintoneRecord[]): string {
   const meetingNotes: string[] = [];
@@ -175,13 +175,14 @@ export function convertJMRecordsToText(records: KintoneRecord[]): string {
       continue;
     }
 
-    meetingNotes.push(`========================================`);
-    meetingNotes.push(`【データソース】JM記録アプリ - 全体ミーティング`);
-    meetingNotes.push(`【日付】${date}`);
-    meetingNotes.push(`【期】${period}`);
-    meetingNotes.push(`【レコードURL】https://eu-plan.cybozu.com/k/117/show#record=${recordId}`);
-    meetingNotes.push(`========================================`);
-    meetingNotes.push('');
+    // XMLタグ開始
+    meetingNotes.push(`<record id="jm_117_${recordId}">`);
+    meetingNotes.push(`  <url>https://eu-plan.cybozu.com/k/117/show#record=${recordId}</url>`);
+    meetingNotes.push(`  <content>`);
+    meetingNotes.push(`    データソース: JM記録アプリ - 全体ミーティング`);
+    meetingNotes.push(`    日付: ${date}`);
+    meetingNotes.push(`    期: ${period}`);
+    meetingNotes.push(``);
 
     for (const row of tableContent) {
       const content = row.value['文字列__複数行_']?.value;
@@ -189,12 +190,12 @@ export function convertJMRecordsToText(records: KintoneRecord[]): string {
         continue;
       }
 
-      meetingNotes.push(content.trim());
-      meetingNotes.push('');
-      meetingNotes.push('---');
-      meetingNotes.push('');
+      meetingNotes.push(`    ${content.trim()}`);
+      meetingNotes.push(``);
     }
 
+    meetingNotes.push(`  </content>`);
+    meetingNotes.push(`</record>`);
     meetingNotes.push('');
   }
 
@@ -202,7 +203,7 @@ export function convertJMRecordsToText(records: KintoneRecord[]): string {
 }
 
 /**
- * 年間スケジュールアプリの22期データをテキストに変換
+ * 年間スケジュールアプリの22期データをXML形式に変換
  */
 export function convertScheduleRecordToText(record: KintoneRecord): string {
   const scheduleNotes: string[] = [];
@@ -210,12 +211,13 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
   const recordId = record.$id.value;
   const period = record.数値?.value || '期不明';
 
-  scheduleNotes.push(`========================================`);
-  scheduleNotes.push(`【データソース】年間スケジュールアプリ`);
-  scheduleNotes.push(`【期】${period}期`);
-  scheduleNotes.push(`【レコードURL】https://eu-plan.cybozu.com/k/238/show#record=${recordId}`);
-  scheduleNotes.push(`========================================`);
-  scheduleNotes.push('');
+  // XMLタグ開始
+  scheduleNotes.push(`<schedule id="schedule_238_${recordId}">`);
+  scheduleNotes.push(`  <url>https://eu-plan.cybozu.com/k/238/show#record=${recordId}</url>`);
+  scheduleNotes.push(`  <content>`);
+  scheduleNotes.push(`    データソース: 年間スケジュールアプリ`);
+  scheduleNotes.push(`    期: ${period}期`);
+  scheduleNotes.push(``);
 
   // 全テーブルフィールドを処理（Table_3, Table_4, ... Table_16）
   const tableFields = [
@@ -241,8 +243,8 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
       continue;
     }
 
-    scheduleNotes.push(`【${tableField.label}】`);
-    scheduleNotes.push('');
+    scheduleNotes.push(`    【${tableField.label}】`);
+    scheduleNotes.push(``);
 
     for (const row of tableData) {
       // 全フィールドから有効なテキストを抽出
@@ -257,21 +259,21 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
       });
 
       if (allText.length > 0) {
-        scheduleNotes.push(allText.join('\n'));
-        scheduleNotes.push('');
-        scheduleNotes.push('---');
-        scheduleNotes.push('');
+        scheduleNotes.push(`    ${allText.join('\n    ')}`);
+        scheduleNotes.push(``);
       }
     }
-
-    scheduleNotes.push('');
   }
+
+  scheduleNotes.push(`  </content>`);
+  scheduleNotes.push(`</schedule>`);
+  scheduleNotes.push('');
 
   return scheduleNotes.join('\n');
 }
 
 /**
- * ルールブックアプリのレコードをテキストに変換
+ * ルールブックアプリのレコードをXML形式に変換
  */
 export function convertRulebookRecordsToText(records: KintoneRecord[]): string {
   const rulebookNotes: string[] = [];
@@ -286,35 +288,32 @@ export function convertRulebookRecordsToText(records: KintoneRecord[]): string {
       continue;
     }
 
-    rulebookNotes.push(`========================================`);
-    rulebookNotes.push(`【データソース】ルールブック`);
-    rulebookNotes.push(`【分類】${category}`);
-    rulebookNotes.push(`【項目】${title}`);
-    rulebookNotes.push(`【レコードURL】https://eu-plan.cybozu.com/k/296/show#record=${recordId}`);
-    rulebookNotes.push(`========================================`);
-    rulebookNotes.push('');
+    // XMLタグ開始
+    rulebookNotes.push(`<rule id="rule_296_${recordId}">`);
+    rulebookNotes.push(`  <url>https://eu-plan.cybozu.com/k/296/show#record=${recordId}</url>`);
+    rulebookNotes.push(`  <content>`);
+    rulebookNotes.push(`    データソース: ルールブック`);
+    rulebookNotes.push(`    分類: ${category}`);
+    rulebookNotes.push(`    項目: ${title}`);
+    rulebookNotes.push(``);
 
     for (const row of tableContent) {
       const rule = row.value['ルール']?.value;
       const rule0 = row.value['ルール_0']?.value;
 
       if (rule && typeof rule === 'string' && rule.trim() !== '') {
-        rulebookNotes.push(rule.trim());
-        rulebookNotes.push('');
+        rulebookNotes.push(`    ${rule.trim()}`);
+        rulebookNotes.push(``);
       }
 
       if (rule0 && typeof rule0 === 'string' && rule0.trim() !== '') {
-        rulebookNotes.push(rule0.trim());
-        rulebookNotes.push('');
-      }
-
-      if ((rule && typeof rule === 'string' && rule.trim() !== '') ||
-          (rule0 && typeof rule0 === 'string' && rule0.trim() !== '')) {
-        rulebookNotes.push('---');
-        rulebookNotes.push('');
+        rulebookNotes.push(`    ${rule0.trim()}`);
+        rulebookNotes.push(``);
       }
     }
 
+    rulebookNotes.push(`  </content>`);
+    rulebookNotes.push(`</rule>`);
     rulebookNotes.push('');
   }
 
