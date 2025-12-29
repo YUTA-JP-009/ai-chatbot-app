@@ -418,15 +418,18 @@ function extractKeywords(question: string): string[] {
 }
 
 /**
- * キーワードに基づいてデータをフィルタリング
+ * キーワードに基づいてデータをフィルタリング（XML形式対応）
  */
 function filterRelevantData(question: string, allData: string): string {
   const keywords = extractKeywords(question);
 
   console.log(`  🔍 抽出キーワード: ${keywords.join(', ')}`);
 
-  // データをセクションごとに分割
-  const sections = allData.split('========================================\n');
+  // XMLタグ単位で分割（<record>、<schedule>、<rule>）
+  const tagPattern = /(<record id="[^"]+">[\s\S]*?<\/record>|<schedule id="[^"]+">[\s\S]*?<\/schedule>|<rule id="[^"]+">[\s\S]*?<\/rule>)/g;
+  const sections = allData.match(tagPattern) || [];
+
+  console.log(`  📦 XMLタグ分割: ${sections.length}件のタグを検出`);
 
   // 各セクションのスコアを計算
   const scoredSections = sections.map(section => {
@@ -446,17 +449,24 @@ function filterRelevantData(question: string, allData: string): string {
     return { section, score };
   });
 
-  // スコアが0より大きいセクションのみ取得し、スコア順にソート
+  // スコアでソートして、上位15タグに絞る
   const relevantSections = scoredSections
     .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 15) // 上位15セクションに制限
+    .slice(0, 15) // 上位15タグに制限
     .map(item => item.section);
 
-  const filteredData = relevantSections.join('========================================\n');
+  const filteredData = relevantSections.join('\n\n');
 
   console.log(`  ✂️  フィルタリング結果: ${sections.length}件 → ${relevantSections.length}件`);
   console.log(`  📊 データ削減: ${allData.length.toLocaleString()}文字 → ${filteredData.length.toLocaleString()}文字 (${Math.round((1 - filteredData.length / allData.length) * 100)}%削減)`);
+
+  // デバッグ: 抽出されたタグIDを表示
+  const tagIds = relevantSections.map(section => {
+    const idMatch = section.match(/id="([^"]+)"/);
+    return idMatch ? idMatch[1] : 'unknown';
+  });
+  console.log(`  🏷️  フィルタリング後のタグID: ${tagIds.join(', ')}`);
 
   return filteredData;
 }
