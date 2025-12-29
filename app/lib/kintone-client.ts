@@ -204,6 +204,7 @@ export function convertJMRecordsToText(records: KintoneRecord[]): string {
 
 /**
  * 年間スケジュールアプリの22期データをXML形式に変換
+ * 各テーブルフィールドをTab番号ごとに分けて、個別のXMLタグとして出力
  */
 export function convertScheduleRecordToText(record: KintoneRecord): string {
   const scheduleNotes: string[] = [];
@@ -211,30 +212,26 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
   const recordId = record.$id.value;
   const period = record.数値?.value || '期不明';
 
-  // XMLタグ開始
-  scheduleNotes.push(`<schedule id="schedule_238_${recordId}">`);
-  scheduleNotes.push(`  <url>https://eu-plan.cybozu.com/k/238/show#record=${recordId}</url>`);
-  scheduleNotes.push(`  <content>`);
-  scheduleNotes.push(`    データソース: 年間スケジュールアプリ`);
-  scheduleNotes.push(`    期: ${period}期`);
-  scheduleNotes.push(``);
-
   // 全テーブルフィールドを処理（Table_3, Table_4, ... Table_16）
+  // 各テーブルフィールドに対応するTab番号を定義
   const tableFields = [
-    { name: 'Table_3', label: '毎月' },
-    { name: 'Table_4', label: '随時' },
-    { name: 'Table_5', label: '10月' },
-    { name: 'Table_6', label: '11月' },
-    { name: 'Table_7', label: '12月' },
-    { name: 'Table_8', label: '1月' },
-    { name: 'Table_9', label: '2月' },
-    { name: 'Table_10', label: '3月' },
-    { name: 'Table_11', label: '4月' },
-    { name: 'Table_12', label: '5月' },
-    { name: 'Table_13', label: '6月' },
-    { name: 'Table_14', label: '8月' },
-    { name: 'Table_16', label: '9月' },
+    { name: 'Table_3', label: '毎月', tab: 1 },
+    { name: 'Table_4', label: '随時', tab: 2 },
+    { name: 'Table_5', label: '10月', tab: 1 },
+    { name: 'Table_6', label: '11月', tab: 1 },
+    { name: 'Table_7', label: '12月', tab: 1 },
+    { name: 'Table_8', label: '1月', tab: 1 },
+    { name: 'Table_9', label: '2月', tab: 1 },
+    { name: 'Table_10', label: '3月', tab: 1 },
+    { name: 'Table_11', label: '4月', tab: 1 },
+    { name: 'Table_12', label: '5月', tab: 1 },
+    { name: 'Table_13', label: '6月', tab: 1 },
+    { name: 'Table_14', label: '8月', tab: 1 },
+    { name: 'Table_16', label: '9月', tab: 1 },
   ];
+
+  // Tab番号ごとにテーブルフィールドをグループ化
+  const tabGroups = new Map<number, typeof tableFields>();
 
   for (const tableField of tableFields) {
     const tableData = record[tableField.name]?.value as KintoneTableRow[] | undefined;
@@ -243,31 +240,51 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
       continue;
     }
 
-    scheduleNotes.push(`    【${tableField.label}】`);
-    scheduleNotes.push(``);
-
-    for (const row of tableData) {
-      // 全フィールドから有効なテキストを抽出
-      const allText: string[] = [];
-
-      Object.keys(row.value).forEach(key => {
-        const fieldValue = row.value[key]?.value;
-
-        if (typeof fieldValue === 'string' && fieldValue.trim() !== '') {
-          allText.push(fieldValue.trim());
-        }
-      });
-
-      if (allText.length > 0) {
-        scheduleNotes.push(`    ${allText.join('\n    ')}`);
-        scheduleNotes.push(``);
-      }
+    if (!tabGroups.has(tableField.tab)) {
+      tabGroups.set(tableField.tab, []);
     }
+    tabGroups.get(tableField.tab)!.push(tableField);
   }
 
-  scheduleNotes.push(`  </content>`);
-  scheduleNotes.push(`</schedule>`);
-  scheduleNotes.push('');
+  // Tab番号ごとに個別のXMLタグを生成
+  for (const [tabNumber, fields] of Array.from(tabGroups.entries()).sort((a, b) => a[0] - b[0])) {
+    scheduleNotes.push(`<schedule id="schedule_238_${recordId}_tab${tabNumber}">`);
+    scheduleNotes.push(`  <url>https://eu-plan.cybozu.com/k/238/show#record=${recordId}&tab=${tabNumber}</url>`);
+    scheduleNotes.push(`  <content>`);
+    scheduleNotes.push(`    データソース: 年間スケジュールアプリ`);
+    scheduleNotes.push(`    期: ${period}期`);
+    scheduleNotes.push(`    Tab: ${tabNumber}`);
+    scheduleNotes.push(``);
+
+    for (const tableField of fields) {
+      const tableData = record[tableField.name]?.value as KintoneTableRow[];
+
+      scheduleNotes.push(`    【${tableField.label}】`);
+      scheduleNotes.push(``);
+
+      for (const row of tableData) {
+        // 全フィールドから有効なテキストを抽出
+        const allText: string[] = [];
+
+        Object.keys(row.value).forEach(key => {
+          const fieldValue = row.value[key]?.value;
+
+          if (typeof fieldValue === 'string' && fieldValue.trim() !== '') {
+            allText.push(fieldValue.trim());
+          }
+        });
+
+        if (allText.length > 0) {
+          scheduleNotes.push(`    ${allText.join('\n    ')}`);
+          scheduleNotes.push(``);
+        }
+      }
+    }
+
+    scheduleNotes.push(`  </content>`);
+    scheduleNotes.push(`</schedule>`);
+    scheduleNotes.push('');
+  }
 
   return scheduleNotes.join('\n');
 }
