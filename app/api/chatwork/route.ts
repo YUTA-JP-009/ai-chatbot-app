@@ -486,10 +486,10 @@ https://eu-plan.cybozu.com/k/296/show#record=96
 - ステップ0: 「お歳暮」「受け取り」に関する質問なので、<rule>（ルールブック）と<schedule>（年間スケジュール）の両方を探索
 - ステップ1:
   * <rule id="rule_296_6"> に基本的な手順が記載
-  * <schedule id="schedule_238_8"> に実際の受け取り事例と具体的な依頼事項が記載
+  * <schedule id="schedule_238_8_tab2"> に実際の受け取り事例と具体的な依頼事項が記載（Tab 2: 随時イベント）
   * 両方を参照することでより詳細な回答が可能
 - ステップ2: 2つのタグの <content> を統合して回答を作成
-- ステップ3: 質問意図に基づいて関連度の高い順に2本のURLを列挙
+- ステップ3: 質問意図に基づいて関連度の高い順に2本のURLを列挙（Tab番号を含める）
 
 実際の回答:
 お歳暮を受け取った場合ですね！🎁
@@ -503,7 +503,7 @@ CDさんが、以下の内容を「全社チャットのタスク」にアップ
 
 📎 参考:
 https://eu-plan.cybozu.com/k/296/show#record=6
-https://eu-plan.cybozu.com/k/238/show#record=8
+https://eu-plan.cybozu.com/k/238/show#record=8&tab=2
 
 【良い回答例6: recordタグを参照する質問】
 （ユーザーの質問: "研修旅行はどこに行く？"）
