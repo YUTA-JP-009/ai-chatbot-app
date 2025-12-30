@@ -89,20 +89,21 @@ async function fetchJMRecordsInternal(): Promise<KintoneRecord[]> {
   return allRecords;
 }
 
+// モジュールレベルでキャッシュ関数を定義（重要: 関数内で定義すると毎回新しいインスタンスが生成される）
+const getCachedJMRecords = unstable_cache(
+  async () => fetchJMRecordsInternal(),
+  ['jm-records-data'],
+  {
+    revalidate: 3600, // 1時間
+    tags: ['jm-records']
+  }
+);
+
 /**
  * JM記録アプリ（アプリID 117）からレコードを取得
  * キャッシュ機能付き: 1時間有効な永続キャッシュ（Data Cache）
  */
 export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord[]> {
-  const getCachedJMRecords = unstable_cache(
-    async () => fetchJMRecordsInternal(),
-    ['jm-records-data'],
-    {
-      revalidate: 3600, // 1時間
-      tags: ['jm-records']
-    }
-  );
-
   const allRecords = await getCachedJMRecords();
   return maxRecords ? allRecords.slice(0, maxRecords) : allRecords;
 }
@@ -143,20 +144,21 @@ async function fetchScheduleRecordInternal(): Promise<KintoneRecord | null> {
   return record;
 }
 
+// モジュールレベルでキャッシュ関数を定義
+const getCachedScheduleRecord = unstable_cache(
+  async () => fetchScheduleRecordInternal(),
+  ['schedule-record-data'],
+  {
+    revalidate: 3600, // 1時間
+    tags: ['schedule-record']
+  }
+);
+
 /**
  * 年間スケジュールアプリ（アプリID 238）から22期のレコードを取得
  * キャッシュ機能付き: 1時間有効な永続キャッシュ（Data Cache）
  */
 export async function fetchScheduleRecord(): Promise<KintoneRecord | null> {
-  const getCachedScheduleRecord = unstable_cache(
-    async () => fetchScheduleRecordInternal(),
-    ['schedule-record-data'],
-    {
-      revalidate: 3600, // 1時間
-      tags: ['schedule-record']
-    }
-  );
-
   return await getCachedScheduleRecord();
 }
 
@@ -208,20 +210,21 @@ async function fetchRulebookRecordsInternal(): Promise<KintoneRecord[]> {
   return allRecords;
 }
 
+// モジュールレベルでキャッシュ関数を定義
+const getCachedRulebookRecords = unstable_cache(
+  async () => fetchRulebookRecordsInternal(),
+  ['rulebook-records-data'],
+  {
+    revalidate: 3600, // 1時間
+    tags: ['rulebook-records']
+  }
+);
+
 /**
  * ルールブックアプリ（アプリID 296）から全レコードを取得
  * キャッシュ機能付き: 1時間有効な永続キャッシュ（Data Cache）
  */
 export async function fetchRulebookRecords(): Promise<KintoneRecord[]> {
-  const getCachedRulebookRecords = unstable_cache(
-    async () => fetchRulebookRecordsInternal(),
-    ['rulebook-records-data'],
-    {
-      revalidate: 3600, // 1時間
-      tags: ['rulebook-records']
-    }
-  );
-
   return await getCachedRulebookRecords();
 }
 
