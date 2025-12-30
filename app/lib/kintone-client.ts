@@ -7,52 +7,13 @@
  * 3. ルールブックアプリ（アプリID: 296） - 社内ルール集
  *
  * キャッシュ機能:
- * - メモリキャッシュでAPI呼び出し回数を削減
- * - TTL（有効期限）: 5分
- * - 期待される効果: 600-1,200ms短縮（2回目以降のリクエスト）
+ * - Next.js Data Cache（unstable_cache）で永続的なキャッシュを実現
+ * - サーバーレス関数のインスタンス間でキャッシュを共有
+ * - TTL（有効期限）: 1時間（3600秒）
+ * - 期待される効果: 600-1,200ms短縮（2回目以降のリクエスト、異なるインスタンスでも有効）
  */
 
-// ============================================================
-// キャッシュ機構
-// ============================================================
-
-interface CacheEntry<T> {
-  data: T;
-  timestamp: number; // キャッシュ作成時刻
-}
-
-// キャッシュストレージ（メモリ内）
-const cache = {
-  jmRecords: null as CacheEntry<KintoneRecord[]> | null,
-  scheduleRecord: null as CacheEntry<KintoneRecord> | null,
-  rulebookRecords: null as CacheEntry<KintoneRecord[]> | null,
-};
-
-// キャッシュTTL（ミリ秒）: 5分 = 300,000ms
-const CACHE_TTL = 5 * 60 * 1000;
-
-/**
- * キャッシュが有効かチェック
- */
-function isCacheValid<T>(cacheEntry: CacheEntry<T> | null): boolean {
-  if (!cacheEntry) return false;
-  const now = Date.now();
-  const age = now - cacheEntry.timestamp;
-  return age < CACHE_TTL;
-}
-
-/**
- * キャッシュ統計をログ出力
- */
-function logCacheStats() {
-  const now = Date.now();
-  const stats = {
-    jm: cache.jmRecords ? `有効（${Math.round((now - cache.jmRecords.timestamp) / 1000)}秒前）` : '無効',
-    schedule: cache.scheduleRecord ? `有効（${Math.round((now - cache.scheduleRecord.timestamp) / 1000)}秒前）` : '無効',
-    rulebook: cache.rulebookRecords ? `有効（${Math.round((now - cache.rulebookRecords.timestamp) / 1000)}秒前）` : '無効',
-  };
-  console.log('📊 キャッシュ統計:', stats);
-}
+import { unstable_cache } from 'next/cache';
 
 // ============================================================
 // 型定義
@@ -80,31 +41,15 @@ export interface KintoneRecordsResponse {
 }
 
 /**
- * JM記録アプリ（アプリID 117）からレコードを取得
+ * JM記録アプリ（アプリID 117）からレコードを取得（内部実装）
  * 2025年10月1日以降のデータのみ
- *
- * キャッシュ機能付き: 5分間有効なメモリキャッシュ
  */
-export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord[]> {
-  // キャッシュチェック
-  if (isCacheValid(cache.jmRecords)) {
-    console.log('✅ JM記録: キャッシュヒット（API呼び出しスキップ）');
-    const cachedData = cache.jmRecords!.data;
-    return maxRecords ? cachedData.slice(0, maxRecords) : cachedData;
-  }
-
-  console.log('🔄 JM記録: キャッシュミス（API呼び出し実行）');
+async function fetchJMRecordsInternal(): Promise<KintoneRecord[]> {
+  console.log('🔄 JM記録: API呼び出し実行中...');
 
   const domain = process.env.KINTONE_DOMAIN;
   const apiToken = process.env.KINTONE_API_TOKEN_JM;
   const appId = process.env.KINTONE_APP_ID_JM || '117';
-
-  // デバッグ: 環境変数の値を確認（本番環境では削除推奨）
-  console.log('🔍 環境変数デバッグ:');
-  console.log(`  KINTONE_DOMAIN: ${domain ? '設定済み' : '未設定'}`);
-  console.log(`  KINTONE_API_TOKEN_JM: ${apiToken ? `設定済み（${apiToken.substring(0, 4)}...）` : '未設定'}`);
-  console.log(`  KINTONE_APP_ID_JM: ${appId}`);
-  console.log(`  USE_KINTONE_DATA: ${process.env.USE_KINTONE_DATA}`);
 
   if (!domain || !apiToken) {
     throw new Error('KINTONE_DOMAIN または KINTONE_API_TOKEN_JM が設定されていません');
@@ -113,9 +58,8 @@ export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord
   const allRecords: KintoneRecord[] = [];
   let offset = 0;
   const limit = 100;
-  const actualMaxRecords = maxRecords || 999999;
 
-  while (allRecords.length < actualMaxRecords) {
+  while (true) {
     const query = `日付 >= "2025-10-01" order by $id desc limit ${limit} offset ${offset}`;
     const encodedQuery = encodeURIComponent(query);
     const url = `https://${domain}/k/v1/records.json?app=${appId}&query=${encodedQuery}`;
@@ -137,34 +81,37 @@ export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord
     if (data.records.length === 0) break;
     allRecords.push(...data.records);
     if (data.records.length < limit) break;
-    if (allRecords.length >= actualMaxRecords) break;
 
     offset += limit;
   }
 
-  // キャッシュに保存
-  cache.jmRecords = {
-    data: allRecords,
-    timestamp: Date.now(),
-  };
-  console.log('💾 JM記録: キャッシュに保存しました（TTL: 5分）');
+  console.log(`✅ JM記録: ${allRecords.length}件取得完了`);
+  return allRecords;
+}
 
+/**
+ * JM記録アプリ（アプリID 117）からレコードを取得
+ * キャッシュ機能付き: 1時間有効な永続キャッシュ（Data Cache）
+ */
+export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord[]> {
+  const getCachedJMRecords = unstable_cache(
+    async () => fetchJMRecordsInternal(),
+    ['jm-records-data'],
+    {
+      revalidate: 3600, // 1時間
+      tags: ['jm-records']
+    }
+  );
+
+  const allRecords = await getCachedJMRecords();
   return maxRecords ? allRecords.slice(0, maxRecords) : allRecords;
 }
 
 /**
- * 年間スケジュールアプリ（アプリID 238）から22期のレコードを取得
- *
- * キャッシュ機能付き: 5分間有効なメモリキャッシュ
+ * 年間スケジュールアプリ（アプリID 238）から22期のレコードを取得（内部実装）
  */
-export async function fetchScheduleRecord(): Promise<KintoneRecord | null> {
-  // キャッシュチェック
-  if (isCacheValid(cache.scheduleRecord)) {
-    console.log('✅ 年間スケジュール: キャッシュヒット（API呼び出しスキップ）');
-    return cache.scheduleRecord!.data;
-  }
-
-  console.log('🔄 年間スケジュール: キャッシュミス（API呼び出し実行）');
+async function fetchScheduleRecordInternal(): Promise<KintoneRecord | null> {
+  console.log('🔄 年間スケジュール: API呼び出し実行中...');
 
   const domain = process.env.KINTONE_DOMAIN;
   const apiToken = process.env.KINTONE_API_TOKEN_SCHEDULE;
@@ -192,29 +139,32 @@ export async function fetchScheduleRecord(): Promise<KintoneRecord | null> {
   const data = await response.json();
   const record = data.record;
 
-  // キャッシュに保存
-  cache.scheduleRecord = {
-    data: record,
-    timestamp: Date.now(),
-  };
-  console.log('💾 年間スケジュール: キャッシュに保存しました（TTL: 5分）');
-
+  console.log('✅ 年間スケジュール: 取得完了');
   return record;
 }
 
 /**
- * ルールブックアプリ（アプリID 296）から全レコードを取得
- *
- * キャッシュ機能付き: 5分間有効なメモリキャッシュ
+ * 年間スケジュールアプリ（アプリID 238）から22期のレコードを取得
+ * キャッシュ機能付き: 1時間有効な永続キャッシュ（Data Cache）
  */
-export async function fetchRulebookRecords(): Promise<KintoneRecord[]> {
-  // キャッシュチェック
-  if (isCacheValid(cache.rulebookRecords)) {
-    console.log('✅ ルールブック: キャッシュヒット（API呼び出しスキップ）');
-    return cache.rulebookRecords!.data;
-  }
+export async function fetchScheduleRecord(): Promise<KintoneRecord | null> {
+  const getCachedScheduleRecord = unstable_cache(
+    async () => fetchScheduleRecordInternal(),
+    ['schedule-record-data'],
+    {
+      revalidate: 3600, // 1時間
+      tags: ['schedule-record']
+    }
+  );
 
-  console.log('🔄 ルールブック: キャッシュミス（API呼び出し実行）');
+  return await getCachedScheduleRecord();
+}
+
+/**
+ * ルールブックアプリ（アプリID 296）から全レコードを取得（内部実装）
+ */
+async function fetchRulebookRecordsInternal(): Promise<KintoneRecord[]> {
+  console.log('🔄 ルールブック: API呼び出し実行中...');
 
   const domain = process.env.KINTONE_DOMAIN;
   const apiToken = process.env.KINTONE_API_TOKEN_RULEBOOK;
@@ -254,14 +204,25 @@ export async function fetchRulebookRecords(): Promise<KintoneRecord[]> {
     offset += limit;
   }
 
-  // キャッシュに保存
-  cache.rulebookRecords = {
-    data: allRecords,
-    timestamp: Date.now(),
-  };
-  console.log('💾 ルールブック: キャッシュに保存しました（TTL: 5分）');
-
+  console.log(`✅ ルールブック: ${allRecords.length}件取得完了`);
   return allRecords;
+}
+
+/**
+ * ルールブックアプリ（アプリID 296）から全レコードを取得
+ * キャッシュ機能付き: 1時間有効な永続キャッシュ（Data Cache）
+ */
+export async function fetchRulebookRecords(): Promise<KintoneRecord[]> {
+  const getCachedRulebookRecords = unstable_cache(
+    async () => fetchRulebookRecordsInternal(),
+    ['rulebook-records-data'],
+    {
+      revalidate: 3600, // 1時間
+      tags: ['rulebook-records']
+    }
+  );
+
+  return await getCachedRulebookRecords();
 }
 
 /**
@@ -599,13 +560,10 @@ function filterRelevantData(question: string, allData: string): string {
 /**
  * 3つのアプリからデータを取得して統合（キーワードフィルタリング付き）
  *
- * キャッシュ機能により、2回目以降は600-1,200ms高速化
+ * キャッシュ機能により、2回目以降は600-1,200ms高速化（Data Cache使用）
  */
 export async function fetchAllKintoneData(question?: string): Promise<string> {
-  console.log('🔗 Kintone APIから全データを取得します');
-
-  // キャッシュ統計を表示
-  logCacheStats();
+  console.log('🔗 Kintone APIから全データを取得します（Data Cache使用）');
 
   try {
     // 1. JM記録アプリから全レコード取得（キャッシュ対応）
