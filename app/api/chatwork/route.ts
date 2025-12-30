@@ -564,6 +564,31 @@ https://eu-plan.cybozu.com/k/117/show#record=380
 - データベースに該当する情報がない場合は、その旨を優しく伝えること
 - 【自走支援】「総務に聞いて」など他者への誘導は避け、チャットボットで完結できる回答を心がける`;
 
+    // ============================================================
+    // デバッグ: Geminiに渡すXMLデータの詳細を記録
+    // ============================================================
+    console.log('\n🔍 ========== Gemini入力データのデバッグ ==========');
+    console.log('📊 検索結果に含まれるタグ一覧:');
+
+    // XMLデータからタグIDとURLを抽出
+    const tagIdPattern = /<(rule|record|schedule) id="([^"]+)">/g;
+    const urlPattern = /<url>([^<]+)<\/url>/g;
+
+    const tagIds: string[] = [];
+    let match;
+    while ((match = tagIdPattern.exec(searchResult)) !== null) {
+      tagIds.push(match[2]);
+    }
+
+    const urls: string[] = [];
+    while ((match = urlPattern.exec(searchResult)) !== null) {
+      urls.push(match[1]);
+    }
+
+    console.log('🏷️  抽出されたタグID:', tagIds);
+    console.log('🔗 抽出されたURL:', urls);
+    console.log('🔍 ==============================================\n');
+
     console.log('📤 Gemini APIにリクエスト送信中...');
     const result = await model.generateContent(prompt);
     console.log('📥 Gemini APIからレスポンス受信');
@@ -574,6 +599,30 @@ https://eu-plan.cybozu.com/k/117/show#record=380
     // レスポンスからテキストを取得
     const text = response.text();
     console.log('✅ Gemini生成テキスト:', text);
+
+    // ============================================================
+    // デバッグ: Geminiが出力したURLを検証
+    // ============================================================
+    console.log('\n🔍 ========== Gemini出力URLの検証 ==========');
+
+    // Geminiの回答からURLを抽出
+    const outputUrlPattern = /https:\/\/eu-plan\.cybozu\.com[^\s\n]+/g;
+    const outputUrls = text.match(outputUrlPattern) || [];
+
+    console.log('📎 Geminiが出力したURL:', outputUrls);
+
+    // 入力URLとの照合
+    console.log('\n📋 URL照合結果:');
+    outputUrls.forEach(outputUrl => {
+      const isInInput = urls.some(inputUrl => inputUrl === outputUrl);
+      if (isInInput) {
+        console.log(`  ✅ ${outputUrl} - 入力データに存在`);
+      } else {
+        console.log(`  ❌ ${outputUrl} - 入力データに存在しない（不正なURL）`);
+      }
+    });
+
+    console.log('🔍 ===========================================\n');
 
     // Geminiが回答内に「参照URL:」を含めているので、そのまま返す
     return text;
