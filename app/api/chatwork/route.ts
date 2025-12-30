@@ -645,6 +645,51 @@ https://eu-plan.cybozu.com/k/117/show#record=380
       }
     });
 
+    // ============================================================
+    // デバッグ: Geminiが出力したURLのContent全体を表示
+    // ============================================================
+    console.log('\n🔍 ========== Gemini出力URLのContent検証 ==========');
+    outputUrls.forEach(outputUrl => {
+      // URLからタグIDを特定
+      const tabMatch = outputUrl.match(/&tab=(\d+)/);
+      const recordMatch = outputUrl.match(/record=(\d+)/);
+
+      let tagId = '';
+      if (tabMatch && recordMatch) {
+        // scheduleタグ
+        tagId = `schedule_238_${recordMatch[1]}_tab${tabMatch[1]}`;
+      } else if (recordMatch) {
+        // recordまたはruleタグ
+        const appMatch = outputUrl.match(/\/k\/(\d+)\//);
+        if (appMatch) {
+          if (appMatch[1] === '117') {
+            tagId = `jm_117_${recordMatch[1]}`;
+          } else if (appMatch[1] === '296') {
+            tagId = `rule_296_${recordMatch[1]}`;
+          }
+        }
+      }
+
+      if (tagId) {
+        // タグIDからContent全体を抽出
+        const tagPattern = new RegExp(`<(?:rule|record|schedule) id="${tagId}">[\\s\\S]*?<content>([\\s\\S]*?)</content>`, '');
+        const match = searchResult.match(tagPattern);
+
+        if (match) {
+          const fullContent = match[1].trim();
+          console.log(`\n📋 ${tagId} のContent全体（${fullContent.length}文字）:`);
+          console.log(`${fullContent.substring(0, 500)}...`);
+
+          // キーワード検索（上野、面談、順番など）
+          const keywords = ['上野', '面談', '順番', 'UN', 'YD', '3番目', '10:00'];
+          const foundKeywords = keywords.filter(kw => fullContent.includes(kw));
+          console.log(`🔍 含まれるキーワード: ${foundKeywords.join(', ')}`);
+        } else {
+          console.log(`❌ ${tagId} のContentが見つかりません`);
+        }
+      }
+    });
+
     console.log('🔍 ===========================================\n');
 
     // Geminiが回答内に「参照URL:」を含めているので、そのまま返す
