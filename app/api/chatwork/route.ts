@@ -587,6 +587,19 @@ https://eu-plan.cybozu.com/k/117/show#record=380
 
     console.log('🏷️  抽出されたタグID:', tagIds);
     console.log('🔗 抽出されたURL:', urls);
+
+    // デバッグ: 各TagのContent先頭部分を表示（Geminiが何を見ているか確認）
+    console.log('\n📄 各TagのContent先頭部分:');
+    tagIds.forEach((tagId, index) => {
+      const tagPattern = new RegExp(`<(?:rule|record|schedule) id="${tagId}">[\\s\\S]*?<content>([\\s\\S]*?)</content>`, '');
+      const match = searchResult.match(tagPattern);
+      if (match) {
+        const content = match[1].trim();
+        const preview = content.substring(0, 150).replace(/\n/g, ' ');
+        console.log(`  ${tagId}: ${preview}...`);
+      }
+    });
+
     console.log('🔍 ==============================================\n');
 
     console.log('📤 Gemini APIにリクエスト送信中...');
