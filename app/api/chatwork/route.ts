@@ -774,8 +774,19 @@ https://eu-plan.cybozu.com/k/117/show#record=380
 
     console.log('🔍 ===========================================\n');
 
-    // Geminiが回答内に「参照URL:」を含めているので、そのまま返す
-    return text;
+    // ============================================================
+    // ユーザー向け回答の整形: 【使用したタグID】セクションを削除
+    // ============================================================
+    console.log('📝 ユーザー向け回答を整形中...');
+
+    // 【使用したタグID】セクション全体を削除（デバッグ用なのでユーザーには表示しない）
+    const cleanedText = text.replace(/【使用したタグID】\n(?:- .+\n?)+\n?/, '');
+
+    console.log('✅ 【使用したタグID】セクションを削除しました');
+    console.log(`📏 整形前: ${text.length}文字 → 整形後: ${cleanedText.length}文字`);
+
+    // 整形後の回答を返す
+    return cleanedText;
   } catch (error) {
     console.error('❌ Gemini API エラー:', error);
     console.error('📋 Error details:', JSON.stringify(error, null, 2));
