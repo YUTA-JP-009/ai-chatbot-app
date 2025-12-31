@@ -92,10 +92,10 @@ async function fetchJMRecordsInternal(): Promise<KintoneRecord[]> {
 // モジュールレベルでキャッシュ関数を定義（重要: 関数内で定義すると毎回新しいインスタンスが生成される）
 const getCachedJMRecords = unstable_cache(
   async () => fetchJMRecordsInternal(),
-  ['jm-records-data'],
+  ['jm-records-data-v2'], // キャッシュキーを変更（キャッシュクリア用）
   {
     revalidate: 3600, // 1時間
-    tags: ['jm-records']
+    tags: ['jm-records-v2'] // タグも変更
   }
 );
 
@@ -147,10 +147,10 @@ async function fetchScheduleRecordInternal(): Promise<KintoneRecord | null> {
 // モジュールレベルでキャッシュ関数を定義
 const getCachedScheduleRecord = unstable_cache(
   async () => fetchScheduleRecordInternal(),
-  ['schedule-record-data'],
+  ['schedule-record-data-v2'], // キャッシュキーを変更（キャッシュクリア用）
   {
     revalidate: 3600, // 1時間
-    tags: ['schedule-record']
+    tags: ['schedule-record-v2'] // タグも変更
   }
 );
 
@@ -213,10 +213,10 @@ async function fetchRulebookRecordsInternal(): Promise<KintoneRecord[]> {
 // モジュールレベルでキャッシュ関数を定義
 const getCachedRulebookRecords = unstable_cache(
   async () => fetchRulebookRecordsInternal(),
-  ['rulebook-records-data'],
+  ['rulebook-records-data-v2'], // キャッシュキーを変更（キャッシュクリア用）
   {
     revalidate: 3600, // 1時間
-    tags: ['rulebook-records']
+    tags: ['rulebook-records-v2'] // タグも変更
   }
 );
 
