@@ -521,29 +521,47 @@ function filterRelevantData(question: string, allData: string): string {
 
   console.log(`  📦 XMLタグ分割: ${sections.length}件のタグを検出`);
 
-  // 各セクションのスコアを計算
+  // 【改善】意図ベースのスコアリング
+  // 固有名詞（カタカナ、漢字の人名）を検出
+  const properNouns = keywords.filter(kw =>
+    /^[ぁ-ん一-龯]{2,}$/.test(kw) || // 漢字のみ2文字以上（人名の可能性）
+    /^[ァ-ヴー]{2,}$/.test(kw)        // カタカナのみ2文字以上（人名の可能性）
+  );
+
   const scoredSections = sections.map(section => {
     let score = 0;
 
-    // キーワードマッチング
+    // 【優先度1】固有名詞（人名）マッチング: 1件 = 100点
+    properNouns.forEach(properNoun => {
+      const escapedKeyword = properNoun.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedKeyword, 'gi');
+      const matches = section.match(regex);
+      if (matches) {
+        score += matches.length * 100; // 人名マッチは高得点
+      }
+    });
+
+    // 【優先度2】一般キーワードマッチング: 1件 = 10点
     keywords.forEach(keyword => {
-      // 正規表現の特殊文字をエスケープ
+      // 固有名詞は既にカウント済みなのでスキップ
+      if (properNouns.includes(keyword)) return;
+
       const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const regex = new RegExp(escapedKeyword, 'gi');
       const matches = section.match(regex);
       if (matches) {
-        score += matches.length * 10; // マッチ回数 × 10点
+        score += matches.length * 10; // 通常キーワード
       }
     });
 
     return { section, score };
   });
 
-  // スコアでソートして、上位15タグに絞る
+  // スコアでソートして、上位30タグに絞る（15 → 30に拡大）
   const relevantSections = scoredSections
     .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 15) // 上位15タグに制限
+    .slice(0, 30) // 上位30タグに拡大（精度向上のため）
     .map(item => item.section);
 
   const filteredData = relevantSections.join('\n\n');
@@ -551,12 +569,17 @@ function filterRelevantData(question: string, allData: string): string {
   console.log(`  ✂️  フィルタリング結果: ${sections.length}件 → ${relevantSections.length}件`);
   console.log(`  📊 データ削減: ${allData.length.toLocaleString()}文字 → ${filteredData.length.toLocaleString()}文字 (${Math.round((1 - filteredData.length / allData.length) * 100)}%削減)`);
 
-  // デバッグ: 抽出されたタグIDを表示
-  const tagIds = relevantSections.map(section => {
-    const idMatch = section.match(/id="([^"]+)"/);
-    return idMatch ? idMatch[1] : 'unknown';
-  });
-  console.log(`  🏷️  フィルタリング後のタグID: ${tagIds.join(', ')}`);
+  // デバッグ: 抽出されたタグIDとスコアを表示
+  const tagScores = scoredSections
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 30)
+    .map(item => {
+      const idMatch = item.section.match(/id="([^"]+)"/);
+      const id = idMatch ? idMatch[1] : 'unknown';
+      return `${id}(${item.score}点)`;
+    });
+  console.log(`  🏷️  フィルタリング後のタグID（スコア順）: ${tagScores.join(', ')}`);
 
   return filteredData;
 }
@@ -600,9 +623,13 @@ export async function fetchAllKintoneData(question?: string): Promise<string> {
 
     console.log(`✅ 全データ取得完了: ${combinedText.length.toLocaleString()}文字`);
 
-    // 【変更】キーワードフィルタリングを廃止
-    // Geminiに全件を渡して、より正確な判断をさせる
-    console.log('  ℹ️  キーワードフィルタリングなし: 全データをGeminiに渡します');
+    // 【改善】意図ベースのキーワードフィルタリングを実行
+    // 固有名詞（人名）を優先的にスコアリング
+    if (question) {
+      console.log('  🔍 意図ベースのキーワードフィルタリング実行中...');
+      const filteredText = filterRelevantData(question, combinedText);
+      return filteredText; // 上位30件に絞った結果を返す
+    }
 
     return combinedText;
 
