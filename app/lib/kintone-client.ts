@@ -623,13 +623,11 @@ export async function fetchAllKintoneData(question?: string): Promise<string> {
 
     console.log(`✅ 全データ取得完了: ${combinedText.length.toLocaleString()}文字`);
 
-    // 【改善】意図ベースのキーワードフィルタリングを実行
-    // 固有名詞（人名）を優先的にスコアリング
-    if (question) {
-      console.log('  🔍 意図ベースのキーワードフィルタリング実行中...');
-      const filteredText = filterRelevantData(question, combinedText);
-      return filteredText; // 上位30件に絞った結果を返す
-    }
+    // 【重要】キーワードフィルタリング廃止
+    // 理由: 150文字プレビューによる情報損失を防ぐため、全データをGeminiに渡す
+    // - Tab 2のプレビューに「上野」が含まれず、「年末大掃除」が表示される問題を解決
+    // - Geminiが全文を確認して正確にタグを選択できるようにする
+    console.log('  ℹ️  キーワードフィルタリングなし: 全データをGeminiに渡します');
 
     return combinedText;
 
