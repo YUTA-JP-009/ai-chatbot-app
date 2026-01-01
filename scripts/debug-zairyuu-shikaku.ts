@@ -1,6 +1,10 @@
 /**
- * 在留資格質問でのTab選択ミスをデバッグするスクリプト
- * Tab 2, Tab 3, Tab 8の<content>を比較する
+ * Tab 1 vs Tab 2 の完全な内容比較スクリプト
+ *
+ * 目的:
+ * - Tab 1 (schedule_238_8_tab1) に上野さんの面談情報が本当にないか確認
+ * - Tab 2 (schedule_238_8_tab2) の面談情報がどこに含まれているか確認
+ * - なぜGeminiがTab 1を選択したのか分析
  */
 
 import dotenv from 'dotenv';
@@ -10,16 +14,16 @@ import path from 'path';
 dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 import {
-  fetchScheduleRecord,
+  fetchScheduleRecordInternal,
   convertScheduleRecordToText
 } from '../app/lib/kintone-client';
 
 async function main() {
-  console.log('🔍 在留資格質問でのTab選択ミスをデバッグします\n');
+  console.log('🔍 Tab 1 vs Tab 2 の完全な内容比較を開始します\n');
 
   try {
-    // 年間スケジュールレコード取得
-    const record = await fetchScheduleRecord();
+    // 年間スケジュールレコード取得（キャッシュバイパス）
+    const record = await fetchScheduleRecordInternal();
 
     if (!record) {
       console.error('❌ レコードが見つかりませんでした');
@@ -31,11 +35,10 @@ async function main() {
     // XML形式に変換
     const xmlData = convertScheduleRecordToText(record);
 
-    // Tab 2, Tab 3, Tab 8のデータを抽出
+    // Tab 1 と Tab 2 のデータを抽出
     const tabs = [
-      { tabNumber: 2, label: '10月' },
-      { tabNumber: 3, label: '11月' },
-      { tabNumber: 8, label: '4月' }
+      { tabNumber: 1, label: '随時' },
+      { tabNumber: 2, label: '10月' }
     ];
 
     for (const tab of tabs) {
@@ -62,28 +65,45 @@ async function main() {
         const content = contentMatch ? contentMatch[1] : 'contentなし';
 
         console.log(`\n🔗 URL: ${url}`);
-        console.log(`\n📄 Content:\n${content}`);
+        console.log(`\n📄 Content全文:\n${content}`);
 
-        // 「在留資格」キーワードの出現回数
-        const keyword = '在留資格';
-        const keywordCount = (content.match(new RegExp(keyword, 'g')) || []).length;
+        // 「上野」キーワードの出現回数
+        const uenoCount = (content.match(/上野/g) || []).length;
+        console.log(`\n🔍 「上野」の出現回数: ${uenoCount}回`);
 
-        console.log(`\n🔍 「${keyword}」の出現回数: ${keywordCount}回`);
+        // 「面談」キーワードの出現回数
+        const mentanCount = (content.match(/面談/g) || []).length;
+        console.log(`🔍 「面談」の出現回数: ${mentanCount}回`);
 
         // contentの文字数
         console.log(`📊 Content文字数: ${content.length}文字`);
+
+        // 最初の150文字（プレビュー）
+        const preview = content.substring(0, 150);
+        console.log(`\n📌 Content最初の150文字（プレビュー）:\n${preview}...`);
+
+        // 「上野」を含む行を抽出
+        if (uenoCount > 0) {
+          const lines = content.split('\n');
+          const uenoLines = lines.filter(line => line.includes('上野'));
+          console.log(`\n🎯 「上野」を含む行（${uenoLines.length}行）:`);
+          uenoLines.forEach((line, index) => {
+            console.log(`  ${index + 1}. ${line.trim()}`);
+          });
+        }
       } else {
         console.log(`❌ Tab ${tab.tabNumber} のデータが見つかりませんでした`);
       }
     }
 
-    console.log(`\n${'='.repeat(80)}`);
-    console.log('🎯 結論:');
+    console.log('\n' + '='.repeat(80));
+    console.log('🎯 分析結果:');
     console.log('='.repeat(80));
-    console.log('1. 各Tabの「在留資格」出現回数を比較');
-    console.log('2. 各Tabのcontent文字数を比較');
-    console.log('3. Tab 2やTab 8に「在留資格」が含まれている場合、キーワードフィルタリングが誤動作している');
-    console.log('4. Tab 3のcontent文字数がTab 2やTab 8より少ない場合、Geminiが「詳しさ」で判断している');
+    console.log('1. Tab 1とTab 2の「上野」「面談」の出現回数を比較');
+    console.log('2. Tab 1に「上野」が含まれていない場合、Geminiの誤選択を確認');
+    console.log('3. Tab 2のプレビュー（最初の150文字）に「上野」が含まれていない場合、');
+    console.log('   コンテンツプレビューの問題を確認');
+    console.log('4. Tab 2の「上野」を含む行の位置を確認（コンテンツの深さを分析）');
 
   } catch (error) {
     console.error('❌ エラーが発生しました:', error);

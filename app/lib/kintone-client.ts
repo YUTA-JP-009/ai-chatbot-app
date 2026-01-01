@@ -110,8 +110,9 @@ export async function fetchJMRecords(maxRecords?: number): Promise<KintoneRecord
 
 /**
  * 年間スケジュールアプリ（アプリID 238）から22期のレコードを取得（内部実装）
+ * スクリプトからの直接呼び出し用にexport
  */
-async function fetchScheduleRecordInternal(): Promise<KintoneRecord | null> {
+export async function fetchScheduleRecordInternal(): Promise<KintoneRecord | null> {
   console.log('🔄 年間スケジュール: API呼び出し実行中...');
 
   const domain = process.env.KINTONE_DOMAIN;
@@ -561,9 +562,14 @@ function filterRelevantData(question: string, allData: string): string {
 }
 
 /**
- * 3つのアプリからデータを取得して統合（キーワードフィルタリング付き）
+ * 3つのアプリからデータを取得して統合
  *
  * キャッシュ機能により、2回目以降は600-1,200ms高速化（Data Cache使用）
+ *
+ * 【重要】キーワードフィルタリングを廃止し、全データをGeminiに渡す方式に変更
+ * - フィルタリングによる情報損失を防ぐ
+ * - Geminiが全文を見て正確に判断できる
+ * - プレビュー切り詰めによるミスマッチを防ぐ
  */
 export async function fetchAllKintoneData(question?: string): Promise<string> {
   console.log('🔗 Kintone APIから全データを取得します（Data Cache使用）');
@@ -594,12 +600,9 @@ export async function fetchAllKintoneData(question?: string): Promise<string> {
 
     console.log(`✅ 全データ取得完了: ${combinedText.length.toLocaleString()}文字`);
 
-    // 6. キーワードフィルタリング（質問が提供された場合）
-    if (question) {
-      console.log('  🔍 キーワードフィルタリング実行中...');
-      const filteredText = filterRelevantData(question, combinedText);
-      return filteredText;
-    }
+    // 【変更】キーワードフィルタリングを廃止
+    // Geminiに全件を渡して、より正確な判断をさせる
+    console.log('  ℹ️  キーワードフィルタリングなし: 全データをGeminiに渡します');
 
     return combinedText;
 
