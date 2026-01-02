@@ -658,6 +658,9 @@ function calculateTagScore(tagContent: string, keywords: string[]): number {
 
 /**
  * XMLタグを解析してフィルタリング
+ * スコア閾値により動的にタグ数を調整:
+ * - 高スコア（100以上）: 明確な質問 → 10件に絞る（高速化優先）
+ * - 低スコア（100未満）: 曖昧な質問 → 20件確保（精度優先）
  */
 function filterRelevantTags(combinedText: string, keywords: string[]): string {
   // XMLタグを抽出（<record>, <schedule>, <rule>）
@@ -674,10 +677,13 @@ function filterRelevantTags(combinedText: string, keywords: string[]): string {
   // スコア降順でソート
   tags.sort((a, b) => b.score - a.score);
 
-  // 上位20件を選択（精度維持のため多めに確保）
-  const topTags = tags.slice(0, 20);
+  // スコア閾値による動的な件数調整
+  const maxScore = tags[0]?.score || 0;
+  const tagLimit = maxScore >= 100 ? 10 : 20;
 
-  console.log(`  🔍 キーワードフィルタリング: ${tags.length}件 → ${topTags.length}件に絞り込み`);
+  const topTags = tags.slice(0, tagLimit);
+
+  console.log(`  🔍 キーワードフィルタリング: ${tags.length}件 → ${topTags.length}件に絞り込み（最高スコア: ${maxScore}）`);
   console.log(`  📊 上位3件のスコア: ${topTags.slice(0, 3).map(t => `${t.id}(${t.score})`).join(', ')}`);
 
   return topTags.map(t => t.content).join('\n\n');
