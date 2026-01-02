@@ -3,6 +3,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getAllQAAsText } from '../../data/qa-database';
+import { logToSheetsAsync } from '../../lib/sheets-logger';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -15,6 +16,7 @@ export async function GET() {
 
 // --- メインの処理：ChatworkからのPOSTリクエストを受け取る ---
 export async function POST(request: Request) {
+  const startTime = Date.now(); // 処理開始時刻
   console.log('🔥 Webhook received!');
 
   // 1. セキュリティチェック - 署名ベース認証に対応
@@ -73,19 +75,48 @@ export async function POST(request: Request) {
     const searchResult = await askAI(question);
 
     // 3.3. Gemini APIで質問応答形式の回答を生成
-    const aiResponse = await generateAnswerWithGemini(question, searchResult.content, searchResult.sourceUrl);
+    const geminiResult = await generateAnswerWithGemini(question, searchResult.content, searchResult.sourceUrl);
 
     // 3.4. ボットの人格設定を反映（BOT_PREFIXは除外）
-    const personalizedResponse = applyBotPersonality(aiResponse, false); // false = PREFIX除外
+    const personalizedResponse = applyBotPersonality(geminiResult.answer, false); // false = PREFIX除外
 
     // 4. AIの回答をChatworkに返信する
     await replyToChatwork(roomId, personalizedResponse);
+
+    // 5. 処理時間を計算
+    const endTime = Date.now();
+    const processingTime = (endTime - startTime) / 1000; // 秒に変換
+
+    // 6. スプレッドシートにログを記録（非同期、Fire-and-Forget）
+    logToSheetsAsync({
+      timestamp: new Date().toISOString(),
+      questionerId: String(fromAccountId),
+      question: question,
+      answer: geminiResult.answer,
+      processingTime: processingTime,
+      promptTokenCount: geminiResult.promptTokenCount,
+      usedTagIds: geminiResult.usedTagIds,
+    });
 
     // Chatworkには200 OKを返す
     return NextResponse.json({ message: 'OK' });
 
   } catch (error) {
     console.error('エラーが発生しました:', error);
+
+    // エラー時のログ記録
+    const endTime = Date.now();
+    const processingTime = (endTime - startTime) / 1000;
+
+    logToSheetsAsync({
+      timestamp: new Date().toISOString(),
+      questionerId: String(fromAccountId),
+      question: question,
+      answer: '',
+      processingTime: processingTime,
+      error: error instanceof Error ? error.message : String(error),
+    });
+
     // エラーが発生した場合も、Chatworkにエラーメッセージを返信する
     await replyToChatwork(roomId, '申し訳ありません、エラーが発生しました。');
     return new NextResponse('Internal Server Error', { status: 500 });
@@ -210,14 +241,22 @@ async function askAI(question: string): Promise<{ content: string; sourceUrl: st
 }
 
 // --- Gemini APIで質問応答形式の回答を生成する関数 ---
-async function generateAnswerWithGemini(question: string, searchResult: string, _sourceUrl: string | null): Promise<string> {
+async function generateAnswerWithGemini(
+  question: string,
+  searchResult: string,
+  _sourceUrl: string | null
+): Promise<{
+  answer: string;
+  promptTokenCount?: number;
+  usedTagIds?: string[];
+}> {
   try {
     // Google AI SDKを使用（APIキーベース認証）
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
       console.error('❌ GEMINI_API_KEY が設定されていません');
-      return searchResult;
+      return { answer: searchResult };
     }
 
     console.log('🤖 Gemini API 呼び出し開始...');
@@ -817,12 +856,24 @@ https://eu-plan.cybozu.com/k/117/show#record=380
     console.log('✅ 【使用したタグID】セクションを削除しました');
     console.log(`📏 整形前: ${text.length}文字 → 整形後: ${cleanedText.length}文字`);
 
+    // promptTokenCountとusedTagIdsを抽出
+    const promptTokenCount = response.usageMetadata?.promptTokenCount;
+    const usedTagIds = tagIdSectionMatch
+      ? tagIdSectionMatch[1].trim().split('\n').map(line => line.replace(/^- /, '').trim())
+      : undefined;
+
     // 整形後の回答を返す
-    return cleanedText;
+    return {
+      answer: cleanedText,
+      promptTokenCount,
+      usedTagIds,
+    };
   } catch (error) {
     console.error('❌ Gemini API エラー:', error);
     console.error('📋 Error details:', JSON.stringify(error, null, 2));
     // Gemini APIが失敗した場合は元の検索結果を返す
-    return searchResult;
+    return {
+      answer: searchResult,
+    };
   }
 }
