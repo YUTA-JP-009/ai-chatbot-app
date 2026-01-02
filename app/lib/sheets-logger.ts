@@ -34,8 +34,29 @@ async function getSheetsClient() {
     throw new Error('GOOGLE_SHEETS_CREDENTIALS environment variable is not set');
   }
 
+  // JSONパース（.env.localの場合、改行やエスケープが正しくない可能性があるため処理）
+  let parsedCredentials;
+  try {
+    parsedCredentials = JSON.parse(credentials);
+  } catch (firstError) {
+    try {
+      // 先頭と末尾の引用符を削除（.env.localで二重引用符になっている場合）
+      let cleaned = credentials.trim();
+      if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+        cleaned = cleaned.slice(1, -1);
+      }
+      // 実際の改行文字を\\nにエスケープ
+      cleaned = cleaned.replace(/\n/g, '\\n');
+      // エスケープされたダブルクォートを修正
+      cleaned = cleaned.replace(/\\"/g, '"');
+      parsedCredentials = JSON.parse(cleaned);
+    } catch (secondError) {
+      throw new Error(`Failed to parse GOOGLE_SHEETS_CREDENTIALS: ${secondError}`);
+    }
+  }
+
   const auth = new google.auth.GoogleAuth({
-    credentials: JSON.parse(credentials),
+    credentials: parsedCredentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
