@@ -625,6 +625,64 @@ function filterRelevantData(question: string, allData: string): string {
  * - Geminiが全文を見て正確に判断できる
  * - プレビュー切り詰めによるミスマッチを防ぐ
  */
+/**
+ * タグとキーワードのマッチングスコアを計算
+ * - タイトル/見出しマッチ: 10点
+ * - 本文マッチ: 3点
+ * - 固有名詞（カタカナ・人名）マッチ: +5点ボーナス
+ */
+function calculateTagScore(tagContent: string, keywords: string[]): number {
+  let score = 0;
+
+  // タグの最初の200文字をタイトル領域とみなす
+  const title = tagContent.substring(0, 200);
+  const body = tagContent.substring(200);
+
+  for (const keyword of keywords) {
+    // タイトルマッチ（重要）
+    const titleMatches = (title.match(new RegExp(keyword, 'g')) || []).length;
+    score += titleMatches * 10;
+
+    // 本文マッチ
+    const bodyMatches = (body.match(new RegExp(keyword, 'g')) || []).length;
+    score += bodyMatches * 3;
+
+    // カタカナ固有名詞ボーナス（人名・地名・プロジェクト名）
+    if (/^[ァ-ヴー]+$/.test(keyword) && keyword.length >= 3) {
+      score += titleMatches * 5;
+    }
+  }
+
+  return score;
+}
+
+/**
+ * XMLタグを解析してフィルタリング
+ */
+function filterRelevantTags(combinedText: string, keywords: string[]): string {
+  // XMLタグを抽出（<record>, <schedule>, <rule>）
+  const tagPattern = /<(record|schedule|rule) id="([^"]+)">([\s\S]*?)<\/\1>/g;
+  const tags: Array<{ type: string; id: string; content: string; score: number }> = [];
+
+  let match;
+  while ((match = tagPattern.exec(combinedText)) !== null) {
+    const [fullMatch, type, id, content] = match;
+    const score = calculateTagScore(content, keywords);
+    tags.push({ type, id, content: fullMatch, score });
+  }
+
+  // スコア降順でソート
+  tags.sort((a, b) => b.score - a.score);
+
+  // 上位20件を選択（精度維持のため多めに確保）
+  const topTags = tags.slice(0, 20);
+
+  console.log(`  🔍 キーワードフィルタリング: ${tags.length}件 → ${topTags.length}件に絞り込み`);
+  console.log(`  📊 上位3件のスコア: ${topTags.slice(0, 3).map(t => `${t.id}(${t.score})`).join(', ')}`);
+
+  return topTags.map(t => t.content).join('\n\n');
+}
+
 export async function fetchAllKintoneData(question?: string): Promise<string> {
   console.log('🔗 Kintone APIから全データを取得します（Data Cache使用）');
 
@@ -654,12 +712,19 @@ export async function fetchAllKintoneData(question?: string): Promise<string> {
 
     console.log(`✅ 全データ取得完了: ${combinedText.length.toLocaleString()}文字`);
 
-    // 【重要】キーワードフィルタリング廃止
-    // 理由: 150文字プレビューによる情報損失を防ぐため、全データをGeminiに渡す
-    // - Tab 2のプレビューに「上野」が含まれず、「年末大掃除」が表示される問題を解決
-    // - Geminiが全文を確認して正確にタグを選択できるようにする
-    console.log('  ℹ️  キーワードフィルタリングなし: 全データをGeminiに渡します');
+    // 6. 質問ベースのキーワードフィルタリング（精度重視で上位20件確保）
+    if (question && question.trim().length > 0) {
+      const keywords = extractKeywords(question);
+      console.log(`  🔑 抽出キーワード: ${keywords.join(', ')}`);
 
+      const filteredText = filterRelevantTags(combinedText, keywords);
+      console.log(`  ✅ フィルタリング後: ${filteredText.length.toLocaleString()}文字`);
+
+      return filteredText;
+    }
+
+    // 質問がない場合は全データを返す（フォールバック）
+    console.log('  ℹ️  質問なし: 全データをGeminiに渡します');
     return combinedText;
 
   } catch (error) {
