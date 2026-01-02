@@ -626,12 +626,15 @@ function calculateTagScore(tagContent: string, keywords: string[]): number {
 }
 
 /**
- * キーワード該当箇所を抽出（2段階目のフィルタリング）
- * - タグのヘッダー（URL、データソース、期、Tab）は必ず保持
- * - キーワード周辺200文字を抽出
- * - 複数箇所にキーワードがあれば全て抽出
+ * タグ内容を最大文字数に制限（2段階目のフィルタリング）
+ * - ヘッダー（URL、データソース、期、Tab）: 必ず保持
+ * - 本文: 最大2,000文字に制限
+ *
+ * 重要キーワード抽出は複雑で逆効果だったため、シンプルな文字数制限に変更
  */
-function extractRelevantSections(tagContent: string, keywords: string[]): string {
+function truncateTagContent(tagContent: string): string {
+  const MAX_BODY_LENGTH = 2000;
+
   const lines = tagContent.split('\n');
 
   // ヘッダー部分を抽出（最初の10行: URL、データソース、期、Tab）
@@ -639,40 +642,23 @@ function extractRelevantSections(tagContent: string, keywords: string[]): string
   const header = headerLines.join('\n');
 
   // 本文部分
-  const bodyText = lines.slice(10).join('\n');
+  const bodyLines = lines.slice(10);
+  const bodyText = bodyLines.join('\n');
 
-  // キーワードが含まれる箇所を抽出（前後100文字）
-  const sections: string[] = [];
-
-  for (const keyword of keywords) {
-    const regex = new RegExp(keyword, 'g');
-    let match;
-
-    while ((match = regex.exec(bodyText)) !== null) {
-      const start = Math.max(0, match.index - 100);
-      const end = Math.min(bodyText.length, match.index + keyword.length + 100);
-      const section = bodyText.substring(start, end);
-
-      // 重複排除（既に同じ箇所を抽出済みならスキップ）
-      if (!sections.some(s => s.includes(section) || section.includes(s))) {
-        sections.push(section);
-      }
-    }
+  // 本文を最大2,000文字に制限
+  if (bodyText.length <= MAX_BODY_LENGTH) {
+    return tagContent; // 制限以下ならそのまま返す
   }
 
-  // ヘッダー + 該当箇所
-  if (sections.length > 0) {
-    return `${header}\n\n【該当箇所】\n${sections.join('\n...\n')}`;
-  }
+  const truncatedBody = bodyText.substring(0, MAX_BODY_LENGTH);
 
-  // キーワードが見つからない場合は全文返す（フォールバック）
-  return tagContent;
+  return `${header}\n\n${truncatedBody}\n\n...(以下省略)`;
 }
 
 /**
  * XMLタグを解析してフィルタリング（2段階フィルタリング）
  * - 1段階目: スコアリングで上位20件を選択
- * - 2段階目: 各タグからキーワード該当箇所を抽出
+ * - 2段階目: 各タグを最大2,000文字に制限
  */
 function filterRelevantTags(combinedText: string, keywords: string[]): string {
   // XMLタグを抽出（<record>, <schedule>, <rule>）
@@ -695,7 +681,7 @@ function filterRelevantTags(combinedText: string, keywords: string[]): string {
   console.log(`  🔍 1段階目フィルタリング: ${tags.length}件 → ${topTags.length}件に絞り込み`);
   console.log(`  📊 上位3件のスコア: ${topTags.slice(0, 3).map(t => `${t.id}(${t.score})`).join(', ')}`);
 
-  // 【2段階目】各タグからキーワード該当箇所を抽出
+  // 【2段階目】各タグを最大2,000文字に制限
   const extractedTags = topTags.map(tag => {
     // XMLタグを再解析してコンテンツ部分を抽出
     const contentMatch = tag.content.match(/<(?:record|schedule|rule) id="[^"]+">([\s\S]*?)<\/(?:record|schedule|rule)>/);
@@ -705,12 +691,12 @@ function filterRelevantTags(combinedText: string, keywords: string[]): string {
     }
 
     const originalContent = contentMatch[1];
-    const extractedContent = extractRelevantSections(originalContent, keywords);
+    const truncatedContent = truncateTagContent(originalContent);
 
     // XMLタグを再構築
     const tagName = tag.type;
     const tagId = tag.id;
-    return `<${tagName} id="${tagId}">\n${extractedContent}\n</${tagName}>`;
+    return `<${tagName} id="${tagId}">\n${truncatedContent}\n</${tagName}>`;
   });
 
   const result = extractedTags.join('\n\n');
