@@ -329,10 +329,6 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
     scheduleNotes.push(`    Tab: ${tabNumber}`);
     scheduleNotes.push(``);
 
-    // 【重要】Tab 1（随時）はキャリア採用（中途採用）の情報のみ含める
-    // 社員面談などの他の情報は除外し、Tab 2以降の具体的なスケジュールと競合しないようにする
-    const isTab1 = tabNumber === 1;
-
     for (const tableField of fields) {
       const tableData = record[tableField.name]?.value as KintoneTableRow[];
 
@@ -350,33 +346,6 @@ export function convertScheduleRecordToText(record: KintoneRecord): string {
             allText.push(fieldValue.trim());
           }
         });
-
-        // Tab 1の場合: キャリア採用（中途採用）以外の情報を除外
-        if (isTab1) {
-          const combinedText = allText.join(' ');
-
-          // キャリア採用関連のキーワードをチェック
-          const isCareerRecruitment =
-            combinedText.includes('キャリア採用') ||
-            combinedText.includes('中途採用') ||
-            combinedText.includes('採用') && (
-              combinedText.includes('選考') ||
-              combinedText.includes('面接') ||
-              combinedText.includes('応募')
-            );
-
-          // 社員面談関連のキーワードをチェック（除外対象）
-          const isEmployeeInterview =
-            combinedText.includes('社員面談') ||
-            combinedText.includes('SGシート') ||
-            combinedText.includes('面談室') ||
-            combinedText.includes('評価');
-
-          // キャリア採用以外、または社員面談関連の場合はスキップ
-          if (!isCareerRecruitment || isEmployeeInterview) {
-            continue;
-          }
-        }
 
         if (allText.length > 0) {
           scheduleNotes.push(`    ${allText.join('\n    ')}`);
