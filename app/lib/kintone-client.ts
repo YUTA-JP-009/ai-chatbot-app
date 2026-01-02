@@ -626,8 +626,53 @@ function calculateTagScore(tagContent: string, keywords: string[]): number {
 }
 
 /**
- * XMLタグを解析してフィルタリング
- * 上位20件を選択（精度優先）
+ * キーワード該当箇所を抽出（2段階目のフィルタリング）
+ * - タグのヘッダー（URL、データソース、期、Tab）は必ず保持
+ * - キーワード周辺200文字を抽出
+ * - 複数箇所にキーワードがあれば全て抽出
+ */
+function extractRelevantSections(tagContent: string, keywords: string[]): string {
+  const lines = tagContent.split('\n');
+
+  // ヘッダー部分を抽出（最初の10行: URL、データソース、期、Tab）
+  const headerLines = lines.slice(0, 10);
+  const header = headerLines.join('\n');
+
+  // 本文部分
+  const bodyText = lines.slice(10).join('\n');
+
+  // キーワードが含まれる箇所を抽出（前後100文字）
+  const sections: string[] = [];
+
+  for (const keyword of keywords) {
+    const regex = new RegExp(keyword, 'g');
+    let match;
+
+    while ((match = regex.exec(bodyText)) !== null) {
+      const start = Math.max(0, match.index - 100);
+      const end = Math.min(bodyText.length, match.index + keyword.length + 100);
+      const section = bodyText.substring(start, end);
+
+      // 重複排除（既に同じ箇所を抽出済みならスキップ）
+      if (!sections.some(s => s.includes(section) || section.includes(s))) {
+        sections.push(section);
+      }
+    }
+  }
+
+  // ヘッダー + 該当箇所
+  if (sections.length > 0) {
+    return `${header}\n\n【該当箇所】\n${sections.join('\n...\n')}`;
+  }
+
+  // キーワードが見つからない場合は全文返す（フォールバック）
+  return tagContent;
+}
+
+/**
+ * XMLタグを解析してフィルタリング（2段階フィルタリング）
+ * - 1段階目: スコアリングで上位20件を選択
+ * - 2段階目: 各タグからキーワード該当箇所を抽出
  */
 function filterRelevantTags(combinedText: string, keywords: string[]): string {
   // XMLタグを抽出（<record>, <schedule>, <rule>）
@@ -644,13 +689,35 @@ function filterRelevantTags(combinedText: string, keywords: string[]): string {
   // スコア降順でソート
   tags.sort((a, b) => b.score - a.score);
 
-  // 上位20件を選択（精度維持のため固定）
+  // 【1段階目】上位20件を選択（精度維持のため固定）
   const topTags = tags.slice(0, 20);
 
-  console.log(`  🔍 キーワードフィルタリング: ${tags.length}件 → ${topTags.length}件に絞り込み`);
+  console.log(`  🔍 1段階目フィルタリング: ${tags.length}件 → ${topTags.length}件に絞り込み`);
   console.log(`  📊 上位3件のスコア: ${topTags.slice(0, 3).map(t => `${t.id}(${t.score})`).join(', ')}`);
 
-  return topTags.map(t => t.content).join('\n\n');
+  // 【2段階目】各タグからキーワード該当箇所を抽出
+  const extractedTags = topTags.map(tag => {
+    // XMLタグを再解析してコンテンツ部分を抽出
+    const contentMatch = tag.content.match(/<(?:record|schedule|rule) id="[^"]+">([\s\S]*?)<\/(?:record|schedule|rule)>/);
+
+    if (!contentMatch) {
+      return tag.content; // 解析失敗時はそのまま返す
+    }
+
+    const originalContent = contentMatch[1];
+    const extractedContent = extractRelevantSections(originalContent, keywords);
+
+    // XMLタグを再構築
+    const tagName = tag.type;
+    const tagId = tag.id;
+    return `<${tagName} id="${tagId}">\n${extractedContent}\n</${tagName}>`;
+  });
+
+  const result = extractedTags.join('\n\n');
+
+  console.log(`  ✂️  2段階目フィルタリング: ${topTags.map(t => t.content).join('\n\n').length.toLocaleString()}文字 → ${result.length.toLocaleString()}文字に圧縮`);
+
+  return result;
 }
 
 export async function fetchAllKintoneData(question?: string): Promise<string> {
