@@ -3,7 +3,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getAllQAAsText } from '../../data/qa-database';
-import { logToSheetsAsync } from '../../lib/sheets-logger';
+import { logToSheets } from '../../lib/sheets-logger';
 
 // --- テスト用のGETハンドラ ---
 export async function GET() {
@@ -89,30 +89,31 @@ export async function POST(request: Request) {
 
     // 6. 質問者名を取得してログ記録（非同期、Fire-and-Forget）
     // 質問者名の取得に失敗してもログは記録する
-    console.log('📊 ログ記録を開始します...');
-    getQuestionerName(roomId, fromAccountId)
-      .catch((error) => {
-        console.log('⚠️ 質問者名の取得に失敗しました:', error.message);
-        return undefined;
-      })
-      .then((questionerName) => {
-        console.log('👤 質問者名:', questionerName || 'なし（IDのみ）');
-        // 7. スプレッドシートにログを記録（非同期、Fire-and-Forget）
-        logToSheetsAsync({
-          timestamp: new Date().toISOString(),
-          questionerId: String(fromAccountId),
-          questionerName: questionerName,
-          question: question,
-          answer: geminiResult.answer,
-          processingTime: processingTime,
-          promptTokenCount: geminiResult.promptTokenCount,
-          usedTagIds: geminiResult.usedTagIds,
-        });
-        console.log('📝 logToSheetsAsync呼び出し完了');
-      });
+    // Chatworkには200 OKを返す（先に返す）
+    const response = NextResponse.json({ message: 'OK' });
 
-    // Chatworkには200 OKを返す
-    return NextResponse.json({ message: 'OK' });
+    // 7. スプレッドシートにログを記録（Chatwork返信後に実行）
+    console.log('📊 ログ記録を開始します...');
+    try {
+      const questionerName = await getQuestionerName(roomId, fromAccountId).catch(() => undefined);
+      console.log('👤 質問者名:', questionerName || 'なし（IDのみ）');
+
+      await logToSheets({
+        timestamp: new Date().toISOString(),
+        questionerId: String(fromAccountId),
+        questionerName: questionerName,
+        question: question,
+        answer: geminiResult.answer,
+        processingTime: processingTime,
+        promptTokenCount: geminiResult.promptTokenCount,
+        usedTagIds: geminiResult.usedTagIds,
+      });
+      console.log('📝 ログ記録完了');
+    } catch (logError) {
+      console.error('⚠️ ログ記録でエラーが発生しましたが、処理は継続します:', logError);
+    }
+
+    return response;
 
   } catch (error) {
     console.error('エラーが発生しました:', error);
@@ -121,19 +122,20 @@ export async function POST(request: Request) {
     const endTime = Date.now();
     const processingTime = (endTime - startTime) / 1000;
 
-    getQuestionerName(roomId, fromAccountId)
-      .catch(() => undefined) // エラー時はundefinedを返す
-      .then((questionerName) => {
-        logToSheetsAsync({
-          timestamp: new Date().toISOString(),
-          questionerId: String(fromAccountId),
-          questionerName: questionerName,
-          question: question,
-          answer: '',
-          processingTime: processingTime,
-          error: error instanceof Error ? error.message : String(error),
-        });
+    try {
+      const questionerName = await getQuestionerName(roomId, fromAccountId).catch(() => undefined);
+      await logToSheets({
+        timestamp: new Date().toISOString(),
+        questionerId: String(fromAccountId),
+        questionerName: questionerName,
+        question: question,
+        answer: '',
+        processingTime: processingTime,
+        error: error instanceof Error ? error.message : String(error),
       });
+    } catch (logError) {
+      console.error('⚠️ エラー時のログ記録も失敗しました:', logError);
+    }
 
     // エラーが発生した場合も、Chatworkにエラーメッセージを返信する
     await replyToChatwork(roomId, '申し訳ありません、エラーが発生しました。');
