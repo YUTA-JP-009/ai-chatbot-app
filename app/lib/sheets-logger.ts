@@ -91,10 +91,18 @@ async function getSheetsClient() {
  */
 export async function logToSheets(entry: LogEntry): Promise<void> {
   try {
+    console.log('🔍 [sheets-logger] logToSheets開始:', {
+      questionerId: entry.questionerId,
+      questionerName: entry.questionerName,
+    });
+
+    console.log('🔍 [sheets-logger] getSheetsClient呼び出し...');
     const sheets = await getSheetsClient();
+    console.log('✓ [sheets-logger] Sheetsクライアント取得成功');
 
     // タイムスタンプを日本時間（JST）に変換
     const formattedTimestamp = formatTimestampJST(entry.timestamp);
+    console.log('✓ [sheets-logger] タイムスタンプ変換完了:', formattedTimestamp);
 
     // 質問者表示（名前がある場合は「名前 (ID)」、ない場合はIDのみ）
     const questionerDisplay = entry.questionerName
@@ -112,6 +120,12 @@ export async function logToSheets(entry: LogEntry): Promise<void> {
       entry.usedTagIds?.join(', ') || '', // G列: 使用タグID
       entry.error || '',          // H列: エラー
     ];
+
+    console.log('🔍 [sheets-logger] スプレッドシート書き込み開始:', {
+      spreadsheetId: SPREADSHEET_ID,
+      sheetName: SHEET_NAME,
+      rowLength: row.length,
+    });
 
     // スプレッドシートに行を追加（A列から開始）
     await sheets.spreadsheets.values.append({
@@ -132,6 +146,11 @@ export async function logToSheets(entry: LogEntry): Promise<void> {
   } catch (error) {
     // エラーはコンソールに記録するのみ（メイン処理には影響させない）
     console.error('❌ スプレッドシートへのログ記録に失敗しました:', error);
+    console.error('❌ エラー詳細:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     console.error('失敗したログエントリ:', {
       timestamp: entry.timestamp,
       questionerId: entry.questionerId,
