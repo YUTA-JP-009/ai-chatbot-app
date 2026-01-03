@@ -87,15 +87,19 @@ export async function POST(request: Request) {
     const endTime = Date.now();
     const processingTime = (endTime - startTime) / 1000; // 秒に変換
 
-    // 6. スプレッドシートにログを記録（非同期、Fire-and-Forget）
-    logToSheetsAsync({
-      timestamp: new Date().toISOString(),
-      questionerId: String(fromAccountId),
-      question: question,
-      answer: geminiResult.answer,
-      processingTime: processingTime,
-      promptTokenCount: geminiResult.promptTokenCount,
-      usedTagIds: geminiResult.usedTagIds,
+    // 6. 質問者名を取得（非同期、Fire-and-Forget）
+    getQuestionerName(roomId, fromAccountId).then((questionerName) => {
+      // 7. スプレッドシートにログを記録（非同期、Fire-and-Forget）
+      logToSheetsAsync({
+        timestamp: new Date().toISOString(),
+        questionerId: String(fromAccountId),
+        questionerName: questionerName,
+        question: question,
+        answer: geminiResult.answer,
+        processingTime: processingTime,
+        promptTokenCount: geminiResult.promptTokenCount,
+        usedTagIds: geminiResult.usedTagIds,
+      });
     });
 
     // Chatworkには200 OKを返す
@@ -104,17 +108,20 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('エラーが発生しました:', error);
 
-    // エラー時のログ記録
+    // エラー時のログ記録（質問者名も取得）
     const endTime = Date.now();
     const processingTime = (endTime - startTime) / 1000;
 
-    logToSheetsAsync({
-      timestamp: new Date().toISOString(),
-      questionerId: String(fromAccountId),
-      question: question,
-      answer: '',
-      processingTime: processingTime,
-      error: error instanceof Error ? error.message : String(error),
+    getQuestionerName(roomId, fromAccountId).then((questionerName) => {
+      logToSheetsAsync({
+        timestamp: new Date().toISOString(),
+        questionerId: String(fromAccountId),
+        questionerName: questionerName,
+        question: question,
+        answer: '',
+        processingTime: processingTime,
+        error: error instanceof Error ? error.message : String(error),
+      });
     });
 
     // エラーが発生した場合も、Chatworkにエラーメッセージを返信する
@@ -126,6 +133,38 @@ export async function POST(request: Request) {
 // 事前定義回答は廃止: 全ての質問をVertex AI Searchで処理
 
 // --- Chatworkに返信する関数（メンション部分を削除） ---
+/**
+ * Chatwork APIから質問者の名前を取得
+ */
+async function getQuestionerName(roomId: number, accountId: number): Promise<string | undefined> {
+  const CHATWORK_API_BASE_URL = 'https://api.chatwork.com/v2';
+  const apiToken = process.env.CHATWORK_API_TOKEN;
+
+  if (!apiToken) return undefined;
+
+  try {
+    const endpoint = `${CHATWORK_API_BASE_URL}/rooms/${roomId}/members`;
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'X-ChatWorkToken': apiToken,
+      },
+    });
+
+    if (!response.ok) {
+      console.error('❌ Chatwork API error:', response.status);
+      return undefined;
+    }
+
+    const members = await response.json();
+    const member = members.find((m: any) => m.account_id === accountId);
+    return member?.name;
+  } catch (error) {
+    console.error('❌ Failed to get questioner name:', error);
+    return undefined;
+  }
+}
+
 async function replyToChatwork(roomId: number, message: string) {
   const CHATWORK_API_BASE_URL = 'https://api.chatwork.com/v2';
   const apiToken = process.env.CHATWORK_API_TOKEN;

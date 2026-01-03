@@ -13,14 +13,34 @@ const SPREADSHEET_ID = '1lo0AvDdsVgb2jK3fMpos4TtLr5Whcp6uQ5KSQLayzxE';
 const SHEET_NAME = 'シート1'; // デフォルトシート名（必要に応じて変更）
 
 interface LogEntry {
-  timestamp: string;        // A列: タイムスタンプ
-  questionerId: string;     // B列: 質問者（Chatwork Account ID）
-  question: string;         // C列: 質問文
-  answer: string;           // D列: 回答
-  processingTime: number;   // E列: 処理時間（秒）
+  timestamp: string;         // A列: タイムスタンプ（ISO形式）
+  questionerId: string;      // B列: 質問者ID（Chatwork Account ID）
+  questionerName?: string;   // B列: 質問者名（取得できた場合）
+  question: string;          // C列: 質問文
+  answer: string;            // D列: 回答
+  processingTime: number;    // E列: 処理時間（秒）
   promptTokenCount?: number; // F列: promptTokenCount
-  usedTagIds?: string[];    // G列: 使用タグID（カンマ区切り）
-  error?: string;           // H列: エラー（あれば）
+  usedTagIds?: string[];     // G列: 使用タグID（カンマ区切り）
+  error?: string;            // H列: エラー（あれば）
+}
+
+/**
+ * ISO形式のタイムスタンプを日本時間（JST）の読みやすい形式に変換
+ * 例: "2026-01-03 16:08:13"
+ */
+function formatTimestampJST(isoTimestamp: string): string {
+  const date = new Date(isoTimestamp);
+  // JSTはUTC+9時間
+  const jstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+
+  const year = jstDate.getUTCFullYear();
+  const month = String(jstDate.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(jstDate.getUTCDate()).padStart(2, '0');
+  const hours = String(jstDate.getUTCHours()).padStart(2, '0');
+  const minutes = String(jstDate.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(jstDate.getUTCSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 /**
@@ -73,16 +93,24 @@ export async function logToSheets(entry: LogEntry): Promise<void> {
   try {
     const sheets = await getSheetsClient();
 
+    // タイムスタンプを日本時間（JST）に変換
+    const formattedTimestamp = formatTimestampJST(entry.timestamp);
+
+    // 質問者表示（名前がある場合は「名前 (ID)」、ない場合はIDのみ）
+    const questionerDisplay = entry.questionerName
+      ? `${entry.questionerName} (${entry.questionerId})`
+      : entry.questionerId;
+
     // スプレッドシートに追加する行データ
     const row = [
-      entry.timestamp,
-      entry.questionerId,
-      entry.question,
-      entry.answer,
-      entry.processingTime,
-      entry.promptTokenCount || '',
-      entry.usedTagIds?.join(', ') || '',
-      entry.error || '',
+      formattedTimestamp,        // A列: 日本時間のタイムスタンプ
+      questionerDisplay,          // B列: 質問者名 (ID) または ID
+      entry.question,             // C列: 質問文
+      entry.answer,               // D列: 回答
+      entry.processingTime,       // E列: 処理時間
+      entry.promptTokenCount || '', // F列: promptTokenCount
+      entry.usedTagIds?.join(', ') || '', // G列: 使用タグID
+      entry.error || '',          // H列: エラー
     ];
 
     // スプレッドシートに行を追加（A列から開始）
