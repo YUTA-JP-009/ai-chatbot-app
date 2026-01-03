@@ -87,20 +87,23 @@ export async function POST(request: Request) {
     const endTime = Date.now();
     const processingTime = (endTime - startTime) / 1000; // 秒に変換
 
-    // 6. 質問者名を取得（非同期、Fire-and-Forget）
-    getQuestionerName(roomId, fromAccountId).then((questionerName) => {
-      // 7. スプレッドシートにログを記録（非同期、Fire-and-Forget）
-      logToSheetsAsync({
-        timestamp: new Date().toISOString(),
-        questionerId: String(fromAccountId),
-        questionerName: questionerName,
-        question: question,
-        answer: geminiResult.answer,
-        processingTime: processingTime,
-        promptTokenCount: geminiResult.promptTokenCount,
-        usedTagIds: geminiResult.usedTagIds,
+    // 6. 質問者名を取得してログ記録（非同期、Fire-and-Forget）
+    // 質問者名の取得に失敗してもログは記録する
+    getQuestionerName(roomId, fromAccountId)
+      .catch(() => undefined) // エラー時はundefinedを返す
+      .then((questionerName) => {
+        // 7. スプレッドシートにログを記録（非同期、Fire-and-Forget）
+        logToSheetsAsync({
+          timestamp: new Date().toISOString(),
+          questionerId: String(fromAccountId),
+          questionerName: questionerName,
+          question: question,
+          answer: geminiResult.answer,
+          processingTime: processingTime,
+          promptTokenCount: geminiResult.promptTokenCount,
+          usedTagIds: geminiResult.usedTagIds,
+        });
       });
-    });
 
     // Chatworkには200 OKを返す
     return NextResponse.json({ message: 'OK' });
@@ -108,21 +111,23 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('エラーが発生しました:', error);
 
-    // エラー時のログ記録（質問者名も取得）
+    // エラー時のログ記録（質問者名も取得、失敗してもログは記録）
     const endTime = Date.now();
     const processingTime = (endTime - startTime) / 1000;
 
-    getQuestionerName(roomId, fromAccountId).then((questionerName) => {
-      logToSheetsAsync({
-        timestamp: new Date().toISOString(),
-        questionerId: String(fromAccountId),
-        questionerName: questionerName,
-        question: question,
-        answer: '',
-        processingTime: processingTime,
-        error: error instanceof Error ? error.message : String(error),
+    getQuestionerName(roomId, fromAccountId)
+      .catch(() => undefined) // エラー時はundefinedを返す
+      .then((questionerName) => {
+        logToSheetsAsync({
+          timestamp: new Date().toISOString(),
+          questionerId: String(fromAccountId),
+          questionerName: questionerName,
+          question: question,
+          answer: '',
+          processingTime: processingTime,
+          error: error instanceof Error ? error.message : String(error),
+        });
       });
-    });
 
     // エラーが発生した場合も、Chatworkにエラーメッセージを返信する
     await replyToChatwork(roomId, '申し訳ありません、エラーが発生しました。');
