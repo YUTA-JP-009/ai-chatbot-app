@@ -128,7 +128,8 @@ export async function logToSheets(entry: LogEntry): Promise<void> {
     });
 
     // スプレッドシートに行を追加（A列から開始）
-    await sheets.spreadsheets.values.append({
+    // タイムアウト設定（5秒）
+    const appendPromise = sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: `${SHEET_NAME}!A1:H1`, // A1から開始を明示
       valueInputOption: 'RAW',
@@ -137,6 +138,14 @@ export async function logToSheets(entry: LogEntry): Promise<void> {
         values: [row],
       },
     });
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Google Sheets API timeout (5s)')), 5000)
+    );
+
+    console.log('⏳ [sheets-logger] API呼び出し中...');
+    const result = await Promise.race([appendPromise, timeoutPromise]);
+    console.log('✓ [sheets-logger] API呼び出し成功:', result);
 
     console.log('✅ スプレッドシートにログを記録しました', {
       timestamp: entry.timestamp,
