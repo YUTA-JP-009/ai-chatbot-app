@@ -89,9 +89,14 @@ export async function POST(request: Request) {
 
     // 6. 質問者名を取得してログ記録（非同期、Fire-and-Forget）
     // 質問者名の取得に失敗してもログは記録する
+    console.log('📊 ログ記録を開始します...');
     getQuestionerName(roomId, fromAccountId)
-      .catch(() => undefined) // エラー時はundefinedを返す
+      .catch((error) => {
+        console.log('⚠️ 質問者名の取得に失敗しました:', error.message);
+        return undefined;
+      })
       .then((questionerName) => {
+        console.log('👤 質問者名:', questionerName || 'なし（IDのみ）');
         // 7. スプレッドシートにログを記録（非同期、Fire-and-Forget）
         logToSheetsAsync({
           timestamp: new Date().toISOString(),
@@ -103,6 +108,7 @@ export async function POST(request: Request) {
           promptTokenCount: geminiResult.promptTokenCount,
           usedTagIds: geminiResult.usedTagIds,
         });
+        console.log('📝 logToSheetsAsync呼び出し完了');
       });
 
     // Chatworkには200 OKを返す
