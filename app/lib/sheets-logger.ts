@@ -85,11 +85,12 @@ export async function logToSheets(entry: LogEntry): Promise<void> {
       entry.error || '',
     ];
 
-    // スプレッドシートに行を追加
+    // スプレッドシートに行を追加（A列から開始）
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A:H`,
+      range: `${SHEET_NAME}!A1:H1`, // A1から開始を明示
       valueInputOption: 'RAW',
+      insertDataOption: 'INSERT_ROWS', // 新しい行を挿入
       requestBody: {
         values: [row],
       },
